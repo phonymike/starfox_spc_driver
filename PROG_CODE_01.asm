@@ -449,8 +449,9 @@ mov	$3c82,a
 mov	$3c83,y
 mov.b	a,$18
 or.b	a,$19
-bne	$067a
+bne	+
 inc	$18
++
 ret
 ;................................................
 _67B:
@@ -1109,7 +1110,7 @@ mv1x:
 ;************************************************
 ;		main volume move
 ;************************************************
-mvx2:
+mv2x:
 	;call	data_in			; data in & inc add
 	mov.b	!mvoc,a			; mvol (count)
 ;
@@ -1220,6 +1221,7 @@ swsx0:
 ;................................................
 ;		sweep off		; a = 0
 ;................................................
+sofx:
 	mov	!swsc+x,a		;
 	mov	$03e1+x,a
 	ret
@@ -1283,165 +1285,563 @@ addset:
 	mov	a,!adp+1+x		; pattern add. (high)
 	mov.b	!add+1+x,a
 	ret
-
-mov	$03c3,a
-mov.b	$4a,a
-call	data_in
-mov	a,#$00
-movw	$60,ya
-call	data_in
-mov	a,#$00
-movw	$62,ya
-clr5	$48
-ret
-mov.b	$68,a
-call	data_in
-mov.b	$69,a
-setc
-sbc.b	a,$61
-mov.b	x,$68
-call	$0bbe
-movw	$64,ya
-call	data_in
-mov.b	$6a,a
-setc
-sbc.b	a,$63
-mov.b	x,$68
-call	$0bbe
-movw	$66,ya
-ret
-movw	$60,ya
-movw	$62,ya
-set5	$48
-ret
-call	$0b14
-call	data_in
-mov.b	$4e,a
-call	data_in
-mov	y,#$08
-mul	ya
-mov	x,a
-mov	y,#$0f
-mov	a,$0e7c+x
-call	apus
-inc	x
-mov	a,y
-clrc
-adc	a,#$10
-mov	y,a
-bpl	$0b03
-mov.b	x,$44
-ret
+;************************************************
+;		echo on channel & volume
+;************************************************
+ecvx:
+	;call	!data_in		; data in & inc add
+	mov	$03c3,a
+	mov.b	!eons,a			; echo channel set
+;
+	call	data_in			; data in & inc add
+	mov	a,#$00
+	movw	!evolw,ya
+;
+	call	data_in			; data in & inc add
+	mov	a,#$00
+	movw	!evorw,ya
+;
+	clr5	!flgs			; write enable
+;
+	ret
+;************************************************
+;		echo volume move
+;************************************************
+ev2x:
+	;call	!data_in		; data in & inc add
+	mov.b	!evoc,a			; evol (count)
+;......
+	call	data_in			; data in & inc add
+	mov.b	!evolm,a		; evol (mokuteki)
+;...
+	setc
+	sbc.b	a,!evol			; evol (now data)
+	mov.b	x,!evoc			; count --> x
+;
+	call	$0bbe			; x=count a=sa c=+,-
+	movw	!evoladw,ya		; + @
+;...................
+	call	data_in			; data in & inc add
+	mov.b	!evorm,a		; evor (mokuteki)
+;...
+	setc
+	sbc.b	a,!evor			; evor (now data)
+	mov.b	x,!evoc			; count --> x
+;
+	call	$0bbe			; x=count a=sa c=+,-
+	movw	!evoradw,ya		; + @
+	ret
+;************************************************
+;		echo off
+;************************************************
+eofx:
+	movw	!evolw,ya		; ya = 00
+	movw	!evorw,ya		; EVOL "00" set
+;
+	set5	!flgs			; write disable
+	ret
+;************************************************
+;		echo delay time & feed back
+;************************************************
+edlx:
+	;call	data_in			; data in & inc add
+	call	$0b14			; EDL & ESA set
+;
+	call	data_in			; data in & inc add
+	mov.b	!efbs,a			; EFB = feed back     
+;
+	call	data_in			; data in & inc add
+;
+filset:
+	mov	y,#$08			; a = fil no.
+	mul	ya
+	mov	x,a			; table add.
+	mov	y,#$0f			; tenso address set
+;
+filset2:
+	mov	a,$0e7c+x
+	call	apus			; a=data  y= address 
+;
+	inc	x
+	mov	a,y
+	clrc
+	adc	a,#$10
+	mov	y,a
+	bpl	filset2			; until 07fh
+;
+	mov.b	x,!chn
+	ret
 ;........................................
 esaset:
-mov.b	$4d,a
-mov	y,#$7d
-mov	!apuadd,y
-mov	a,!apudt
-cmp.b	a,$4d
-beq	$0b4d
-and	a,#$0f
-eor	a,#$ff
-bbc7	$4c,$0b2c
-clrc
-adc.b	a,$4c
+	mov.b	$4d,a
+	mov	y,#$7d			; EDL = delay time
+	mov	!apuadd,y
+	mov	a,!apudt
+	cmp.b	a,!eclr
+	beq	$0b4d
+;......
+	and	a,#$0f
+	eor	a,#$ff
+	bbc7	!ekin,esaset1		; kinshi chu ?
+	clrc
+	adc.b	a,!ekin
 esaset1:
-mov.b	$4c,a
-mov	y,#$04
-mov	a,$0e9b+y
-mov	$00f2,a
-mov	a,#$00
-mov	$00f3,a
-dbnz	y,$0b30
-mov.b	a,$48
-or	a,#$20
-mov	y,#$6c
-call	apus
-mov.b	a,$4d
-mov	y,#$7d
-call	apus
-asl	a
-asl	a
-asl	a
-eor	a,#$ff
-setc
-adc	a,#$3c
-mov	y,#$6d
-jmp	apus
-mov.b	$5f,a
-ret
-push	a
-mov.b	a,$47
-and.b	a,$1a
-pop	a
-beq	$0b8b
-mov	$10,#$02
-bra	$0b7d
-mov.b	a,$a0+x
-bne	$0bb2
-mov	a,($30+x)
-cmp	a,#$f9
-bne	$0bb2
-mov.b	a,$47
-and.b	a,$1a
-beq	$0b85
-mov	$10,#$04
-call	$092a
-dbnz	$10,$0b7d
-bra	$0bb2
-call	$092a
-call	data_in
-mov.b	$a1+x,a
-call	data_in
-mov.b	$a0+x,a
-call	data_in
-clrc
-adc.b	a,$50
-adc	a,$02f0+x
-and	a,#$7f
-mov	$0380+x,a
-setc
-sbc	a,$0361+x
-mov.b	y,$a0+x
-push	y
-pop	x
-call	$0bbe
-mov	$0370+x,a
-mov	a,y
-mov	$0371+x,a
-ret
-mov	a,$0361+x
-mov.b	$11,a
-mov	a,$0360+x
-mov.b	$10,a
-ret
-notc
-ror	$12
-bpl	$0bc6
-eor	a,#$ff
-inc	a
-mov	y,#$00
-div	ya,x
-push	a
-mov	a,#$00
-div	ya,x
-pop	y
-mov.b	x,$44
-bbc7	$12,$0bd9
-movw	$14,ya
-movw	ya,$0e
-subw	ya,$14
+	mov.b	!ekin,a			; echo kinshi time
+;
+	mov	y,#$04
+esaset2:
+	mov	a,dseta-1+y		; EON EFB EVOL EVOR
+	mov	!apuadd,a		; write address 
+	mov	a,#$00
+	mov	!apudt,a		; data write
+	dbnz	y,esaset2		;
+;
+	mov.b	a,!flgs
+	or	a,#$20
+	mov	y,#$6c			; FLG echo off
+	call	apus			; a=data  y=address
+;
+	mov.b	a,!eclr
+	mov	y,#$7d			; EDL = delay time
+	call	apus			; a=data  y=address
+;......
+esaset4:
+	asl	a			; ESA set
+	asl	a
+	asl	a
+	eor	a,#$ff
+	setc
+	adc	a,#$3c			; 0ffh = echo end add.  ** henko **
+	mov	y,#$6d			; ESA = echo start add.
+	jmp	apus			; a=data  y=address
+;************************************************
+;		source count
+;************************************************
+wavx:	mov.b	!wavs,a			;
+	ret				;
+;************************************************
+;		sel dammy
+;************************************************
+;selx:	call	add_inc			;	!! test !!
+;	ret				;	!! test !!
+;************************************************
+;		sound cut
+;************************************************
+;cutx:	inc	a			;	!! test !!
+;	mov	!cutk+x,a		;	!! test !!
+;	ret				;	!! test !!
+;************************************************
+;		F.F. set
+;************************************************
+;fftx:		inc	a		;	!! test !!
+;************************************************
+;               F.F. clear
+;************************************************
+;plyx:		mov	!ffk,a		; 	 !! test !!
+;		jmp	ks04		; keyoff !! test !!
+_B5D:
+	push	a
+	mov.b	a,!keyd
+	and.b	a,!fkin			; kinshi flag check
+	pop	a
+	beq	swpx
+	mov	$10,#$02
+	bra	_B7D
+;................................................
+;************** sweep check (next data) *********
+;................................................
+swpch:
+	mov.b	a,!swpc+x		;
+	bne	swpadsetr
+;
+	mov	a,(!add+x)		; next data check
+	cmp	a,#!swp
+	bne	swpadsetr		; not [swp] ?
+;......
+	mov.b	a,!keyd
+	and.b	a,!fkin
+	beq	+
+	mov	$10,#$04
+_B7D:
+	call	add_inc			; inc add
+	dbnz	$10,_B7D
+	bra	swpadsetr
+;......
++
+	call	add_inc			; inc add
+	call	data_in			; data in & inc add
+swpx:
+	mov.b	!swphc+x,a		; sweep (hold)
+;
+	call	data_in			; data in & inc add
+	mov.b	!swpc+x,a		; sweep (counter)
+;
+	call	data_in			; data in & inc add
+	clrc				; key trans. add.
+	adc.b	a,!ktps
+	adc	a,!ptps+x
+;................................................
+swpadset:
+	and	a,#$7f			; $
+	mov	!swpm+x,a		; sweep (mokuteki)
+;......
+	setc				;
+	sbc	a,!swpd+x		; moku - now
+;
+	mov.b	y,!swpc+x		; sweep count
+	push	y
+	pop	x			; count --> x
+;
+	call	divx			; x=count a=sa c=+,-
+	mov	!swpadw+x,a		; + shimo
+	mov	a,y
+	mov	!swpad+x,a		; + kami
+swpadsetr:
+	ret
+;........................................
+swpdset:
+	mov	a,!swpd+x		; kkk sss <-- swpd swpdw
+	mov.b	!kkk,a
+	mov	a,$0360+x		;
+	mov.b	!sss,a
+	ret
+;................................................
+;************** div keisan  from tp2 & mv2 & pam & swp (x=count a=sa)
+;................................................
+divx:
+	notc				; c=1 plus
+	ror.b	!ttt			; data store
+	bpl	div10			; lpus ?
+;......
+	eor	a,#$ff			; minus
+	inc	a
+;......
+div10:
+	mov	y,#$00			; sa --> 00 sa ( y a )
+	div	ya,x			; 00 sa / count --> a ... y
+	push	a			; kami
+;
+	mov	a,#$00
+	div	ya,x			; sa 00  / count --> a
+	pop	y			; ya data set
+	mov.b	x,!chn			;
+;...................
+minusc:
+	bbc7	!ttt,divr		; ttt d7=1 ?
+;
+	movw	!adx,ya			; minus
+	movw	ya,!t00
+	subw	ya,!adx
 divr:
 	ret
 ;................................................
 spft:
-skip 54
-
+	dw snox,panx,pamx,vibx,vofx,mv1x,mv2x,tp1x,tp2x
+	dw ktpx,ptpx,trex,tofx,pv1x,pv2x,patx,vchx,swkx,swsx,sofx
+	;dw tunx,ecvx,eofx,edlx,ev2x,swpx,wavx
+	dw $0A82,ecvx,eofx,edlx,ev2x,_B5D,wavx
+	;dw                                    selx,cutx,fftx,plyx	; !! test !!
 spfp:
 	db $01, $01, $02, $03, $00, $01, $02, $01, $02
 	db $01, $01, $03, $00, $01, $02, $03, $01, $03, $03, $00
 	db $01, $03, $00, $03, $03, $03, $01
-	db                                    $02, $00, $00, $00	; !! test !!
+	;db                                    $02, $00, $00, $00	; !! test !!
+;................................................
+;
+;
+;
+;************************************************
+;		part vol move
+;************************************************
+voly:
+	mov.b   a,$90+x
+	beq   $0c38
+
+mov   a,#$00
+mov   y,#$03
+dec.b   $90+x
+call  $0cc1
+mov.b   y,$c1+x
+beq   $0c5f
+mov   a,$02e0+x
+cbne  $c0+x,$0c5d
+or    (!vols),(!keyd)
+mov   a,$02d0+x
+bpl   $0c51
+inc   y
+bne   $0c51
+mov   a,#$80
+bra   $0c55
+	clrc
+	adc   a,$02d1+x
+	mov   $02d0+x,a
+call  $0e4a
+bra   $0c64
+inc.b   $c0+x
+mov   a,#$ff
+call  $0e55
+mov.b   a,$91+x
+beq   $0c71
+mov   a,#$30
+mov   y,#$03
+dec.b   $91+x
+call  $0cc1
+mov.b   a,$47
+and.b   a,$5e
+beq   $0cc0
+mov   a,$0331+x
+mov   y,a
+mov   a,$0330+x
+movw  $10,ya
+mov   a,x
+xcn   a
+lsr   a
+mov.b   $12,a
+mov   y,$11
+mov   a,$0e68+y
+setc
+sbc   a,$0e67+y
+mov   y,$10
+mul   ya
+mov   a,y
+mov   y,$11
+clrc
+adc   a,$0e67+y
+mov   y,a
+mov   $0250+x,a
+mov   a,$0321+x
+mul   ya
+mov   a,$0351+x
+asl   a
+bbc0  $12,$0ca8
+asl   a
+mov   a,y
+bcc   $0cae
+eor   a,#$ff
+inc   a
+mov   y,$12
+call  $0605
+mov   y,#$14
+mov   a,#$00
+subw  ya,$10
+movw  $10,ya
+inc   $12
+bbc1  $12,$0c85
+ret
+or    ($5e),($47)
+movw  $14,ya
+movw  $16,ya
+push  x
+pop   y
+clrc
+bne   $0cd7
+adc   $16,#$1f
+mov   a,#$00
+mov   ($14)+y,a
+inc   y
+bra   $0ce0
+adc   $16,#$10
+call  $0cde
+inc   y
+mov   a,($14)+y
+adc   a,($16)+y
+mov   ($14)+y,a
+ret
+mov.b   a,$71+x
+beq   $0d4e
+dec.b   $71+x
+beq   $0cf2
+mov   a,#$02
+cbne  $70+x,$0d4e
+mov.b   a,$80+x
+mov.b   $17,a
+mov.b   a,$30+x
+mov.b   y,$31+x
+movw  $14,ya
+mov   y,#$00
+mov   a,($14)+y
+beq   $0d20
+bmi   $0d0b
+inc   y
+bmi   $0d47
+mov   a,($14)+y
+bpl   $0d04
+cmp   a,#$c8
+beq   $0d4e
+cmp   a,#$ef
+beq   $0d3c
+cmp   a,#$e0
+bcc   $0d47
+push  y
+mov   y,a
+pop   a
+adc   a,$0b30+y
+mov   y,a
+bra   $0cfe
+mov.b   a,$17
+beq   $0d47
+dec   $17
+bne   $0d32
+mov   a,$0231+x
+push  a
+mov   a,$0230+x
+pop   y
+bra   $0cfa
+mov   a,$0241+x
+push  a
+mov   a,$0240+x
+pop   y
+bra   $0cfa
+inc   y
+mov   a,($14)+y
+push  a
+inc   y
+mov   a,($14)+y
+mov   y,a
+pop   a
+bra   $0cfa
+mov.b   a,$47
+mov   y,#$5c
+call  $0605
+clr7  $13
+mov.b   a,$a0+x
+beq   $0d6d
+mov.b   a,$a1+x
+beq   $0d5c
+dec.b   $a1+x
+bra   $0d6d
+mov.b   a,$1a
+and.b   a,$47
+bne   $0d6d
+set7  $13
+mov   a,#$60
+mov   y,#$03
+dec.b   $a0+x
+call  $0cc4
+call  $0bb3
+mov.b   a,$b1+x
+beq   $0dc0
+mov   a,$02b0+x
+cbne  $b0+x,$0dbe
+mov   a,$0100+x
+cmp   a,$02b1+x
+bne   $0d87
+mov   a,$02c1+x
+bra   $0d94
+setp
+inc.b   $00+x
+clrp
+mov   y,a
+beq   $0d90
+mov.b   a,$b1+x
+clrc
+adc   a,$02c0+x
+mov.b   $b1+x,a
+mov   a,$02a0+x
+clrc
+adc   a,$02a1+x
+mov   $02a0+x,a
+mov.b   $12,a
+asl   a
+asl   a
+bcc   $0da8
+eor   a,#$ff
+mov   y,a
+mov.b   a,$b1+x
+cmp   a,#$f1
+bcc   $0db4
+and   a,#$0f
+mul   ya
+bra   $0db8
+mul   ya
+mov   a,y
+mov   y,#$00
+call  $0e35
+jmp   $0582
+inc.b   $b0+x
+bbs7  $13,$0dbb
+ret
+clr7  $13
+mov.b   a,$c1+x
+beq   $0dd3
+mov   a,$02e0+x
+cbne  $c0+x,$0dd3
+call  $0e3d
+mov   a,$0331+x
+mov   y,a
+mov   a,$0330+x
+movw  $10,ya
+mov.b   a,$91+x
+beq   $0dea
+mov   a,$0341+x
+mov   y,a
+mov   a,$0340+x
+call  $0e1f
+bbc7  $13,$0df0
+call  $0c80
+clr7  $13
+call  $0bb3
+mov.b   a,$a0+x
+beq   $0e07
+mov.b   a,$a1+x
+bne   $0e07
+mov   a,$0371+x
+mov   y,a
+mov   a,$0370+x
+call  $0e1f
+mov.b   a,$b1+x
+beq   $0dc0
+mov   a,$02b0+x
+cbne  $b0+x,$0dc0
+mov   y,$51
+mov   a,$02a1+x
+mul   ya
+mov   a,y
+clrc
+adc   a,$02a0+x
+jmp   $0da0
+set7  $13
+mov.b   $12,y
+call  $0bd0
+push  y
+mov   y,$51
+mul   ya
+mov.b   $14,y
+mov   $15,#$00
+mov   y,$51
+pop   a
+mul   ya
+addw  ya,$14
+call  $0bd0
+addw  ya,$10
+movw  $10,ya
+ret
+set7  $13
+mov   y,$51
+mov   a,$02d1+x
+mul   ya
+mov   a,y
+clrc
+adc   a,$02d0+x
+asl   a
+bcc   $0e4f
+eor   a,#$ff
+mov.b   y,$c1+x
+mul   ya
+mov   a,y
+eor   a,#$ff
+mov   y,$59
+mul   ya
+mov   a,$0210+x
+mul   ya
+mov   a,$0301+x
+mul   ya
+mov   a,y
+mul   ya
+mov   a,y
+mov   $0321+x,a
+ret
+
 
 
 
