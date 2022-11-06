@@ -1560,7 +1560,7 @@ voly:
 mov	a,#$00
 mov	y,#$03
 dec.b	!pvoc+x
-call	$0cc1
+call	_CC1
 
 ;************************************************
 ;               tremolo check                      
@@ -1608,7 +1608,7 @@ pany:
 	mov	a,#$30
 	mov	y,#$03
 	dec.b	!panc+x
-	call	$0cc1
+	call	_CC1
 ;..............................................
 pan10:
 	mov.b	a,!keyd
@@ -1668,106 +1668,162 @@ pan34:
 ;
 panr:
 	ret
-	or	(!vols),(!keyd)
-	movw	$14,ya
-	movw	$16,ya
-	push	x
-	pop	y
-	clrc
-	bne	$0cd7
-	adc	$16,#$1f
-	mov	a,#$00
-	mov	($14)+y,a
-	inc	y
-	bra	$0ce0
-	adc	$16,#$10
-	call	$0cde
-	inc	y
-	mov	a,($14)+y
-	adc	a,($16)+y
-	mov	($14)+y,a
-	ret
-	mov.b	a,$71+x
-	beq	$0d4e
-	dec.b	$71+x
-	beq	$0cf2
+;................................................
+_CC1:
+or	(!vols),(!keyd)		; vol set flag 
+_CC4:
+movw	$14,ya
+movw	$16,ya
+push	x
+pop	y
+clrc
+bne	$0cd7
+adc	$16,#$1f
+mov	a,#$00
+mov	($14)+y,a
+inc	y
+bra	+
+adc	$16,#$10
+call	_CDE
+inc	y
+;
+_CDE:
+mov	a,($14)+y
++
+adc	a,($16)+y
+mov	($14)+y,a
+ret
+;************************************************
+;		keyoff check
+;************************************************
+	mov.b	a,!ngo+x		; key off ?
+	beq	swpy
+;
+	dec.b	!ngo+x			; key off ?
+	beq	key02
+;
 	mov	a,#$02
-	cbne	$70+x,$0d4e
-	mov.b	a,$80+x
-	mov.b	$17,a
-	mov.b	a,$30+x
-	mov.b	y,$31+x
-	movw	$14,ya
+	cbne	!ngc+x,swpy
+;...................
+key02:
+	mov.b	a,!ptc+x		; pattern count
+	mov.b	!adx+3,a
+
+	mov.b	a,!add+x		; address set
+	mov.b	y,!add+1+x
+key04:
+	movw	!adx,ya
+;
 	mov	y,#$00
-	mov	a,($14)+y
-	beq	$0d20
-	bmi	$0d0b
+;......
+key10:
+	mov	a,(!adx)+y		; data in
+	beq	key16			; block end ?
+	bmi	key14
+
 	inc	y
 	bmi	$0d47
 	mov	a,($14)+y
 	bpl	$0d04
-	cmp	a,#$c8
-	beq	$0d4e
-	cmp	a,#$ef
-	beq	$0d3c
-	cmp	a,#$e0
-	bcc	$0d47
-	push	y
+;
+key14:
+	cmp	a,#!xxx			; xxx ?
+	beq	swpy			; = tai
+;
+	cmp	a,#!pat
+	beq	key18			; pat ?
+;
+	cmp	a,#!sno
+	bcc	key20
+;...
+	push	y			; special flag
 	mov	y,a
 	pop	a
-	adc	a,$0b30+y
+	adc	a,spfp-!sno+y		; c=1
 	mov	y,a
 	bra	$0cfe
-	mov.b	a,$17
+;...................
+key16:
+	mov.b	a,!adx+3		; pattern chu ?
 	beq	$0d47
-	dec	$17
-	bne	$0d32
-	mov	a,$0231+x
+;......
+	dec.b	!adx+3			; pattern end ?
+	bne	key17
+;
+	mov	a,!adt+1+x		; add restore (pattern end)
 	push	a
-	mov	a,$0230+x
+	mov	a,!adt+x
+	pop	y
+	bra	$0cfa			;
+;
+key17:
+	mov	a,!adp+1+x		; pattern add. (high)
+	push	a
+	mov	a,!adp+x		; pattern add. (low)
 	pop	y
 	bra	$0cfa
-	mov	a,$0241+x
-	push	a
-	mov	a,$0240+x
-	pop	y
-	bra	$0cfa
-	inc	y
-	mov	a,($14)+y
-	push	a
-	inc	y
-	mov	a,($14)+y
-	mov	y,a
+;......
+key18:
+	inc	y			; pat
+	mov	a,(!adx)+y		; data in
+	push	a			; add. low
+	inc	y			;
+	mov	a,(!adx)+y		; data in
+	mov	y,a			; add. high
 	pop	a
-	bra	$0cfa
-	mov.b	a,!keyd
-	mov	y,#$5c
-	call	$0605
-	clr7	$13
-	mov.b	a,$a0+x
-	beq	$0d6d
-	mov.b	a,$a1+x
-	beq	$0d5c
-	dec.b	$a1+x
-	bra	$0d6d
-	mov.b	a,$1a
+	bra	$0cfa			;
+;...................
+key20:
+	mov.b	a,!keyd			; key off set
+	mov	y,#!keyoff
+	call	apusx			; keyoff set (a=keyd)
+;************************************************
+;		sweep check
+;************************************************
+swpy:
+	clr7	!uuu			; sweep chu flag
+;
+	mov.b	a,!swpc+x		; sweep chu ?
+	beq	viby
+;................................................
+	mov.b	a,!swphc+x		; hold chu ?
+	beq	swp20
+;
+	dec.b	!swphc+x		; hold chu
+	bra	viby
+;................................................
+swp20:
+	mov.b	a,!fkin
 	and.b	a,!keyd
-	bne	$0d6d
-	set7	$13
+	bne	viby
+;
+	set7	!uuu			; sweep chu flag
+;........................................
 	mov	a,#$60
 	mov	y,#$03
-	dec.b	$a0+x
-	call	$0cc4
-	call	$0bb3
-	mov.b	a,$b1+x
+;
+	dec.b	!swpc+x			; sweep keisan
+	call	_CC4
+;************************************************
+;		vib check
+;************************************************
+viby:
+	call	swpdset			; kkk sss <-- swpd swpdw
+
+	mov.b	a,!vibd+x		; vib chu ?
 	beq	$0dc0
-	mov	a,$02b0+x
-	cbne	$b0+x,$0dbe
-	mov	a,$0100+x
-	cmp	a,$02b1+x
-	bne	$0d87
+;
+	mov	a,!vibhs+x
+	cbne	!vibhc+x,$0dbe		; hold chu ?
+;................................................
+	mov	a,!vibcc+x		;
+	cmp	a,!vibcs+x
+	bne	vib15			; change chu ?
+;...
 	mov	a,$02c1+x
 	bra	$0d94
+;......
+vib15:
 	setp
 	inc.b	$00+x
 	clrp
