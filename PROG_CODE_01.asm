@@ -1554,295 +1554,335 @@ spfp:
 ;		part vol move
 ;************************************************
 voly:
-	mov.b   a,$90+x
-	beq   $0c38
+	mov.b	a,!pvoc+x		; vol move chu ?
+	beq	trey
+;................................................
+mov	a,#$00
+mov	y,#$03
+dec.b	!pvoc+x
+call	$0cc1
 
-mov   a,#$00
-mov   y,#$03
-dec.b   $90+x
-call  $0cc1
-mov.b   y,$c1+x
-beq   $0c5f
-mov   a,$02e0+x
-cbne  $c0+x,$0c5d
-or    (!vols),(!keyd)
-mov   a,$02d0+x
-bpl   $0c51
-inc   y
-bne   $0c51
-mov   a,#$80
-bra   $0c55
+;************************************************
+;               tremolo check                      
+;************************************************
+trey:
+	mov.b	y,!tred+x		; tre chu ?
+	beq	$0c5f
+;
+	mov	a,!trehs+x		; hold chu ?
+	cbne	!trehc+x,$0c5d
+;................................................
+	or	(!vols),(!keyd)		; vol set flag  
+;......
+	mov	a,!trec+x		; trec = a
+	bpl	tre02			; trec = 080h ijo ?
+
+	inc	y			; tred = 0ffh ?
+	bne	tre02
+
+	mov	a,#$80
+	bra	tre04
+;......
+tre02:
+	clrc				; speed keisan
+	adc	a,!trecad+x
+tre04:
+	mov	!trec+x,a		; count data
+;
+	call	$0e4a			; volx set
+	bra	pany
+;................................................
+tre20:
+	inc.b	!trehc+x		; hold chu
+;
+tre22:
+	mov	a,#$ff			; y = depth (tre)
+	call	$0e55			; volx set
+;************************************************
+;		pan move & gain set
+;************************************************
+pany:
+	mov.b	a,!panc+x		; pan move chu ?
+	beq	pan10
+;..............................................
+	mov	a,#$30
+	mov	y,#$03
+	dec.b	!panc+x
+	call	$0cc1
+;..............................................
+pan10:
+	mov.b	a,!keyd
+	and.b	a,!vols			; vol set ?
+	beq	panr
+;...
+	mov	a,!pand+x		; kami
+	mov	y,a
+	mov	a,!pandw+x		; shimo
+	movw	!sss,ya
+;................................................
+pan20:
+	mov	a,x			; kkk sss --> pand set
+	xcn	a
+	lsr	a			; apuch
+	mov.b	!ttt,a			; r.gain = 0
+;................................................
+pan30:
+	mov.b	y,!kkk			; right gain keisan
+	mov	a,$0e68+y
+	setc
+	sbc	a,$0e67+y		; sa --> a
+	mov.b	y,!sss			; shimo
+	mul	ya			; sa x 0.???
+	mov	a,y			;          --> a
+;
+	mov.b	y,!kkk			; kami
 	clrc
-	adc   a,$02d1+x
-	mov   $02d0+x,a
-call  $0e4a
-bra   $0c64
-inc.b   $c0+x
-mov   a,#$ff
-call  $0e55
-mov.b   a,$91+x
-beq   $0c71
-mov   a,#$30
-mov   y,#$03
-dec.b   $91+x
-call  $0cc1
-mov.b   a,$47
-and.b   a,$5e
-beq   $0cc0
-mov   a,$0331+x
-mov   y,a
-mov   a,$0330+x
-movw  $10,ya
-mov   a,x
-xcn   a
-lsr   a
-mov.b   $12,a
-mov   y,$11
-mov   a,$0e68+y
-setc
-sbc   a,$0e67+y
-mov   y,$10
-mul   ya
-mov   a,y
-mov   y,$11
-clrc
-adc   a,$0e67+y
-mov   y,a
-mov   $0250+x,a
-mov   a,$0321+x
-mul   ya
-mov   a,$0351+x
-asl   a
-bbc0  $12,$0ca8
-asl   a
-mov   a,y
-bcc   $0cae
-eor   a,#$ff
-inc   a
-mov   y,$12
-call  $0605
-mov   y,#$14
-mov   a,#$00
-subw  ya,$10
-movw  $10,ya
-inc   $12
-bbc1  $12,$0c85
-ret
-or    ($5e),($47)
-movw  $14,ya
-movw  $16,ya
-push  x
-pop   y
-clrc
-bne   $0cd7
-adc   $16,#$1f
-mov   a,#$00
-mov   ($14)+y,a
-inc   y
-bra   $0ce0
-adc   $16,#$10
-call  $0cde
-inc   y
-mov   a,($14)+y
-adc   a,($16)+y
-mov   ($14)+y,a
-ret
-mov.b   a,$71+x
-beq   $0d4e
-dec.b   $71+x
-beq   $0cf2
-mov   a,#$02
-cbne  $70+x,$0d4e
-mov.b   a,$80+x
-mov.b   $17,a
-mov.b   a,$30+x
-mov.b   y,$31+x
-movw  $14,ya
-mov   y,#$00
-mov   a,($14)+y
-beq   $0d20
-bmi   $0d0b
-inc   y
-bmi   $0d47
-mov   a,($14)+y
-bpl   $0d04
-cmp   a,#$c8
-beq   $0d4e
-cmp   a,#$ef
-beq   $0d3c
-cmp   a,#$e0
-bcc   $0d47
-push  y
-mov   y,a
-pop   a
-adc   a,$0b30+y
-mov   y,a
-bra   $0cfe
-mov.b   a,$17
-beq   $0d47
-dec   $17
-bne   $0d32
-mov   a,$0231+x
-push  a
-mov   a,$0230+x
-pop   y
-bra   $0cfa
-mov   a,$0241+x
-push  a
-mov   a,$0240+x
-pop   y
-bra   $0cfa
-inc   y
-mov   a,($14)+y
-push  a
-inc   y
-mov   a,($14)+y
-mov   y,a
-pop   a
-bra   $0cfa
-mov.b   a,$47
-mov   y,#$5c
-call  $0605
-clr7  $13
-mov.b   a,$a0+x
-beq   $0d6d
-mov.b   a,$a1+x
-beq   $0d5c
-dec.b   $a1+x
-bra   $0d6d
-mov.b   a,$1a
-and.b   a,$47
-bne   $0d6d
-set7  $13
-mov   a,#$60
-mov   y,#$03
-dec.b   $a0+x
-call  $0cc4
-call  $0bb3
-mov.b   a,$b1+x
-beq   $0dc0
-mov   a,$02b0+x
-cbne  $b0+x,$0dbe
-mov   a,$0100+x
-cmp   a,$02b1+x
-bne   $0d87
-mov   a,$02c1+x
-bra   $0d94
-setp
-inc.b   $00+x
-clrp
-mov   y,a
-beq   $0d90
-mov.b   a,$b1+x
-clrc
-adc   a,$02c0+x
-mov.b   $b1+x,a
-mov   a,$02a0+x
-clrc
-adc   a,$02a1+x
-mov   $02a0+x,a
-mov.b   $12,a
-asl   a
-asl   a
-bcc   $0da8
-eor   a,#$ff
-mov   y,a
-mov.b   a,$b1+x
-cmp   a,#$f1
-bcc   $0db4
-and   a,#$0f
-mul   ya
-bra   $0db8
-mul   ya
-mov   a,y
-mov   y,#$00
-call  $0e35
-jmp   $0582
-inc.b   $b0+x
-bbs7  $13,$0dbb
-ret
-clr7  $13
-mov.b   a,$c1+x
-beq   $0dd3
-mov   a,$02e0+x
-cbne  $c0+x,$0dd3
-call  $0e3d
-mov   a,$0331+x
-mov   y,a
-mov   a,$0330+x
-movw  $10,ya
-mov.b   a,$91+x
-beq   $0dea
-mov   a,$0341+x
-mov   y,a
-mov   a,$0340+x
-call  $0e1f
-bbc7  $13,$0df0
-call  $0c80
-clr7  $13
-call  $0bb3
-mov.b   a,$a0+x
-beq   $0e07
-mov.b   a,$a1+x
-bne   $0e07
-mov   a,$0371+x
-mov   y,a
-mov   a,$0370+x
-call  $0e1f
-mov.b   a,$b1+x
-beq   $0dc0
-mov   a,$02b0+x
-cbne  $b0+x,$0dc0
-mov   y,$51
-mov   a,$02a1+x
-mul   ya
-mov   a,y
-clrc
-adc   a,$02a0+x
-jmp   $0da0
-set7  $13
-mov.b   $12,y
-call  $0bd0
-push  y
-mov   y,$51
-mul   ya
-mov.b   $14,y
-mov   $15,#$00
-mov   y,$51
-pop   a
-mul   ya
-addw  ya,$14
-call  $0bd0
-addw  ya,$10
-movw  $10,ya
-ret
-set7  $13
-mov   y,$51
-mov   a,$02d1+x
-mul   ya
-mov   a,y
-clrc
-adc   a,$02d0+x
-asl   a
-bcc   $0e4f
-eor   a,#$ff
-mov.b   y,$c1+x
-mul   ya
-mov   a,y
-eor   a,#$ff
-mov   y,$59
-mul   ya
-mov   a,$0210+x
-mul   ya
-mov   a,$0301+x
-mul   ya
-mov   a,y
-mul   ya
-mov   a,y
-mov   $0321+x,a
-ret
+	adc	a,$0e67+y		; pan data --> a
+	mov	y,a
+;
+	mov	$0250+x,a
+	mov	a,!volx+x		; gain data set
+	mul	ya			;
+;
+	mov	a,!panf+x
+	asl	a
+	bbc0	!ttt,pan32
+	asl	a
+pan32:
+	mov	a,y
+	bcc	pan34
+;
+	eor	a,#$ff
+	inc	a
+;
+pan34:
+	mov.b	y,!ttt			; write address
+	call	apusx			; a=data  y=address
+;................................................
+	mov	y,#20			; left gain keisan
+	mov	a,#$00
+	subw	ya,!sss			; 20.00 - kkk sss 
+	movw	!sss,ya
+	inc.b	!ttt			; l.gain = 1
+	bbc1	!ttt,$0c85
+;
+panr:
+	ret
+	or	(!vols),(!keyd)
+	movw	$14,ya
+	movw	$16,ya
+	push	x
+	pop	y
+	clrc
+	bne	$0cd7
+	adc	$16,#$1f
+	mov	a,#$00
+	mov	($14)+y,a
+	inc	y
+	bra	$0ce0
+	adc	$16,#$10
+	call	$0cde
+	inc	y
+	mov	a,($14)+y
+	adc	a,($16)+y
+	mov	($14)+y,a
+	ret
+	mov.b	a,$71+x
+	beq	$0d4e
+	dec.b	$71+x
+	beq	$0cf2
+	mov	a,#$02
+	cbne	$70+x,$0d4e
+	mov.b	a,$80+x
+	mov.b	$17,a
+	mov.b	a,$30+x
+	mov.b	y,$31+x
+	movw	$14,ya
+	mov	y,#$00
+	mov	a,($14)+y
+	beq	$0d20
+	bmi	$0d0b
+	inc	y
+	bmi	$0d47
+	mov	a,($14)+y
+	bpl	$0d04
+	cmp	a,#$c8
+	beq	$0d4e
+	cmp	a,#$ef
+	beq	$0d3c
+	cmp	a,#$e0
+	bcc	$0d47
+	push	y
+	mov	y,a
+	pop	a
+	adc	a,$0b30+y
+	mov	y,a
+	bra	$0cfe
+	mov.b	a,$17
+	beq	$0d47
+	dec	$17
+	bne	$0d32
+	mov	a,$0231+x
+	push	a
+	mov	a,$0230+x
+	pop	y
+	bra	$0cfa
+	mov	a,$0241+x
+	push	a
+	mov	a,$0240+x
+	pop	y
+	bra	$0cfa
+	inc	y
+	mov	a,($14)+y
+	push	a
+	inc	y
+	mov	a,($14)+y
+	mov	y,a
+	pop	a
+	bra	$0cfa
+	mov.b	a,!keyd
+	mov	y,#$5c
+	call	$0605
+	clr7	$13
+	mov.b	a,$a0+x
+	beq	$0d6d
+	mov.b	a,$a1+x
+	beq	$0d5c
+	dec.b	$a1+x
+	bra	$0d6d
+	mov.b	a,$1a
+	and.b	a,!keyd
+	bne	$0d6d
+	set7	$13
+	mov	a,#$60
+	mov	y,#$03
+	dec.b	$a0+x
+	call	$0cc4
+	call	$0bb3
+	mov.b	a,$b1+x
+	beq	$0dc0
+	mov	a,$02b0+x
+	cbne	$b0+x,$0dbe
+	mov	a,$0100+x
+	cmp	a,$02b1+x
+	bne	$0d87
+	mov	a,$02c1+x
+	bra	$0d94
+	setp
+	inc.b	$00+x
+	clrp
+	mov	y,a
+	beq	$0d90
+	mov.b	a,$b1+x
+	clrc
+	adc	a,$02c0+x
+	mov.b	$b1+x,a
+	mov	a,$02a0+x
+	clrc
+	adc	a,$02a1+x
+	mov	$02a0+x,a
+	mov.b	$12,a
+	asl	a
+	asl	a
+	bcc	$0da8
+	eor	a,#$ff
+	mov	y,a
+	mov.b	a,$b1+x
+	cmp	a,#$f1
+	bcc	$0db4
+	and	a,#$0f
+	mul	ya
+	bra	$0db8
+	mul	ya
+	mov	a,y
+	mov	y,#$00
+	call	$0e35
+	jmp	$0582
+	inc.b	$b0+x
+	bbs7	$13,$0dbb
+	ret
+	clr7	$13
+	mov.b	a,$c1+x
+	beq	$0dd3
+	mov	a,$02e0+x
+	cbne	$c0+x,$0dd3
+	call	$0e3d
+	mov	a,$0331+x
+	mov	y,a
+	mov	a,$0330+x
+	movw	$10,ya
+	mov.b	a,!panc+x
+	beq	$0dea
+	mov	a,$0341+x
+	mov	y,a
+	mov	a,$0340+x
+	call	$0e1f
+	bbc7	$13,$0df0
+	call	$0c80
+	clr7	$13
+	call	$0bb3
+	mov.b	a,$a0+x
+	beq	$0e07
+	mov.b	a,$a1+x
+	bne	$0e07
+	mov	a,$0371+x
+	mov	y,a
+	mov	a,$0370+x
+	call	$0e1f
+	mov.b	a,$b1+x
+	beq	$0dc0
+	mov	a,$02b0+x
+	cbne	$b0+x,$0dc0
+	mov	y,$51
+	mov	a,$02a1+x
+	mul	ya
+	mov	a,y
+	clrc
+	adc	a,$02a0+x
+	jmp	$0da0
+	set7	$13
+	mov.b	$12,y
+	call	$0bd0
+	push	y
+	mov	y,$51
+	mul	ya
+	mov.b	$14,y
+	mov	$15,#$00
+	mov	y,$51
+	pop	a
+	mul	ya
+	addw	ya,$14
+	call	$0bd0
+	addw	ya,$10
+	movw	$10,ya
+	ret
+	set7	$13
+	mov	y,$51
+	mov	a,!trecad+x
+	mul	ya
+	mov	a,y
+	clrc
+	adc	a,$02d0+x
+	asl	a
+	bcc	$0e4f
+	eor	a,#$ff
+	mov.b	y,$c1+x
+	mul	ya
+	mov	a,y
+	eor	a,#$ff
+	mov	y,$59
+	mul	ya
+	mov	a,$0210+x
+	mul	ya
+	mov	a,$0301+x
+	mul	ya
+	mov	a,y
+	mul	ya
+	mov	a,y
+	mov	$0321+x,a
+	ret
 
-
+db $12, $34, $56, $78
 
 
 
