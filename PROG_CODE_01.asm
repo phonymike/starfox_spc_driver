@@ -38,7 +38,7 @@ mov	a,#$96
 mov	$03c6,a
 mov	a,#$bb
 mov	$03cb,a
-call	$0648
+call	_648
 ;................................................
 	mov	a,#$60
 	mov	y,#$0c			; MVOL
@@ -61,10 +61,10 @@ call	$0648
 	mov	a,#$01			; timer start
 	mov	!cont,a
 ;++++++++++++++++++++++++++++++++++++++++++++++++
-start20:
+start20:				; 2mS
 ;........................................
-;	mov	a,ffk		; !! test !!
-;	bne	start55		; !! test !!
+;	mov	a,ffk			; !! test !!
+;	bne	start55			; !! test !!
 ;........................................
 	mov	y,#10			; 10 data set
 start24:
@@ -115,11 +115,11 @@ start40:
 ;.......................................; 16mS
 call	$257c
 mov	x,#$01
-call	$04ed
+call	flset
 call	$2749
 ;
 	mov	x,#$02			; fl2 & port2 check
-	call	$04ed			; x = fl?
+	call	flset			; x = fl?
 call	$2a1a
 call	$2981
 ;........................................
@@ -148,8 +148,8 @@ start55:
 	call	$07d5			; music
 ;
 	mov	x,#$00			; fl0 & port0 check
-	call	$04fe			; x = fl?
-	jmp	$0451
+	call	_4FE			; x = fl?
+	jmp	start20
 ;................................................
 start60:
 	mov.b	a,!sf0
@@ -160,7 +160,7 @@ start60:
 ;
 start62:
 	mov.b	a,!add+1+x
-	beq	$04e1			; kami = 0
+	beq	start64			; kami = 0
 ;
 	call	$0dc4			; pan move & sweep & vib check
 ;
@@ -171,32 +171,37 @@ start64:
 	bne	start62			; channel end ? (8ch)
 ;
 start20x:
-	call	$0614
+	call	_614
 	jmp	start20			; channel end
 ;************************************************
 flset:
 	mov.b	a,!sf0+x		; flag set flx
 	mov	!port0+x,a		; flag return
 ;
+flset02:
 	mov	a,!port0+x		; flag read
 	cmp	a,!port0+x		; 2 kai check
-	bne	$04f2			;
+	bne	flset02			;
 ;
 	mov	y,a
 	mov	!fl0+x,y		; new data
+;
 dssr:
 	ret
 ;************************************************
+_4FE:
 mov.b	a,$04+x
-mov	$00f4+x,a
-mov	a,$00f4+x
-cmp	a,$00f4+x
-bne	$0503
+mov	!port0+x,a
+-
+mov	a,!port0+x
+cmp	a,!port0+x
+bne	-
 mov	y,a
 mov.b	a,$08+x
 mov	$08+x,y
-cbne	$08+x,$0515
+cbne	$08+x,+
 mov	y,#$00
++
 mov	$00+x,y
 ret
 
@@ -207,17 +212,17 @@ ret
 ;		Freq. data set
 ;************************************************ 
 dss:
-	cmp	y,#$ca			; drams check
+	cmp	y,#!dd0			; drams check
 	bcc	dss0
 ;************************************************ 
 ;		drams set    ; x=channel  a=sno 
 ;************************************************ 
 dds:
-	call	$0932			; sno data set
-	mov	y,#$a4			; (takasa)
+	call	snoset			; sno data set
+	mov	y,#!c30			; (takasa)
 ;................................................
 dss0:
-	cmp	y,#$c8			; tai or yyy ? 
+	cmp	y,#!xxx			; tai or yyy ? 
 	bcs	dssr
 ;................................................
 	mov.b	a,!fkin			; kinshi flag check
@@ -270,10 +275,10 @@ dss3:
 	clrc
 	adc	a,!swpd+x		; now + @
 ;......
-	call	$0b9b			; sweep data set
+	call	swpadset		; sweep data set
 ;........................................ from kokaon
 dss6:
-	call	$0bb3			; kkk sss <-- swpd swpdw
+	call	swpdset			; kkk sss <-- swpd swpdw
 ;************************************************
 ;		fre. data set   kkk & sss  x=channel  bls set
 ;************************************************
@@ -282,13 +287,13 @@ dssx:
 	mov.b	a,!kkk
 	setc
 	sbc	a,#52			; e40 = 52
-	bcs	$0594			; e40 ijo add
+	bcs	dssx04			; e40 ijo add
 ;...
 dssx02:
 	mov.b	a,!kkk
 	setc
 	sbc	a,#19			; g10 = 19
-	bcs	$0598
+	bcs	dssx10
 ;
 	dec	y			; y = 0ffh
 	asl	a
@@ -306,14 +311,14 @@ dssx10:
 	div	ya,x			; ya/x = a ... y
 	mov	x,a			; x = oct.
 ;...
-	mov	a,$0eb1+y		; high
+	mov	a,gfd+1+y		; high
 	mov.b	!adx+1,a
-	mov	a,$0eb0+y		; low
+	mov	a,gfd+y			; low
 	mov.b	!adx,a
 ;
-	mov	a,$0eb3+y		; high
+	mov	a,gfd+3+y		; high
 	push	a
-	mov	a,$0eb2+y		; low
+	mov	a,gfd+2+y		; low
 	pop	y
 	subw	ya,!adx			; ya - adx
 ;...					; ( 0.sss x ya ) + adx  = adx
@@ -327,7 +332,7 @@ dssx10:
 	asl	a
 	rol.b	!adx+1
 	mov.b	!adx,a
-	bra	$05cb
+	bra	dssx14
 ;...
 dssx12:
 	lsr.b	!adx+1
@@ -340,23 +345,23 @@ dssx14:
 ;
 	pop	x
 ;........................................
-	mov	a,$0220+x		; 0. block su
+	mov	a,!bls+x		; 0. block su
 	mov.b	y,!adx+1		; fre.(high)
 	mul	ya			;
 	movw	!adx+2,ya		;
 ;
-	mov	a,$0220+x		; 0. block su
+	mov	a,!bls+x		; 0. block su
 	mov.b	y,!adx			; fre.(low)
 	mul	ya			;
 	push	y			; --> low
 ;
-	mov	a,$0221+x		; block su
+	mov	a,!bls+1+x		; block su
 	mov.b	y,!adx			; fre.(low)
 	mul	ya			;
 	addw	ya,!adx+2
 	movw	!adx+2,ya		;
 ;
-	mov	a,$0221+x		; block su
+	mov	a,!bls+1+x		; block su
 	mov.b	y,!adx+1		; fre.(high)
 	mul	ya
 	mov	y,a
@@ -398,6 +403,7 @@ apusr:
 ;
 ;
 ;................................................
+_614:
 dec	$d0
 mov.b	a,$d0
 and	a,#$03
@@ -407,6 +413,7 @@ mov	y,a
 mov	$12,#$07
 inc	y
 mov	x,#$04
+-
 mov1 c,$0019.6
 eor1	c,$0019.5
 rol	$18
@@ -421,12 +428,14 @@ or	a,#$11
 mov	$fe00+y,a
 inc	y
 dec	x
-bne	$0624
+bne	-
 dbnz	$12,$0621
 ret
+_648:
 mov	y,#$00
 mov	x,#$1b
 mov	a,$03c6
+-
 mov	$fe00+y,a
 inc	y
 inc	y
@@ -438,7 +447,7 @@ inc	y
 inc	y
 inc	y
 dec	x
-bne	$064f
+bne	-
 inc	a
 mov	$fe00+y,a
 mov	y,#$fe
@@ -478,7 +487,7 @@ mov	a,#$96
 mov	$03c6,a
 mov	a,#$bb
 mov	$03cb,a
-call	$0648
+call	_648
 ;................................................
 _6B7:
 cmp	$04,#$11
@@ -490,7 +499,7 @@ mov	a,#$00
 mov.b	!mvom,a
 setc
 sbc.b	a,!mvo
-call	$0bbe
+call	divx
 movw	!mvoadw,ya
 _6CF:
 jmp	cha02				; finished with command
@@ -549,7 +558,7 @@ mov.b	!tmpm,a
 setc
 sbc.b	a,!tmp
 mov.b	x,!tmpc
-call	$0bbe
+call	divx
 movw	!tmpadw,ya
 jmp	cha02				; finished with command
 ;................................................
@@ -590,9 +599,10 @@ mov	$03f1,x
 	mov	x,a			; shoki data set
 	mov	a,$fdbf+x		; block add. shoki set
 	mov	y,a
-	bne	$077c
-	mov.b	$04,a
-ret
+	bne	+
+	mov	$04,a
+	ret
++
 	mov	a,$fdbe+x
 	movw	!ads,ya
 ;......
@@ -601,7 +611,7 @@ ret
 ks04:
 	mov.b	a,!fkin			; key off
 	eor	a,#$ff
-	tset	$0046,a			; keyoff set
+	tset	!keyoffs,a		; keyoff set
 	ret
 ;................................................ 
 ks10:
@@ -618,7 +628,7 @@ ks12:
 	mov	!pvod+x,a		; part vol
 ;
 	mov	a,#10			; pan data set
-	call	$098b			; pand & panf  set    (a=0)
+	call	panx			; pand & panf  set    (a=0)
 ;
 	mov	!snos+x,a		; sound number
 	mov	!tund+x,a		; tun shoki set
@@ -836,7 +846,7 @@ tx22:
 	call	$0ce5			; keyoff & sweep & vib check
 ;................................................
 tx40:
-	call	$0b6a			; sweep check (next data)
+	call	swpch			; sweep check (next data)
 ;................................................
 tx60:
 	inc	x			;
@@ -882,13 +892,14 @@ evo12:
 ;		mvol move
 ;************************************************
 	mov.b	a,!mvoc			; mvol move chu ?
-	beq	$0903
+	beq	mvo40
 ;
 	movw	ya,!mvoadw		; move keisan
 	addw	ya,!mvow
-	dbnz	!mvoc,$08fe		; dec & bne
+	dbnz	!mvoc,+			; dec & bne
 ;					; mvoc = 0 (move end)
 	movw	ya,!mvoc		; y <- mvom , a <- 00
++
 	movw	!mvow,ya
 	mov	!vols,#$ff		; mvo set
 ;................................................
@@ -900,13 +911,13 @@ mvo42:
 	mov.b	a,!add+1+x
 	beq	mvo46			; kami = 0
 ;
-	call	$0c2b			; tre pan move & vol set
+	call	voly			; tre pan move & vol set
 ;
 mvo46:
 	inc	x
 	inc	x
 	asl.b	!keyd
-	bne	$0908
+	bne	mvo42
 ;
 mvo48:
 	ret
@@ -964,7 +975,7 @@ snoset0:
 	sbc	a,#$ca
 ;
 	clrc
-	adc.b	a,$5f			; bias add.
+	adc.b	a,!wavs			; bias add.
 ;......
 snoset1:
 	mov	y,#$06			; x=channel a=sno
@@ -987,7 +998,7 @@ snoset1:
 ;
 	mov	y,#$00			; 1st data in
 	mov	a,(!adx)+y		; sound data set
-	bpl	$096b			; noise ?
+	bpl	snoset4			; noise ?
 ;......
 snoset2:
 	and	a,#$1f			; noise clock store
@@ -1051,7 +1062,7 @@ pamx:
 	sbc	a,!pand+x		; pan (now data)
 	pop	x			; count --> x
 ;
-	call	$0bbe			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,-
 ;......
 	mov	!panadw+x,a		; + shimo
 	mov	a,y			; kami
@@ -1101,11 +1112,12 @@ vchx:
 mv1x:
 	;call	data_in			;;00
 	mov	a,$03ca
-	bne	$09e7
+	bne	+
 	mov	a,$03f1
-	bne	$09e7
+	bne	+
 	mov	a,#$00
 	movw	!mvow,ya		; main vol
++
 	ret
 ;************************************************
 ;		main volume move
@@ -1121,7 +1133,7 @@ mv2x:
 	sbc.b	a,!mvo			; mvol (now data)
 	mov.b	x,!mvoc			; count --> x
 ;
-	call	$0bbe			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,-
 ;
 	movw	!mvoadw,ya		; + @
 	ret
@@ -1147,7 +1159,7 @@ tp2x:
 	sbc.b	a,!tmp			; tmp (now data)
 	mov.b	x,!tmpc			; count --> x
 ;
-	call	$0bbe			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,-
 ;
 	movw	!tmpadw,ya		; + @
 	ret
@@ -1249,19 +1261,23 @@ pv2x:
 	sbc	a,!pvod+x		; vol (now data)
 	pop	x			; count --> x
 ;
-	call	$0bbe			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,-
 ;......
 	mov	!pvoadw+x,a		; + shimo
 	mov	a,y			; kami
 	mov	!pvoad+x,a		; + kami
 	ret
-
-mov	$03e0+x,a
-mov	a,$03a0+x
-bne	$0a90
-mov	a,$03e0+x
-mov	$0381+x,a
-ret
+;************************************************
+;		part tune
+;************************************************
+tunx:
+	mov	$03e0+x,a
+	mov	a,$03a0+x
+	bne	+
+	mov	a,$03e0+x
+	mov	!tund+x,a
++
+	ret
 ;************************************************
 ;		rythm pattern
 ;************************************************
@@ -1289,7 +1305,7 @@ addset:
 ;		echo on channel & volume
 ;************************************************
 ecvx:
-	;call	!data_in		; data in & inc add
+	;call	data_in			; data in & inc add
 	mov	$03c3,a
 	mov.b	!eons,a			; echo channel set
 ;
@@ -1318,7 +1334,7 @@ ev2x:
 	sbc.b	a,!evol			; evol (now data)
 	mov.b	x,!evoc			; count --> x
 ;
-	call	$0bbe			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,-
 	movw	!evoladw,ya		; + @
 ;...................
 	call	data_in			; data in & inc add
@@ -1328,7 +1344,7 @@ ev2x:
 	sbc.b	a,!evor			; evor (now data)
 	mov.b	x,!evoc			; count --> x
 ;
-	call	$0bbe			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,-
 	movw	!evoradw,ya		; + @
 	ret
 ;************************************************
@@ -1345,7 +1361,7 @@ eofx:
 ;************************************************
 edlx:
 	;call	data_in			; data in & inc add
-	call	$0b14			; EDL & ESA set
+	call	esaset			; EDL & ESA set
 ;
 	call	data_in			; data in & inc add
 	mov.b	!efbs,a			; EFB = feed back     
@@ -1373,12 +1389,13 @@ filset2:
 	ret
 ;........................................
 esaset:
-	mov.b	$4d,a
+	mov.b	!eclr,a			; echo delay time
+;
 	mov	y,#$7d			; EDL = delay time
 	mov	!apuadd,y
 	mov	a,!apudt
 	cmp.b	a,!eclr
-	beq	$0b4d
+	beq	esaset4
 ;......
 	and	a,#$0f
 	eor	a,#$ff
@@ -1567,10 +1584,10 @@ call	_CC1
 ;************************************************
 trey:
 	mov.b	y,!tred+x		; tre chu ?
-	beq	$0c5f
+	beq	tre22
 ;
 	mov	a,!trehs+x		; hold chu ?
-	cbne	!trehc+x,$0c5d
+	cbne	!trehc+x,tre20
 ;................................................
 	or	(!vols),(!keyd)		; vol set flag  
 ;......
@@ -1664,7 +1681,7 @@ pan34:
 	subw	ya,!sss			; 20.00 - kkk sss 
 	movw	!sss,ya
 	inc.b	!ttt			; l.gain = 1
-	bbc1	!ttt,$0c85
+	bbc1	!ttt,pan30
 ;
 panr:
 	ret
@@ -1720,11 +1737,11 @@ key10:
 	mov	a,(!adx)+y		; data in
 	beq	key16			; block end ?
 	bmi	key14
-
+-
 	inc	y
-	bmi	$0d47
+	bmi	key20
 	mov	a,($14)+y
-	bpl	$0d04
+	bpl	-
 ;
 key14:
 	cmp	a,#!xxx			; xxx ?
@@ -1741,11 +1758,11 @@ key14:
 	pop	a
 	adc	a,spfp-!sno+y		; c=1
 	mov	y,a
-	bra	$0cfe
+	bra	key10
 ;...................
 key16:
 	mov.b	a,!adx+3		; pattern chu ?
-	beq	$0d47
+	beq	key20
 ;......
 	dec.b	!adx+3			; pattern end ?
 	bne	key17
@@ -1754,7 +1771,7 @@ key16:
 	push	a
 	mov	a,!adt+x
 	pop	y
-	bra	$0cfa			;
+	bra	key04			;
 ;
 key17:
 	mov	a,!adp+1+x		; pattern add. (high)
@@ -1876,7 +1893,7 @@ vib15:
 	bbc7	$13,$0df0
 	call	$0c80
 	clr7	$13
-	call	$0bb3
+	call	swpdset
 	mov.b	a,$a0+x
 	beq	$0e07
 	mov.b	a,$a1+x
@@ -1948,3 +1965,18 @@ dseta: ;   EVOL EVOR EFB  EON  FLG                  NOOF PMON
 ;base $ea6
 dsetd: ;    1      2      3      4      5      6        7     8     9       10  
 	db !evol, !evor, !efbs, !eons, !flgs, !keyons, !t00, !nons, !mons, !keyoffs
+;................................................
+;
+;
+;
+;
+;************************************************
+base $eb0
+gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
+; dw	0066,0070,0075,0079,0084,0089,0094,0100,0106,0112,0119,0126  ; c00
+; dw	0133,0141,0150,0159,0168,0178,0189,0200,0212,0225,0238,0252  ; c10
+; dw	0267,0283,0300,0318,0337,0357,0378,0401,0425,0450,0477,0505  ; c20
+; dw	0535,0567,0601,0637,0675,0715,0757,0802,0850,0901,0954,1011  ; c30
+; dw	1071,1135,1202,1274,1350,1430,1515,1605,1701,1802,1909,2022  ; c40
+	dw 2143,2270,2405,2548,2700,2860,3030,3211,3402,3604,3818,4045  ; c50
+	dw 4286;4541,4811,5097,5400,5721,6061,6422,6804,7208,7637,8091  ; c60
