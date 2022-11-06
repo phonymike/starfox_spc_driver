@@ -343,18 +343,18 @@ dssx14:
 	mov	a,$0220+x		; 0. block su
 	mov.b	y,!adx+1		; fre.(high)
 	mul	ya			;
-	movw	!adx+2,ya			;
+	movw	!adx+2,ya		;
 ;
 	mov	a,$0220+x		; 0. block su
 	mov.b	y,!adx			; fre.(low)
 	mul	ya			;
-	push	y				; --> low
+	push	y			; --> low
 ;
 	mov	a,$0221+x		; block su
 	mov.b	y,!adx			; fre.(low)
 	mul	ya			;
 	addw	ya,!adx+2
-	movw	!adx+2,ya			;
+	movw	!adx+2,ya		;
 ;
 	mov	a,$0221+x		; block su
 	mov.b	y,!adx+1		; fre.(high)
@@ -375,9 +375,9 @@ dssx14:
 ;
 	inc	y
 	mov.b	a,!adx+3			; kami
-;************************************************ 
-;		APU data out   acc = write data   y = write add 
-;************************************************ 
+;************************************************
+;		APU data out   acc = write data   y = write add
+;************************************************
 apusx:
 	push	a
 	mov.b	a,!keyd
@@ -774,33 +774,55 @@ tx15:
 	mov	a,$3ef0+y
 	mov	!vol+x,a			; vol set
 ;...................
-call	$0928
-cmp	a,#$e0
-bcc	$089d
-call	$0916
-bra	$0856
-push	a
-mov.b	a,$47
-and.b	a,$1a
-pop	a
-bne	$08a8
-call	$0518
-mov	a,$0200+x
-mov.b	$70+x,a
-mov	y,a
-mov	a,$0201+x
-mul	ya
-mov	a,y
-bne	$08b6
-inc	a
-mov.b	$71+x,a
-bra	$08bd
-call	$0ce5
-call	$0b6a
-inc	x
-inc	x
-asl	$47
-beq	$08c9
+;	mov	kkk,a				; X 2.5
+;	lsr	kkk
+;	asl	a
+;	adc	a,kkk
+;	mov	!ngg+x,a			; Gate off (%) set
+;... 
+;	call	!data_in			; data in & inc add
+;	bmi	tx16				; $
+;...
+;	asl	a				; X 2
+;	mov	!vol+x,a			; Gain set
+;...................
+	call	data_in				; data in & inc add
+;
+tx16:
+	cmp	a,#!sno				; special flag ?
+	bcc	$089d
+;
+	call	spfx				; special flag
+	bra	tx10
+;
+tx17:
+	push	a
+	mov.b	a,!keyd
+	and.b	a,!fkin
+	pop	a
+	bne	tx18
+	call	dss				; freq. data set
+;...................
+tx18:
+	mov	a,!ngs+x
+	mov.b	!ngc+x,a
+	mov	y,a
+;
+	mov	a,!ngg+x			; gate off (step) set
+	mul	ya
+	mov	a,y
+	bne	$08b6
+	inc	a				; a = 1
+tx19:
+	mov.b	!ngo+x,a
+	bra	$08bd
+;................................................
+	call	$0ce5
+	call	$0b6a
+	inc	x
+	inc	x
+	asl	$47
+	beq	$08c9
 jmp	$084c
 mov.b	a,$54
 beq	$08d8
@@ -863,14 +885,14 @@ spfx:
 ;		data in  &  inc address
 ;************************************************
 data_in:
-	mov	a,(!add+x)			; data in
+	mov	a,(!add+x)		; data in
 ;
 add_inc:
 	inc.b	!add+x
 	bne	data_inr
 	inc.b	!add+1+x
 data_inr:
-	mov	y,a				; flag set
+	mov	y,a			; flag set
 	ret
 ;................................................
 ;
@@ -879,76 +901,76 @@ data_inr:
 ;		sound no.
 ;************************************************
 snox:
-	;call	!data_in 			; data in & inc add
+	;call	data_in 		; data in & inc add
 ;************************************************
 ;		Sound No. data set
 ;************************************************
 snoset:
-	mov	!snos+x,a			; sno store
+	mov	!snos+x,a		; sno store
 snoset0:
-	mov	y,a				; d7 check
+	mov	y,a			; d7 check
 	bpl	snoset1
 ;......
 	setc
 	sbc	a,#$ca
 ;
 	clrc
-	adc.b	a,$5f				; bias add.
+	adc.b	a,$5f			; bias add.
 ;......
 snoset1:
-	mov	y,#$06				; x=channel a=sno
+	mov	y,#$06			; x=channel a=sno
 	mul	ya
 	movw	!adx,ya
 	clrc
-	adc	!adx,#$00			; #low sod
-	adc	!adx+1,#$3d			; #high sod
+	adc	!adx,#$00		; #low sod
+	adc	!adx+1,#$3d		; #high sod
 ;...
-	mov.b	a,!fkin				; kinshi flag check
+	mov.b	a,!fkin			; kinshi flag check
 	and.b	a,!keyd
 	bne	snosetr
 ;...
 	push	x
-	mov	a,x				; apuch
+	mov	a,x			; apuch
 	xcn	a
 	lsr	a
-	or	a,#$04				; write address
+	or	a,#$04			; write address
 	mov	x,a
 ;
-	mov	y,#$00				; 1st data in
-	mov	a,(!adx)+y			; sound data set
-	bpl	$096b				; noise ?
+	mov	y,#$00			; 1st data in
+	mov	a,(!adx)+y		; sound data set
+	bpl	$096b			; noise ?
 ;......
 snoset2:
-	and	a,#$1f				; noise clock store
+	and	a,#$1f			; noise clock store
 	and	!flgs,#$20
-	tset	!flgs,a				; noise clock store
+	tset	!flgs,a			; noise clock store
 ;
-	or	(!nons),(!keyd)			; noise channel store
+	or	(!nons),(!keyd)		; noise channel store
 ;
-	mov	a,y				; y = 0 (=dd0)
+	mov	a,y			; y = 0 (=dd0)
 	bra	snoset8
 ;......
 snoset4:
-	mov.b	a,!keyd				; normal sno
-	tclr	!nons,a				; noise channel clear
+	mov.b	a,!keyd			; normal sno
+	tclr	!nons,a			; noise channel clear
 ;...................
 snoset6:
-	mov	a,(!adx)+y			; sound data set
+	mov	a,(!adx)+y		; sound data set
 snoset8:
-	mov	!apuadd,x			; write address
-	mov	!apudt,a			; data write
+	mov	!apuadd,x		; write address
+	mov	!apudt,a		; data write
 ;
 	inc	x
 	inc	y
 	cmp	y,#$04
-	bne	snoset6				; tensou data 4 
+	bne	snoset6			; tensou data 4 
 ;
 	pop	x
-	mov	a,(!adx)+y			; 5 ban me (block su)
-	mov	!bls+1+x,a			; block su store
+	mov	a,(!adx)+y		; 5 ban me (block su)
+	mov	!bls+1+x,a		; block su store
 	inc	y
-	mov	a,(!adx)+y			; 6 ban me (block su)
-	mov	!bls+x,a			; block su store
+	mov	a,(!adx)+y		; 6 ban me (block su)
+	mov	!bls+x,a		; block su store
 ;
 snosetr:
 	ret
@@ -956,11 +978,11 @@ snosetr:
 ;		pan data set
 ;************************************************
 panx:
-	;call	!data_in 			; data in & inc add
-	mov	!panf+x,a			; pan flag store
+	;call	data_in 		; data in & inc add
+	mov	!panf+x,a		; pan flag store
 ;
 	and	a,#$1f
-	mov	!pand+x,a			; pan data
+	mov	!pand+x,a		; pan data
 	mov	a,#$00
 	mov	!pandw+x,a
 ;
@@ -969,76 +991,118 @@ panx:
 ;		pan move
 ;************************************************
 pamx:
-	;call	!data_in 			; data in & inc add
-	mov.b	!panc+x,a			; pan (count)
-	push	a				; count --> x
+	;call	data_in 		; data in & inc add
+	mov.b	!panc+x,a		; pan (count)
+	push	a			; count --> x
 ;
-	call	data_in				; data in & inc add
-	mov	!panm+x,a			; pan (mokuteki)
+	call	data_in			; data in & inc add
+	mov	!panm+x,a		; pan (mokuteki)
 ;......
 	setc
-	sbc	a,!pand+x			; pan (now data)
-	pop	x				; count --> x
+	sbc	a,!pand+x		; pan (now data)
+	pop	x			; count --> x
 ;
-	call	$0bbe				; x=count a=sa c=+,-
+	call	$0bbe			; x=count a=sa c=+,-
 ;......
-	mov	!panadw+x,a			; + shimo
-	mov	a,y				; kami
-	mov	!panad+x,a			; + kami
+	mov	!panadw+x,a		; + shimo
+	mov	a,y			; kami
+	mov	!panad+x,a		; + kami
 	ret
 ;************************************************
 ;		vibrate
 ;************************************************
 vibx:
-	;call	!data_in 			; data in & inc add
-	mov	!vibhs+x,a			; vib hold
+	;call	data_in 		; data in & inc add
+	mov	!vibhs+x,a		; vib hold
 ;
-	call	data_in				; data in & inc add
-	mov	!vibcad+x,a			; vib speed (+@)
+	call	data_in			; data in & inc add
+	mov	!vibcad+x,a		; vib speed (+@)
 ;
-	call	data_in				; data in & inc add
-mov.b	$b1+x,a
-mov	$02c1+x,a
-mov	a,#$00
-mov	$02b1+x,a
-ret
-mov	$02b1+x,a
-push	a
-mov	y,#$00
-mov.b	a,$b1+x
-pop	x
-div	ya,x
-mov.b	x,$44
-mov	$02c0+x,a
-ret
-mov	a,$03ca
-bne	$09e7
-mov	a,$03f1
-bne	$09e7
-mov	a,#$00
-movw	$58,ya
-ret
-mov.b	$5a,a
-call	$0928
-mov.b	$5b,a
-setc
-sbc.b	a,$59
-mov.b	x,$5a
-call	$0bbe
-movw	$5c,ya
-ret
-mov	a,#$00
-movw	$52,ya
-ret
-mov.b	$54,a
-call	$0928
-mov.b	$55,a
-setc
-sbc.b	a,$53
-mov.b	x,$54
-call	$0bbe
-movw	$56,ya
-ret
+	call	data_in			; data in & inc add
+;************************************************
+;		vibrate off
+;************************************************
+vofx:
+	mov.b	!vibd+x,a		; vib depth
+	mov	!vibdm+x,a		; vib depth mokuteki
+;
+	mov	a,#$00
+	mov	!vibcs+x,a		; vib change count
+	ret
+;************************************************
+;		vibrate change
+;************************************************
+vchx:
+	;call	data_in		; data in & inc add
+	mov	!vibcs+x,a		; vib change count
+	push	a
+;
+	mov	y,#$00
+	mov.b	a,!vibd+x		;
+	pop	x
+	div	ya,x			; ya/x = a ... y
+;
+	mov.b	x,!chn
+	mov	!vibad+x,a
+;
+	ret
+;************************************************
+;		main volume change
+;************************************************
+mv1x:
+	;call	data_in 		;;00
+	mov	a,$03ca
+	bne	$09e7
+	mov	a,$03f1
+	bne	$09e7
+	mov	a,#$00
+	movw	!mvow,ya		; main vol
+	ret
+;************************************************
+;		main volume move
+;************************************************
+mvx2:
+	;call	data_in 		; data in & inc add
+	mov.b	!mvoc,a			; mvol (count)
+;
+	call	data_in			; data in & inc add
+	mov.b	!mvom,a			; mvol (mokuteki)
+;......
+	setc
+	sbc.b	a,!mvo			; mvol (now data)
+	mov.b	x,!mvoc			; count --> x
+;
+	call	$0bbe			; x=count a=sa c=+,-
+;
+	movw	!mvoadw,ya		; + @
+	ret
+;************************************************ 
+;               tempo change   
+;************************************************ 
+tp1x:
+	;call	data_in 		;;00   
+	mov	a,#$00
+	movw	!tmpw,ya		; tempo
+	ret
+;************************************************ 
+;               tempo move     
+;************************************************ 
+tp2x:
+	;call	data_in 	; data in & inc add
+	mov.b	!tmpc,a		; tmp (count)
+;
+	call	data_in		; data in & inc add
+	mov.b	!tmpm,a		; tmp (mokuteki)
+;
+	setc
+	sbc.b	a,!tmp		; tmp (now data)
+	mov.b	x,!tmpc		; count --> x
+;
+	call	$0bbe		; x=count a=sa c=+,-
+;
+	movw	!tmpadw,ya	; + @
+	ret
+
 mov.b	$50,a
 ret
 mov	$03d0+x,a
