@@ -163,7 +163,7 @@ start62:
 	mov.b	a,!add+1+x
 	beq	start64			; kami = 0
 ;
-	call	$0dc4			; pan move & sweep & vib check
+	call	trry			; pan move & sweep & vib check
 ;
 start64:
 	inc	x
@@ -191,21 +191,21 @@ dssr:
 	ret
 ;************************************************
 _4FE:
-mov.b	a,$04+x
-mov	!port0+x,a
+	mov.b	a,!sf0+x		; flag set flx
+	mov	!port0+x,a		; flag return
 -
-mov	a,!port0+x
-cmp	a,!port0+x
-bne	-
-mov	y,a
-mov.b	a,$08+x
-mov	$08+x,y
-cbne	$08+x,+
-mov	y,#$00
+	mov	a,!port0+x		; flag read
+	cmp	a,!port0+x		; 2 kai check
+	bne	-			;
+;
+	mov	y,a
+	mov.b	a,!fl0s+x
+	mov	!fl0s+x,y
+	cbne	!fl0s+x,+
+	mov	y,#$00
 +
-mov	$00+x,y
-ret
-
+	mov	!fl0+x,y
+	ret
 ;************************************************
 ; 
 ;
@@ -1647,16 +1647,16 @@ pan20:
 ;................................................
 pan30:
 	mov.b	y,!kkk			; right gain keisan
-	mov	a,$0e68+y
+	mov	a,pant+1+y
 	setc
-	sbc	a,$0e67+y		; sa --> a
+	sbc	a,pant+y		; sa --> a
 	mov.b	y,!sss			; shimo
 	mul	ya			; sa x 0.???
 	mov	a,y			;          --> a
 ;
 	mov.b	y,!kkk			; kami
 	clrc
-	adc	a,$0e67+y		; pan data --> a
+	adc	a,pant+y		; pan data --> a
 	mov	y,a
 ;
 	mov	$0250+x,a
@@ -1902,6 +1902,7 @@ vib40:
 ;................................................
 vib11:
 	inc.b	!vibhc+x		; hold chu
+vib12:
 	bbs7	!uuu,vib40		; sweep chu ?
 	ret
 ;................................................
@@ -1910,95 +1911,167 @@ vib11:
 ;................................................
 ;************** tremolo check *******************
 ;................................................
-	clr7	$13
-	mov.b	a,$c1+x
-	beq	$0dd3
-	mov	a,$02e0+x
-	cbne	$c0+x,$0dd3
+trry:
+	clr7	!uuu			; tre chu flag
+;
+	mov.b	a,!tred+x		; tre chu ?
+	beq	pnny
+;
+	mov	a,!trehs+x		; holdchu ?
+	cbne	!trehc+x,pnny
+;................................................
 	call	$0e3d
-	mov	a,$0331+x
+;................................................
+;************** pan move check ******************
+;................................................
+pnny:
+	mov	a,!pand+x		; kami
 	mov	y,a
-	mov	a,$0330+x
-	movw	$10,ya
-	mov.b	a,!panc+x
+	mov	a,!pandw+x		; shimo
+	movw	!sss,ya
+;...
+	mov.b	a,!panc+x		; pan move chu ?
 	beq	$0dea
-	mov	a,$0341+x
+;...
+	mov	a,!panad+x
 	mov	y,a
-	mov	a,$0340+x
-	call	$0e1f
-	bbc7	$13,$0df0
-	call	$0c80
-	clr7	$13
-	call	swpdset
-	mov.b	a,$a0+x
+	mov	a,!panadw+x		; + @ keisan
+;
+	call	$0e1f			; kkk sss <-- data set
+;...
+pnn04:
+	bbc7	!uuu,$0df0
+;......
+	call	$0c80			; vol data set
+;................................................
+;************** sweep check *********************
+;................................................
+sppy:
+	clr7	!uuu			; sweep chu flag
+;
+	call	swpdset			; kkk sss <-- swpd swpdw
+;...
+	mov.b	a,$a0+x			; sweep chu ?
 	beq	$0e07
-	mov.b	a,$a1+x
+;
+	mov.b	a,$a1+x			; hold chu?
 	bne	$0e07
-	mov	a,$0371+x
+;...................
+	mov	a,!swpad+x
 	mov	y,a
-	mov	a,$0370+x
-	call	$0e1f
-	mov.b	a,$b1+x
-	beq	$0dc0
-	mov	a,$02b0+x
-	cbne	$b0+x,$0dc0
-	mov	y,$51
-	mov	a,$02a1+x
+	mov	a,!swpadw+x
+;
+	call	$0e1f			; kkk sss <-- data set 
+;................................................
+;************** vib check ***********************
+;................................................
+vbby:
+	mov.b	a,!vibd+x		; vib chu ?
+	beq	vib12			; uuu d7 check & ret
+;
+	mov	a,!vibhs+x
+	cbne	!vibhc+x,vib12		; hold chu ?
+;................................................
+vbb10:
+	mov.b	y,!tmpd
+	mov	a,!vibcad+x		; vib keisan
 	mul	ya
 	mov	a,y
 	clrc
-	adc	a,$02a0+x
-	jmp	$0da0
-	set7	$13
-	mov.b	$12,y
-	call	$0bd0
+	adc	a,!vibc+x		; vib count
+	jmp	vib20			; depth keisan & data set
+;................................................
+;************** hokan keisan ********************
+;................................................
+hokan:
+	set7	!uuu			; from sppy
+	mov.b	!ttt,y			; data store
+;...
+	call	minusc			; if ttt(d7)=1 then minus       
+;
 	push	y
-	mov	y,$51
+	mov.b	y,!tmpd			; X 0.???
+	mul	ya			; a = shimo
+	mov.b	!adx,y
+	mov	!adx+1,#$00
+;
+	mov.b	y,!tmpd
+	pop	a			; a = kami
 	mul	ya
-	mov.b	$14,y
-	mov	$15,#$00
-	mov	y,$51
-	pop	a
-	mul	ya
-	addw	ya,$14
-	call	$0bd0
-	addw	ya,$10
-	movw	$10,ya
+	addw	ya,!adx
+;
+minusad:
+	call	minusc			; if ttt(d7)=1 then minus
+;...
+	addw	ya,!sss			; sweep keisan
+	movw	!sss,ya			; data set
 	ret
-	set7	$13
-	mov	y,$51
-	mov	a,!trecad+x
+;................................................
+;************** tremolo data set ****************
+;................................................
+tresetx:
+	set7	!uuu			; call from trr
+;
+	mov.b	y,!tmpd
+	mov	a,!trecad+x		; tre keisan
+
 	mul	ya
 	mov	a,y
 	clrc
-	adc	a,$02d0+x
-	asl	a
-	bcc	$0e4f
+	adc	a,!trec+x
+;................................................
+treset:
+	asl	a			; volx set
+	bcc	treset2
+;
 	eor	a,#$ff
-	mov.b	y,$c1+x
-	mul	ya
+;
+treset2:
+	mov	y,!tred+x
+	mul	ya			; tre depth x wave
+;
 	mov	a,y
-	eor	a,#$ff
-	mov	y,$59
+	eor	a,#$ff			; = 1 - depth
+;...................
+volxset:
+	mov.b	y,!mvo			; main vol x ( 1 - depth )
+	mul	ya			;
+;
+	mov	a,!vol+x		; vol
 	mul	ya
-	mov	a,$0210+x
+;
+	mov	a,!pvod+x		; part vol x
 	mul	ya
-	mov	a,$0301+x
-	mul	ya
+;
+	mov	a,y			; dB
+	mul	ya			; dB
+;
 	mov	a,y
-	mul	ya
-	mov	a,y
-	mov	$0321+x,a
+	mov	!volx+x,a
+;
 	ret
-
-db $12, $34, $56, $78
-
-
-
-base $e9c
+;................................................
+;
+;
+;..............................................
+pant:   ; 0 - 20
+	db 000, 001, 003, 007, 013, 021, 030, 041, 052, 066
+	db 081, 094, 103, 110, 115, 119, 122, 124, 125, 126, 127
+;
+;*	db 127, 126, 126, 125, 123, 120, 116, 111, 105, 098
+;*	db 089, 080, 070, 060, 050, 040, 030, 022, 014, 006, 000
+;..............................................
+;
+;
+;................................................
+fild:  ;                                        ; Filter    (0xfh)
+	db $7f, $00, $00, $00, $00, $00, $00, $00 ; no filter (x1.0)
+	db $58, $bf, $db, $f0, $fe, $07, $0c, $0c ; high pass
+	db $0c, $21, $2b, $2b, $13, $fe, $f3, $f9 ; low  pass
+	db $34, $33, $00, $d9, $e5, $01, $fc, $eb ; band pass
+;................................................ 
 dseta: ;   EVOL EVOR EFB  EON  FLG                  NOOF PMON
 	db $2c, $3c, $0d, $4d, $6c, !keyon, !keyoff, $3d, $2d, !keyoff
-;base $ea6
 dsetd: ;    1      2      3      4      5      6        7     8     9       10  
 	db !evol, !evor, !efbs, !eons, !flgs, !keyons, !t00, !nons, !mons, !keyoffs
 ;................................................
@@ -2007,7 +2080,6 @@ dsetd: ;    1      2      3      4      5      6        7     8     9       10
 ;
 ;
 ;************************************************
-base $eb0
 gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ; dw	0066,0070,0075,0079,0084,0089,0094,0100,0106,0112,0119,0126  ; c00
 ; dw	0133,0141,0150,0159,0168,0178,0189,0200,0212,0225,0238,0252  ; c10
@@ -2016,3 +2088,49 @@ gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ; dw	1071,1135,1202,1274,1350,1430,1515,1605,1701,1802,1909,2022  ; c40
 	dw 2143,2270,2405,2548,2700,2860,3030,3211,3402,3604,3818,4045  ; c50
 	dw 4286;4541,4811,5097,5400,5721,6061,6422,6804,7208,7637,8091  ; c60
+;
+; 3=e60 , 4=b50 , 5=g50 , 6=e50 , 7=c51 , 8=b40 , 9=a40 , 10=g40
+;************************************************	; 7.6560747 = 07.a8h
+;
+;************************************************
+	db "*Ver S1.20*"				; ** version check **
+;************************************************
+
+mov   a,#$aa
+mov   $00f4,a
+mov   a,#$bb
+mov   $00f5,a
+mov   a,$00f4
+cmp   a,#$cc
+bne   $0edf
+bra   $0f08
+mov   y,$00f4
+bne   $0ee8
+cmp   y,$00f4
+bne   $0f01
+mov   a,$00f5
+mov   $00f4,y
+mov   ($14)+y,a
+inc   y
+bne   $0eed
+inc   $15
+bra   $0eed
+bpl   $0eed
+cmp   y,$00f4
+bpl   $0eed
+mov   a,$00f6
+mov   y,$00f7
+movw  $14,ya
+mov   y,$00f4
+mov   a,$00f5
+mov   $00f4,y
+bne   $0ee8
+mov   x,#$31
+mov   $00f1,x
+ret
+
+
+
+
+
+db $12, $34, $56, $78
