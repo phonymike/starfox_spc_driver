@@ -516,12 +516,13 @@ jmp	cha02				; finished with command
 ;................................................
 _6E3:
 mov	a,$03f1
-beq	$06f5
+beq	+
 mov	a,$03f1
 mov.b	!mvo,a
 mov	a,#$00
 mov	$03f1,a
 jmp	cha02				; finished with command
++
 ret
 ;................................................
 decode_commands:
@@ -532,7 +533,7 @@ beq	_6B7
 cmp	a,#$f2				; restore song volume
 beq	_6D2
 cmp	a,#$f3
-beq	_6E3
+beq	$06E3
 cmp	a,#$f4
 beq	_71D
 cmp	a,#$f5
@@ -1377,7 +1378,7 @@ filset:
 	mov	y,#$0f			; tenso address set
 ;
 filset2:
-	mov	a,$0e7c+x
+	mov	a,fild+x
 	call	apus			; a=data  y= address 
 ;
 	inc	x
@@ -2095,42 +2096,820 @@ gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ;************************************************
 	db "*Ver S1.20*"				; ** version check **
 ;************************************************
+;
+;
+;***************************************
+;		tensou program
+;***************************************
+ten00:
+	mov	a,#$aa			;
+	mov	!port0,a		;
+	mov	a,#$bb			;
+	mov	!port1,a		;
+;........................................
+ten02:
+	mov	a,!port0			; flag O.K. ?
+	cmp	a,#$cc			;
+	bne	ten02			;
+	bra	$0f08			;
+;........................................
+ten16:
+	mov	y,!port0		;
+	bne	ten16			;
+;........................................
+ten20:
+	cmp	y,!port0		;
+	bne	ten26
+;......
+	mov	a,!port1
+	mov	!port0,y
+	mov	(!adx)+y,a		;
+;
+	inc	y
+	bne	ten20			;
+;......
+	inc.b	!adx+1			;
+	bra	ten20			;
+;........................................
+ten26:
+	bpl	ten20			;
+;
+	cmp	y,!port0		;
+	bpl	ten20			;
+;........................................
+ten40:
+	mov	a,!port2		;
+	mov	y,!port3		;
+	movw	!adx,ya			;
+;
+	mov	y,!port0		;
+	mov	a,!port1		;
+	mov	!port0,y		; flag return
+	bne	ten16			; port1 = 0 ?
+;........................................
+	mov	x,#$31			; in port clear
+	mov	!cont,x
 
-mov   a,#$aa
-mov   $00f4,a
-mov   a,#$bb
-mov   $00f5,a
-mov   a,$00f4
-cmp   a,#$cc
-bne   $0edf
-bra   $0f08
-mov   y,$00f4
-bne   $0ee8
-cmp   y,$00f4
-bne   $0f01
-mov   a,$00f5
-mov   $00f4,y
-mov   ($14)+y,a
-inc   y
-bne   $0eed
-inc   $15
-bra   $0eed
-bpl   $0eed
-cmp   y,$00f4
-bpl   $0eed
-mov   a,$00f6
-mov   y,$00f7
-movw  $14,ya
-mov   y,$00f4
-mov   a,$00f5
-mov   $00f4,y
-bne   $0ee8
-mov   x,#$31
-mov   $00f1,x
+	ret
+;........................................
+incbin	0F21-24FC.bin
+
+
+;reti
+;or    a,($a0+x)
+mov	a,#$80
+mov	y,#$5c
+call	apus
+mov	a,$03c3
+and	a,#$80
+beq	$2512
+set7  $4a
+mov	y,#$4d
+call	apus
+mov	$05,#$00
+clr7	$1a
+mov	x,#$0e
+mov	a,$021f
+call	$0932
+mov	a,#$00
+mov	$03c9,a
+mov.b	$d1,a
+mov.b	$ae,a
+mov.b	$9e,a
+mov	a,$03ee
+mov	$038f,a
+mov	a,$03ef
+mov	$028e,a
+ret
+mov	x,#$60
+mov.b	$9e,x
+mov	$03c9,x
+mov	a,#$00
+mov	$032e,a
+mov.b	x,$9e
+setc
+sbc	a,$030f
+call	$0bbe
+mov	$031e,a
+mov	a,y
+mov	$031f,a
+mov.b	a,$9e
+beq	$24fd
+cmp	a,#$01
+beq	$24fd
+mov	a,#$00
+mov	y,#$03
+mov	x,#$0e
+dec	$9e
+call	$0cc4
+mov	a,$030f
+mov	$032f,a
+mov	a,#$0a
+mov	$035f,a
+mov.b	$11,a
+mov	$10,#$00
+mov	x,#$0e
+call	$0c80
+ret
+mov	a,$03f8
+beq	$2584
+mov	$01,#$00
+mov	y,$09
+cmp	y,$01
+beq	$25a1
+mov.b	a,$01
+mov.b	$05,a
+mov.b	$09,a
+beq	$2537
+mov	a,y
+beq	$25b5
+eor.b	a,$01
+and	a,#$c0
+bne	$25b5
+mov.b	a,$d1
+bne	$25cc
+bra	$2618
+mov.b	a,$01
+bne	$25ac
+mov	x,$03c9
+beq	$25b4
+bra	$2553
+mov.b	a,$d1
+bne	$25cc
+mov.b	a,$05
+bne	$262f
+ret
+mov	$d1,#$02
+mov	a,#$80
+mov	y,#$5c
+call	apus
+set7	$1a
+mov	a,#$00
+mov	$028e,a
+mov.b	$ae,a
+mov	$038f,a
+ret
+dbnz	$d1,$25cb
+call	$2671
+mov	a,#$80
+call	$3e79
+mov.b	a,$05
+bmi	$25ee
+bbs6	$05,$25e6
+mov	y,#$70
+mov	x,#$96
+mov	a,#$a0
+bra	$25ff
+mov	y,#$f7
+mov	x,#$b2
+mov	a,#$ff
+bra	$25ff
+bbs6	$05,$25f9
+mov	y,#$ff
+mov	x,#$b2
+mov	a,#$ff
+bra	$25ff
+mov	y,#$bb
+mov	x,#$96
+mov	a,#$e0
+mov	$03cb,y
+mov	$03c6,x
+mov	$03fc,a
+call	$0648
+clr7	$4a
+mov.b	a,$4a
+mov	y,#$4d
+call	apus
+mov	a,#$01
+bne	$261a
+mov	a,#$30
+mov.b	$ae,a
+mov	$af,#$00
+mov.b	a,$05
+and	a,#$3f
+mov	x,a
+mov	a,$26b4+x
+mov	x,#$0e
+mov.b	$44,x
+call	$0b9b
+ret
+clr7	$13
+mov.b	a,$ae
+beq	$265c
+mov	x,#$0e
+call	$3e5f
+mov	a,$03fc
+mov	$032f,a
+mov	$030f,a
+mov	a,#$0a
+mov	$035f,a
+mov	$033f,a
+mov	x,#$0e
+mov	a,$0331+x
+mov	y,a
+mov	a,$0330+x
+movw	$10,ya
+mov	a,#$0e
+call	$0c80
+ret
+
+mov	a,#$70
+mov.b	$ae,a
+mov	$af,#$00
+mov.b	a,$18
+and	a,#$03
+or	 a,#$a4
+mov	x,#$0e
+mov.b	$44,x
+call	$0b9b
+ret
+
+mov.b	a,$05
+and	a,#$c0
+clrc
+rol	a
+rol	a
+rol	a
+mov	x,a
+mov	y,#$06
+mul	ya
+mov	x,a
+mov	y,#$74
+mov	$12,#$04
+mov	a,_269C+x
+call	apus
+inc	x
+inc	y
+dbnz	$12,$2683
+mov	a,_269C+x
+mov	$022f,a
+inc	x
+mov	a,_269C+x
+mov	$022e,a
+ret
+
+_269C:
+	db $20, $00, $00, $E8, $04, $00, $20, $00
+	db $00, $EF, $00, $60, $20, $00, $00, $E5
+	db $00, $80, $20, $00, $00, $E8, $01, $C0
+	db $A4, $A6, $A7, $A8, $A6, $A7, $A8, $A9
+	db $B0, $B0, $B0, $B0, $98, $98, $98, $98
+
+mov	a,#$00
+mov.b	$06,a
+mov.b	$0d,a
+mov	$03f6,a
+mov.b	$ac,a
+mov.b	$9c,a
+mov.b	$9d,a
+mov	$032d,a
+mov	$030d,a
+mov	a,$03ec
+mov	$038d,a
+mov	a,$03ed
+mov	$028c,a
+clr6	$1a
+mov	x,#$0c
+mov	a,$021d
+call	$0932
+mov	a,$03c3
+and	a,#$40
+beq	$26fd
+set6	$4a
+mov	y,#$4d
+call	apus
+mov	a,#$40
+mov	y,#$5c
+jmp	apus
+mov	x,$03f6
+mov.b	$9c,x
+mov	a,#$00
+mov	$032c,a
+mov.b	x,$9c
+setc
+sbc	a,$030d
+call	$0bbe
+mov	$031c,a
+mov	a,y
+mov	$031d,a
+mov.b	a,$9c
+bne	$2723
+ret
+cmp	a,#$01
+beq	$26c4
+mov	a,#$00
+mov	y,#$03
+mov	x,#$0c
+dec	$9c
+call	$0cc4
+mov	a,$030d
+mov	$032d,a
+mov	a,$03fb
+mov	$035d,a
+mov.b	$11,a
+mov	$10,#$00
+mov	x,#$0c
+call	$0c80
+ret
+mov	a,$03f8
+beq	$2751
+mov	$02,#$00
+mov	y,$0a
+cmp	y,$02
+beq	$277d
+mov.b	a,$02
+mov.b	$06,a
+mov.b	$0a,a
+and	a,#$c0
+beq	$2704
+mov	a,y
+eor.b	a,$02
+and	a,#$0f
+bne	$2779
+mov.b	a,$0d
+bne	$27a4
+mov	a,y
+eor.b	a,$02
+and	a,#$30
+beq	$2776
+jmp	$27ff
+jmp	$2839
+mov.b	a,$02
+bne	_278D
+mov.b	a,$02
+beq	$271e
+mov.b	a,$0d
+bne	$27a4
+mov.b	a,$06
+beq	_278C
+jmp	$285f
+_278C:
+ret
+_278D:
+mov	$0d,#$02
+mov	a,#$40
+mov	y,#$5c
+call	apus
+set6	$1a
+mov	a,#$00
+mov	$028c,a
+mov.b	$ac,a
+mov	$038d,a
+ret
+dbnz	$0d,_278C
+mov.b	a,$06
+and	a,#$0f
+setc
+sbc	a,#$01
+mov	x,a
+mov	a,$2921+x
+mov	$03f6,a
+mov	a,$2930+x
+mov	$03f9,a
+mov	a,x
+call	$289d
+mov.b	a,$06
+and	a,#$30
+bne	$27ca
+mov	y,$03f9
+bne	$27cc
+mov	y,#$ad
+mov	$44,#$0c
+mov	x,#$0c
+call	$0518
+mov	a,#$40
+call	$3e79
+clr6	$4a
+mov.b	a,$4a
+mov	y,#$4d
+call	apus
+mov.b	a,$06
+and	a,#$30
+xcn	a
+mov	x,a
+mov	a,$291d+x
+mov	$032d,a
+mov	$030d,a
+mov.b	a,$06
+and	a,#$c0
+xcn	a
+lsr	a
+lsr	a
+mov	x,a
+mov	a,$2919+x
+mov	$033d,a
+mov	x,$03f6
+mov.b	$9c,x
+mov.b	a,$06
+and	a,#$30
+bne	$280f
+mov	a,$03f9
+bne	$2811
+mov	a,#$ad
+mov.b	$ac,x
+mov	$ad,#$00
+mov	x,#$0c
+mov.b	$44,x
+call	$0b9b
+mov.b	a,$06
+and	a,#$30
+xcn	a
+mov	x,a
+mov	a,$291d+x
+mov	$032c,a
+mov.b	x,$9c
+setc
+sbc	a,$030d
+call	$0bbe
+mov	$031c,a
+mov	a,y
+mov	$031d,a
+mov.b	a,$06
+and	a,#$c0
+xcn	a
+lsr	a
+lsr	a
+mov	x,a
+mov	a,$2919+x
+mov	$03fb,a
+mov	$035c,a
+setc
+sbc	a,$033d
+mov	x,$03f6
+mov.b	$9d,x
+call	$0bbe
+movw	$10,ya
+mov	$034c,a
+mov	a,y
+mov	$034d,a
+mov.b	a,$9c
+beq	$2874
+mov	a,#$00
+mov	y,#$03
+mov	x,#$0c
+dec	$9c
+call	$0cc4
+mov	a,$030d
+mov	$032d,a
+clr7	$13
+mov.b	a,$ac
+beq	$287f
+mov	x,#$0c
+call	$3e5f
+mov.b	a,$9d
+beq	$289c
+mov	a,#$30
+mov	y,#$03
+mov	x,#$0c
+dec	$9d
+call	$0cc4
+mov	a,$033d
+mov	y,a
+mov	a,$033c
+movw	$10,ya
+mov	x,#$0c
+call	$0c80
+ret
+mov	y,#$06
+mul	ya
+mov	x,a
+mov	y,#$64
+mov	$12,#$04
+mov	a,$28bf+x
+call	apus
+inc	x
+inc	y
+dbnz	$12,$28a6
+mov	a,$28bf+x
+mov	$022d,a
+inc	x
+mov	a,$28bf+x
+mov	$022c,a
 ret
 
 
+;28BF data
+	db $20, $0C, $E0, $70, $02, $80, $20, $0C
+	db $E0, $60, $07, $00, $00, $0E, $E0, $70
+	db $03, $00, $0A, $0E, $E0, $70, $01, $80
+	db $01, $0E, $E0, $7F, $01, $00, $01, $0E
+	db $E0, $28, $07, $00, $2D, $0E, $E0, $70
+	db $01, $00, $03, $0E, $E0, $7F, $01, $40
+	db $03, $0E, $E0, $70, $03, $00, $13, $0E
+	db $E0, $60, $00, $60, $0A, $0E, $E0, $7F
+	db $00, $60, $0B, $0E, $E0, $60, $05, $00
+	db $02, $0E, $E0, $7F, $01, $80, $13, $0E
+	db $E0, $70, $01, $00, $02, $0E, $E0, $40
+	db $08, $00, $0A, $14, $0A, $00, $FF, $90
+	db $60, $30, $30, $18, $40, $40, $50, $28
+	db $20, $60, $40, $40, $40, $40, $48, $20
+	db $20, $AB, $A1, $AD, $AD, $AD, $A9, $AC
+	db $AD, $AD, $AD, $AD, $AD, $AD, $AD, $AB
 
 
+;2934 code
 
-db $12, $34, $56, $78
+mov.b	x,$03
+mov.b	$11,x
+mov	a,$0fdf+x
+mov.b	$10,a
+xcn	a
+and	a,#$0f
+asl	a
+mov	y,a
+mov	a,$03a0+y
+beq	$2960
+mov	x,a
+mov	a,$0fdf+x
+setc
+cmp.b	a,$10
+beq	$2960
+bcc	$2960
+jmp	$3eba
+mov.b	a,$11
+mov	$03a0+y,a
+mov.b	$10,y
+mov	a,#$01
+lsr	$10
+beq	$2971
+asl	a
+dbnz	$10,$296d
+mov	$03c1,a
+mov	$03c0,y
+mov	a,$03c1
+or.b	 a,$1a
+mov.b	$1a,a
+jmp	$29c5
+mov	a,$00f7
+cmp	a,$00f7
+bne	$2981
+mov	$00f7,a
+mov	y,a
+mov.b	a,$0b
+mov.b	$0b,y
+cbne	$0b,$2996
+mov	y,#$00
+mov.b	$03,y
+mov.b	a,$03
+beq	$29a0
+cmp	a,#$b0
+bcc	$29c2
+ret
+mov	a,$03f8
+beq	$29be
+mov	a,#$00
+mov	$03f8,a
+call	$3e96
+bra	$29be
+mov.b	a,$1a
+and	a,#$c0
+eor	a,#$ff
+mov	$03f8,a
+mov	y,#$5c
+call	$060d
+mov.b	a,$03
+bra	$29d5
+jmp	$293f
+call	$3ea6
+mov	x,$03c0
+mov.b	a,$03
+cmp	a,#$01
+beq	$29a1
+cmp	a,#$02
+beq	$29b0
+mov	$03a0+x,a
+cmp	a,#$0b
+bcc	$29eb
+cmp	a,#$0e
+bcc	$29e8
+cmp	a,#$15
+bcc	$29eb
+cmp	a,#$18
+bcs	$29eb
+call	$3e87
+mov	a,#$03
+mov	$03a1+x,a
+mov	a,#$00
+mov	$0280+x,a
+mov.b	$a0+x,a
+mov	$0381+x,a
+mov	$02f0+x,a
+mov	a,$03c1
+or	 a,$0007
+mov	$0007,a
+mov	a,$03c1
+mov	y,#$5c
+call	$060d
+mov	a,$03a0+x
+mov	x,a
+mov	a,$0f20+x
+mov.b	$03,a
+bne	$29c2
+ret
+mov	a,$0007
+mov	$03ce,a
+beq	$2a51
+mov	x,#$0a
+mov	a,#$20
+mov	$03c1,a
+asl	$03ce
+asl	$03ce
+asl	$03ce
+bcc	$2a4a
+mov	$03c0,x
+mov	a,x
+xcn	a
+lsr	a
+mov	$03c2,a
+mov	a,$03a1+x
+bne	$2a52
+mov	a,$03a0+x
+beq	$2a4a
+jmp	$2b0c
+lsr	$03c1
+dec	x
+dec	x
+bpl	$2a2f
+ret
+mov	$03c0,x
+mov	a,$03a1+x
+dec	a
+mov	$03a1+x,a
+beq	$2a61
+jmp	$2a4a
+mov	a,$03a0+x
+asl	a
+mov	y,a
+bcs	$2a7b
+mov	a,$109e+y
+mov	$0391+x,a
+mov.b	$2d,a
+mov	a,$109d+y
+mov	$0390+x,a
+mov.b	$2c,a
+jmp	$2b29
+mov	a,$119e+y
+mov	$0391+x,a
+mov.b	$2d,a
+mov	a,$119d+y
+mov	$0390+x,a
+mov.b	$2c,a
+jmp	$2b29
+mov	x,$03c0
+mov	a,$03a0+x
+cmp	a,#$0b
+bcc	$2aac
+cmp	a,#$0e
+bcc	$2aa4
+cmp	a,#$15
+bcc	$2aac
+cmp	a,#$18
+bcs	$2aac
+mov	a,$03ca
+bne	$2aac
+call	$3e96
+mov	a,#$00
+mov	$03a0+x,a
+mov.b	$a0+x,a
+mov	a,$03d0+x
+mov	$02f0+x,a
+mov	a,$03e0+x
+mov	$0381+x,a
+mov	a,$03e1+x
+mov	$0280+x,a
+mov.b	a,$1a
+setc
+sbc	a,$03c1
+mov.b	$1a,a
+mov	a,$0007
+setc
+sbc	a,$03c1
+mov	$0007,a
+mov.b	$44,x
+mov	a,$0211+x
+call	$0932
+mov	a,$03c1
+and	a,$03c3
+beq	$2b02
+and.b	a,$4a
+bne	$2b02
+mov.b	a,$4a
+clrc
+adc	a,$03c1
+mov.b	$4a,a
+mov	y,#$4d
+call	$060d
+mov	a,$03f3
+setc
+sbc	a,$03c1
+mov	$03f3,a
+mov	x,$03c0
+ret
+call	$2a8e
+jmp	$2a4a
+call	$3ea6
+mov	$03c0,x
+mov	a,$0391+x
+mov	y,a
+mov	a,$0390+x
+movw	$2c,ya
+mov	a,$03b0+x
+dec	a
+mov	$03b0+x,a
+beq	$2b27
+jmp	$2b94
+incw	$2c
+mov	a,$03c0
+xcn	a
+lsr	a
+mov	$03c2,a
+mov	x,#$00
+mov	a,($2c+x)
+beq	$2b06
+bmi	$2b6f
+mov	y,$03c0
+mov	$03b1+y,a
+incw	$2c
+mov	a,($2c+x)
+mov.b	$10,a
+bmi	$2b6f
+mov	y,$03c2
+call	$060d
+mov	x,#$00
+incw	$2c
+mov	a,($2c+x)
+bpl	$2b62
+mov	x,a
+mov.b	a,$10
+mov	y,$03c2
+inc	y
+call	$060d
+mov	a,x
+bra	$2b6f
+mov	y,$03c2
+inc	y
+call	$060d
+mov	x,#$00
+incw	$2c
+mov	a,($2c+x)
+cmp	a,#$e0
+bne	$2b76
+jmp	$3e20
+cmp	a,#$f9
+beq	$2bc1
+cmp	a,#$f1
+beq	$2bd6
+mov	x,$03c0
+mov	y,a
+call	$0518
+mov	a,$03c1
+call	$3e79
+mov	x,$03c0
+mov	a,$03b1+x
+mov	$03b0+x,a
+clr7	$13
+mov	x,$03c0
+mov.b	a,$a0+x
+beq	$2ba2
+call	$3e5f
+bra	$2bb1
+mov	a,#$02
+cmp	a,$03b0+x
+bne	$2bb1
+mov	a,$03c1
+mov	y,#$5c
+call	$060d
+mov	x,$03c0
+mov.b	a,$2d
+mov	$0391+x,a
+mov.b	a,$2c
+mov	$0390+x,a
+jmp	$2a4a
+mov	x,#$00
+incw	$2c
+mov	a,($2c+x)
+mov	x,$03c0
+mov.b	$44,x
+mov	y,a
+call	$0518
+mov	a,$03c1
+call	$3e79
+mov	x,#$00
+incw	$2c
+mov	a,($2c+x)
+mov	x,$03c0
+mov.b	$a1+x,a
+mov	x,#$00
+incw	$2c
+mov	a,($2c+x)
+mov	x,$03c0
+mov.b	$a0+x,a
+push	a
+mov	x,#$00
+incw	$2c
+mov	a,($2c+x)
+pop	y
+mov	x,$03c0
+mov.b	$44,x
+call	$0b9b
+jmp	$2b8b
