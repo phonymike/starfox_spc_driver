@@ -846,7 +846,7 @@ tx19:
 	bra	tx40
 ;................................................
 tx22:
-	call	$0ce5			; keyoff & sweep & vib check
+	call	keych			; keyoff & sweep & vib check
 ;................................................
 tx40:
 	call	swpch			; sweep check (next data)
@@ -1609,7 +1609,7 @@ tre02:
 tre04:
 	mov	!trec+x,a		; count data
 ;
-	call	$0e4a			; volx set
+	call	treset			; volx set
 	bra	pany
 ;................................................
 tre20:
@@ -1617,7 +1617,7 @@ tre20:
 ;
 tre22:
 	mov	a,#$ff			; y = depth (tre)
-	call	$0e55			; volx set
+	call	volxset			; volx set
 ;************************************************
 ;		pan move & gain set
 ;************************************************
@@ -1719,6 +1719,7 @@ ret
 ;************************************************
 ;		keyoff check
 ;************************************************
+keych:
 	mov.b	a,!ngo+x		; key off ?
 	beq	swpy
 ;
@@ -1893,7 +1894,7 @@ vib24:
 	mov	y,#$00			; kami
 ;
 vib25:
-	call	$0e35			; if ttt(d7)=1 then minus + sss
+	call	minusad			; if ttt(d7)=1 then minus + sss
 ;......
 ;	addw	ya,sss			; vib keisan
 ;	movw	sss,ya			; data set
@@ -1921,7 +1922,7 @@ trry:
 	mov	a,!trehs+x		; holdchu ?
 	cbne	!trehc+x,pnny
 ;................................................
-	call	$0e3d
+	call	tresetx
 ;................................................
 ;************** pan move check ******************
 ;................................................
@@ -1938,7 +1939,7 @@ pnny:
 	mov	y,a
 	mov	a,!panadw+x		; + @ keisan
 ;
-	call	$0e1f			; kkk sss <-- data set
+	call	hokan			; kkk sss <-- data set
 ;...
 pnn04:
 	bbc7	!uuu,$0df0
@@ -1962,7 +1963,7 @@ sppy:
 	mov	y,a
 	mov	a,!swpadw+x
 ;
-	call	$0e1f			; kkk sss <-- data set 
+	call	hokan			; kkk sss <-- data set 
 ;................................................
 ;************** vib check ***********************
 ;................................................
@@ -2071,7 +2072,7 @@ fild:  ;                                        ; Filter    (0xfh)
 	db $0c, $21, $2b, $2b, $13, $fe, $f3, $f9 ; low  pass
 	db $34, $33, $00, $d9, $e5, $01, $fc, $eb ; band pass
 ;................................................ 
-dseta: ;   EVOL EVOR EFB  EON  FLG                  NOOF PMON
+dseta: ;   EVOL EVOR EFB  EON  FLG                   NOOF PMON
 	db $2c, $3c, $0d, $4d, $6c, !keyon, !keyoff, $3d, $2d, !keyoff
 dsetd: ;    1      2      3      4      5      6        7     8     9       10  
 	db !evol, !evor, !efbs, !eons, !flgs, !keyons, !t00, !nons, !mons, !keyoffs
@@ -2155,22 +2156,21 @@ ten40:
 incbin	0F21-24FC.bin
 
 
-;reti
-;or    a,($a0+x)
+_24FD:
 mov	a,#$80
 mov	y,#$5c
 call	apus
 mov	a,$03c3
 and	a,#$80
 beq	$2512
-set7  $4a
+set7	$4a
 mov	y,#$4d
 call	apus
 mov	$05,#$00
 clr7	$1a
 mov	x,#$0e
 mov	a,$021f
-call	$0932
+call	snox
 mov	a,#$00
 mov	$03c9,a
 mov.b	$d1,a
@@ -2181,6 +2181,7 @@ mov	$038f,a
 mov	a,$03ef
 mov	$028e,a
 ret
+
 mov	x,#$60
 mov.b	$9e,x
 mov	$03c9,x
@@ -2194,9 +2195,9 @@ mov	$031e,a
 mov	a,y
 mov	$031f,a
 mov.b	a,$9e
-beq	$24fd
+beq	_24FD
 cmp	a,#$01
-beq	$24fd
+beq	_24FD
 mov	a,#$00
 mov	y,#$03
 mov	x,#$0e
@@ -2211,6 +2212,7 @@ mov	$10,#$00
 mov	x,#$0e
 call	$0c80
 ret
+
 mov	a,$03f8
 beq	$2584
 mov	$01,#$00
@@ -2239,6 +2241,7 @@ bne	$25cc
 mov.b	a,$05
 bne	$262f
 ret
+
 mov	$d1,#$02
 mov	a,#$80
 mov	y,#$5c
@@ -2249,6 +2252,7 @@ mov	$028e,a
 mov.b	$ae,a
 mov	$038f,a
 ret
+
 dbnz	$d1,$25cb
 call	$2671
 mov	a,#$80
@@ -2291,8 +2295,9 @@ mov	x,a
 mov	a,$26b4+x
 mov	x,#$0e
 mov.b	$44,x
-call	$0b9b
+call	swpadset
 ret
+
 clr7	$13
 mov.b	a,$ae
 beq	$265c
@@ -2321,7 +2326,7 @@ and	a,#$03
 or	 a,#$a4
 mov	x,#$0e
 mov.b	$44,x
-call	$0b9b
+call	swpadset
 ret
 
 mov.b	a,$05
@@ -2371,7 +2376,7 @@ mov	$028c,a
 clr6	$1a
 mov	x,#$0c
 mov	a,$021d
-call	$0932
+call	snox
 mov	a,$03c3
 and	a,#$40
 beq	$26fd
@@ -2476,7 +2481,7 @@ bne	$27cc
 mov	y,#$ad
 mov	$44,#$0c
 mov	x,#$0c
-call	$0518
+call	dss
 mov	a,#$40
 call	$3e79
 clr6	$4a
@@ -2510,7 +2515,7 @@ mov.b	$ac,x
 mov	$ad,#$00
 mov	x,#$0c
 mov.b	$44,x
-call	$0b9b
+call	swpadset
 mov.b	a,$06
 and	a,#$30
 xcn	a
@@ -2570,25 +2575,25 @@ movw	$10,ya
 mov	x,#$0c
 call	$0c80
 ret
+
 mov	y,#$06
 mul	ya
 mov	x,a
 mov	y,#$64
 mov	$12,#$04
-mov	a,$28bf+x
+mov	a,_28BF+x
 call	apus
 inc	x
 inc	y
 dbnz	$12,$28a6
-mov	a,$28bf+x
+mov	a,_28BF+x
 mov	$022d,a
 inc	x
-mov	a,$28bf+x
+mov	a,_28BF+x
 mov	$022c,a
 ret
 
-
-;28BF data
+_28BF:
 	db $20, $0C, $E0, $70, $02, $80, $20, $0C
 	db $E0, $60, $07, $00, $00, $0E, $E0, $70
 	db $03, $00, $0A, $0E, $E0, $70, $01, $80
@@ -2655,6 +2660,8 @@ beq	$29a0
 cmp	a,#$b0
 bcc	$29c2
 ret
+
+_29A1:
 mov	a,$03f8
 beq	$29be
 mov	a,#$00
@@ -2666,7 +2673,7 @@ and	a,#$c0
 eor	a,#$ff
 mov	$03f8,a
 mov	y,#$5c
-call	$060d
+call	apus
 mov.b	a,$03
 bra	$29d5
 jmp	$293f
@@ -2674,7 +2681,7 @@ call	$3ea6
 mov	x,$03c0
 mov.b	a,$03
 cmp	a,#$01
-beq	$29a1
+beq	_29A1
 cmp	a,#$02
 beq	$29b0
 mov	$03a0+x,a
@@ -2699,13 +2706,14 @@ or	 a,$0007
 mov	$0007,a
 mov	a,$03c1
 mov	y,#$5c
-call	$060d
+call	apus
 mov	a,$03a0+x
 mov	x,a
 mov	a,$0f20+x
 mov.b	$03,a
 bne	$29c2
 ret
+
 mov	a,$0007
 mov	$03ce,a
 beq	$2a51
@@ -2731,6 +2739,7 @@ dec	x
 dec	x
 bpl	$2a2f
 ret
+
 mov	$03c0,x
 mov	a,$03a1+x
 dec	a
@@ -2787,7 +2796,7 @@ sbc	a,$03c1
 mov	$0007,a
 mov.b	$44,x
 mov	a,$0211+x
-call	$0932
+call	snox
 mov	a,$03c1
 and	a,$03c3
 beq	$2b02
@@ -2798,7 +2807,7 @@ clrc
 adc	a,$03c1
 mov.b	$4a,a
 mov	y,#$4d
-call	$060d
+call	apus
 mov	a,$03f3
 setc
 sbc	a,$03c1
@@ -2834,7 +2843,7 @@ mov	a,($2c+x)
 mov.b	$10,a
 bmi	$2b6f
 mov	y,$03c2
-call	$060d
+call	apus
 mov	x,#$00
 incw	$2c
 mov	a,($2c+x)
@@ -2843,12 +2852,12 @@ mov	x,a
 mov.b	a,$10
 mov	y,$03c2
 inc	y
-call	$060d
+call	apus
 mov	a,x
 bra	$2b6f
 mov	y,$03c2
 inc	y
-call	$060d
+call	apus
 mov	x,#$00
 incw	$2c
 mov	a,($2c+x)
@@ -2861,7 +2870,7 @@ cmp	a,#$f1
 beq	$2bd6
 mov	x,$03c0
 mov	y,a
-call	$0518
+call	dss
 mov	a,$03c1
 call	$3e79
 mov	x,$03c0
@@ -2878,7 +2887,7 @@ cmp	a,$03b0+x
 bne	$2bb1
 mov	a,$03c1
 mov	y,#$5c
-call	$060d
+call	apus
 mov	x,$03c0
 mov.b	a,$2d
 mov	$0391+x,a
@@ -2891,7 +2900,7 @@ mov	a,($2c+x)
 mov	x,$03c0
 mov.b	$44,x
 mov	y,a
-call	$0518
+call	dss
 mov	a,$03c1
 call	$3e79
 mov	x,#$00
@@ -2911,5 +2920,7 @@ mov	a,($2c+x)
 pop	y
 mov	x,$03c0
 mov.b	$44,x
-call	$0b9b
+call	swpadset
 jmp	$2b8b
+
+warnpc $2BFF
