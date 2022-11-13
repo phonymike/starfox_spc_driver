@@ -105,7 +105,7 @@ start40:
 ;
 	push	y			; 2mS goto
 ;................................................
-	mov	a,#$38			; 14 count
+	mov	a,#14*4			; 14 count
 	mul	ya
 ;
 	clrc
@@ -143,12 +143,13 @@ start50:
 	bcc	start60
 ;...................
 	mov	a,$03f8
-	bne	$04ce
+	bne	+
 start55:
-	call	$07d5			; music
+	call	cha			; music
 ;
 	mov	x,#$00			; fl0 & port0 check
 	call	_4FE			; x = fl?
++
 	jmp	start20
 ;................................................
 start60:
@@ -660,6 +661,7 @@ char:
 ;************************************************
 ;		music enso routin
 ;************************************************
+cha:
 	mov.b	a,$00
 	beq	cha02
 	jmp	decode_commands
@@ -1689,26 +1691,29 @@ panr:
 _CC1:
 or	(!vols),(!keyd)		; vol set flag 
 _CC4:
-movw	$14,ya
-movw	$16,ya
+movw	!adx,ya
+movw	!adx+2,ya
 push	x
 pop	y
 clrc
-bne	$0cd7
-adc	$16,#$1f
+bne	_CD7
+;...
+adc	!adx+2,#$1f
 mov	a,#$00
-mov	($14)+y,a
+mov	(!adx)+y,a
 inc	y
 bra	+
-adc	$16,#$10
+;...
+_CD7:
+adc	!adx+2,#$10
 call	_CDE
 inc	y
 ;
 _CDE:
-mov	a,($14)+y
+mov	a,(!adx)+y
 +
-adc	a,($16)+y
-mov	($14)+y,a
+adc	a,(!adx+2)+y
+mov	(!adx)+y,a
 ret
 ;************************************************
 ;		keyoff check
@@ -1778,7 +1783,7 @@ key17:
 	push	a
 	mov	a,!adp+x		; pattern add. (low)
 	pop	y
-	bra	$0cfa
+	bra	key04
 ;......
 key18:
 	inc	y			; pat
@@ -1788,7 +1793,7 @@ key18:
 	mov	a,(!adx)+y		; data in
 	mov	y,a			; add. high
 	pop	a
-	bra	$0cfa			;
+	bra	key04			;
 ;...................
 key20:
 	mov.b	a,!keyd			; key off set
@@ -1837,43 +1842,74 @@ viby:
 	cmp	a,!vibcs+x
 	bne	vib15			; change chu ?
 ;...
-	mov	a,$02c1+x
+	mov	a,!vibdm+x		; vib change end !
 	bra	$0d94
 ;......
 vib15:
-	setp
-	inc.b	$00+x
+	setp				; change chu
+	inc.b	!vibcc+x
 	clrp
-	mov	y,a
-	beq	$0d90
-	mov.b	a,$b1+x
+;
+	mov	y,a			; !vibcc+x = 0 ?
+	beq	vib16			; change begin (a=0)
+;
+	mov.b	a,!vibd+x		; change chu
+vib16:
 	clrc
-	adc	a,$02c0+x
-	mov.b	$b1+x,a
-	mov	a,$02a0+x
+	adc	a,!vibad+x		;
+vib17:
+	mov.b	!vibd+x,a
+;................................................
+vib18:
+	mov	a,!vibc+x		; vib keisan
 	clrc
-	adc	a,$02a1+x
-	mov	$02a0+x,a
-	mov.b	$12,a
+	adc	a,!vibcad+x
+	mov	!vibc+x,a		; count data
+;................................................
+vib20:
+	mov.b	!ttt,a			; depth keisan
+;
 	asl	a
 	asl	a
-	bcc	$0da8
+	bcc	vib21			; count data d6=0 ?
+;
 	eor	a,#$ff
+;......
+vib21:
 	mov	y,a
-	mov.b	a,$b1+x
+	mov.b	a,!vibd+x		; vib depth (%)
 	cmp	a,#$f1
-	bcc	$0db4
-	and	a,#$0f
+	bcc	vib24
+;
+vib22:
+	and	a,#$0f			;
 	mul	ya
-	bra	$0db8
+	bra	vib25
+;
+vib24:
 	mul	ya
-	mov	a,y
-	mov	y,#$00
-	call	$0e35
-	jmp	$0582
-	inc.b	$b0+x
-	bbs7	$13,$0dbb
+	mov	a,y			; shosuten ika
+	mov	y,#$00			; kami
+;
+vib25:
+	call	$0e35			; if ttt(d7)=1 then minus + sss
+;......
+;	addw	ya,sss			; vib keisan
+;	movw	sss,ya			; data set
+;................................................
+vib40:
+	jmp	dssx			; fre. set (call)
+;................................................
+vib11:
+	inc.b	!vibhc+x		; hold chu
+	bbs7	!uuu,vib40		; sweep chu ?
 	ret
+;................................................
+;
+;
+;................................................
+;************** tremolo check *******************
+;................................................
 	clr7	$13
 	mov.b	a,$c1+x
 	beq	$0dd3
