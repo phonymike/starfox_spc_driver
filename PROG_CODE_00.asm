@@ -3,15 +3,11 @@ arch spc700
 
 base $3ee8
 
-clr1	$65
-reti
-adc	$cb,#$b2
-mov	a,$19fc
-clr1	$4c
-cmp	a,$7f72
-dec	$a598
-clr5	$bf
-mov.b	$d8,y
-mov	a,$fcf2
+gate:
+	db $32, $65, $7F, $98, $B2, $CB, $E5, $FC
+
+volt:
+	db $19, $32, $4C, $65, $72, $7F, $8C, $98
+	db $A5, $B2, $BF, $CB, $D8, $E5, $F2, $FC
 
 warnpc $3f00
