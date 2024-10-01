@@ -507,7 +507,7 @@ jmp	cha02				; finished with command
 ;................................................
 _6D2:
 mov	a,$03f1
-bne	$06f5
+bne	_6F5
 mov.b	a,!mvo
 mov	$03f1,a
 mov	a,#$70
@@ -516,13 +516,13 @@ jmp	cha02				; finished with command
 ;................................................
 _6E3:
 mov	a,$03f1
-beq	+
+beq	_6F5
 mov	a,$03f1
 mov.b	!mvo,a
 mov	a,#$00
 mov	$03f1,a
 jmp	cha02				; finished with command
-+
+_6F5:
 ret
 ;................................................
 decode_commands:
@@ -547,11 +547,11 @@ ret
 _717:
 mov	x,#$03
 mov	a,#$30
-bne	$0721
+bne	+
 _71D:
 mov	x,#$fe
 mov	a,#$09
-_721:
++
 mov	!tmpc,#$8f
 mov	$02f0,x
 mov	$02f2,x
@@ -2243,14 +2243,15 @@ bra	$2618
 
 _25a1:
 mov.b	a,$01
-bne	$25ac
+bne	_25ac
 mov	x,$03c9
 beq	+
 bra	$2553
+_25ac:
 mov.b	a,$d1
 bne	_25cc
 mov.b	a,$05
-bne	$262f
+bne	_262f
 +
 ret
 
@@ -2308,8 +2309,9 @@ mov.b	a,$4a
 mov	y,#$4d
 call	apus
 mov	a,#$01
-bne	$261a
+bne	+
 mov	a,#$30
++
 mov.b	$ae,a
 mov	$af,#$00
 mov.b	a,$05
@@ -2321,6 +2323,7 @@ mov.b	$44,x
 call	swpadset
 ret
 
+_262f:
 clr7	$13
 mov.b	a,$ae
 beq	_265c
@@ -2468,16 +2471,17 @@ beq	_2704
 mov	a,y
 eor.b	a,$02
 and	a,#$0f
-bne	$2779
+bne	_2779
 mov.b	a,$0d
-bne	$27a4
+bne	_27a4
 mov	a,y
 eor.b	a,$02
 and	a,#$30
 beq	+
 jmp	_27ff
 +
-jmp	$2839
+jmp	_2839
+_2779:
 mov.b	a,$02
 bne	_278D
 
@@ -2485,10 +2489,10 @@ _277d:
 mov.b	a,$02
 beq	_271e
 mov.b	a,$0d
-bne	$27a4
+bne	_27a4
 mov.b	a,$06
 beq	_278C
-jmp	$285f
+jmp	_285f
 _278C:
 ret
 _278D:
@@ -2502,6 +2506,7 @@ mov	$028c,a
 mov.b	$ac,a
 mov	$038d,a
 ret
+_27a4:
 dbnz	$0d,_278C
 mov.b	a,$06
 and	a,#$0f
@@ -2516,10 +2521,12 @@ mov	a,x
 call	_289d
 mov.b	a,$06
 and	a,#$30
-bne	$27ca
+bne	_27ca
 mov	y,$03f9
-bne	$27cc
+bne	_27cc
+_27ca:
 mov	y,#$ad
+_27cc:
 mov	$44,#$0c
 mov	x,#$0c
 call	dss
@@ -2550,10 +2557,12 @@ mov	x,$03f6
 mov.b	$9c,x
 mov.b	a,$06
 and	a,#$30
-bne	$280f
+bne	_280f
 mov	a,$03f9
-bne	$2811
+bne	_2811
+_280f:
 mov	a,#$ad
+_2811:
 mov.b	$ac,x
 mov	$ad,#$00
 mov	x,#$0c
@@ -2572,6 +2581,7 @@ call	divx
 mov	$031c,a
 mov	a,y
 mov	$031d,a
+_2839:
 mov.b	a,$06
 and	a,#$c0
 xcn	a
@@ -2590,6 +2600,7 @@ movw	$10,ya
 mov	$034c,a
 mov	a,y
 mov	$034d,a
+_285f:
 mov.b	a,$9c
 beq	_2874
 mov	a,#$00
@@ -2703,18 +2714,19 @@ jmp	_29c5
 _2981:
 mov	a,$00f7
 cmp	a,$00f7
-bne	$2981
+bne	_2981
 mov	$00f7,a
 mov	y,a
 mov.b	a,$0b
 mov.b	$0b,y
-cbne	$0b,$2996
+cbne	$0b,+
 mov	y,#$00
++
 mov.b	$03,y
 mov.b	a,$03
 beq	+
 cmp	a,#$b0
-bcc	$29c2
+bcc	_29c2
 +
 ret
 
@@ -2737,6 +2749,7 @@ call	apus
 _29be:
 mov.b	a,$03
 bra	$29d5
+_29c2:
 jmp	_293f
 _29c5:
 call	$3ea6
@@ -2748,14 +2761,16 @@ cmp	a,#$02
 beq	_29b0
 mov	$03a0+x,a
 cmp	a,#$0b
-bcc	$29eb
+bcc	_29eb
 cmp	a,#$0e
-bcc	$29e8
+bcc	+
 cmp	a,#$15
-bcc	$29eb
+bcc	_29eb
 cmp	a,#$18
-bcs	$29eb
+bcs	_29eb
++
 call	$3e87
+_29eb:
 mov	a,#$03
 mov	$03a1+x,a
 mov	a,#$00
@@ -2773,7 +2788,7 @@ mov	a,$03a0+x
 mov	x,a
 mov	a,$0f20+x
 mov.b	$03,a
-bne	$29c2
+bne	_29c2
 ret
 
 _2a1a:
@@ -2786,18 +2801,18 @@ mov	$03c1,a
 asl	$03ce
 asl	$03ce
 asl	$03ce
-bcc	$2a4a
+bcc	_2a4a
 mov	$03c0,x
 mov	a,x
 xcn	a
 lsr	a
 mov	$03c2,a
 mov	a,$03a1+x
-bne	$2a52
+bne	_2a52
 mov	a,$03a0+x
-beq	+
-jmp	$2b0c
-+
+beq	_2a4a
+jmp	_2b0c
+_2a4a:
 lsr	$03c1
 dec	x
 dec	x
@@ -2805,44 +2820,51 @@ bpl	$2a2f
 _2a51:
 ret
 
+_2a52:
 mov	$03c0,x
 mov	a,$03a1+x
 dec	a
 mov	$03a1+x,a
 beq	+
-jmp	$2a4a
+jmp	_2a4a
 +
 mov	a,$03a0+x
 asl	a
 mov	y,a
-bcs	$2a7b
+bcs	_2a7b
 mov	a,$109e+y
 mov	$0391+x,a
 mov.b	$2d,a
 mov	a,$109d+y
 mov	$0390+x,a
 mov.b	$2c,a
-jmp	$2b29
+jmp	_2b29
+_2a7b:
 mov	a,$119e+y
 mov	$0391+x,a
 mov.b	$2d,a
 mov	a,$119d+y
 mov	$0390+x,a
 mov.b	$2c,a
-jmp	$2b29
+jmp	_2b29
+
+_2a8e:
 mov	x,$03c0
 mov	a,$03a0+x
 cmp	a,#$0b
-bcc	$2aac
+bcc	_2aac
 cmp	a,#$0e
-bcc	$2aa4
+bcc	+
 cmp	a,#$15
-bcc	$2aac
+bcc	_2aac
 cmp	a,#$18
-bcs	$2aac
+bcs	_2aac
++
 mov	a,$03ca
-bne	$2aac
+bne	_2aac
 call	$3e96
+
+_2aac:
 mov	a,#$00
 mov	$03a0+x,a
 mov.b	$a0+x,a
@@ -2884,8 +2906,9 @@ ret
 
 _2B06:
 ; End of sound effect data
-call	$2a8e
-jmp	$2a4a
+call	_2a8e
+jmp	_2a4a
+_2b0c:
 call	$3ea6
 mov	$03c0,x
 mov	a,$0391+x
@@ -2896,10 +2919,11 @@ mov	a,$03b0+x
 dec	a
 mov	$03b0+x,a
 beq	_2B27
-jmp	$2b94
+jmp	_2b94
 
 _2B27:					; Jumped to from PROG_CODE_02.asm
 incw	$2c				; sound effect data pointer
+_2b29:
 mov	a,$03c0				; Get audio channel
 xcn	a
 lsr	a
@@ -2968,25 +2992,27 @@ _2B8B:
 mov	x,$03c0
 mov	a,$03b1+x
 mov	$03b0+x,a
+_2b94:
 clr7	$13
 mov	x,$03c0
 mov.b	a,$a0+x
 beq	+
 call	$3e5f
-bra	$2bb1
+bra	_2bb1
 +
 mov	a,#$02
 cmp	a,$03b0+x
-bne	$2bb1
+bne	_2bb1
 mov	a,$03c1
 mov	y,#$5c
 call	apus
+_2bb1:
 mov	x,$03c0
 mov.b	a,$2d
 mov	$0391+x,a
 mov.b	a,$2c
 mov	$0390+x,a
-jmp	$2a4a
+jmp	_2a4a
 
 _2BC1:
 mov	x,#$00
