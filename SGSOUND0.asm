@@ -1,14 +1,11 @@
 org $008000
-arch spc700
+arch spc700-inline
+startpos $400
 
 
 ; ===============================================
-dw prog_code_00_end-prog_code_00_start		; calculate size in bytes
-dw $3ee8					; spc destination
-
-base $3ee8
-
-prog_code_00_start:
+; PROG_CODE_00
+org $3ee8
 
 gate:
 	db $32, $65, $7F, $98, $B2, $CB, $E5, $FC
@@ -17,21 +14,15 @@ volt:
 	db $19, $32, $4C, $65, $72, $7F, $8C, $98
 	db $A5, $B2, $BF, $CB, $D8, $E5, $F2, $FC
 
-prog_code_00_end:
-
 warnpc $3f00
 
 
 ; ===============================================
-dw prog_code_01_end-prog_code_01_start		; calculate size in bytes
-dw $400						; spc destination
+; PROG_CODE_01
+org $400
 
 incsrc defines.asm
 incsrc KAN.asm
-
-base $400
-
-prog_code_01_start:
 
 	clrp				; clear direct page flag
 ;................................................
@@ -3088,18 +3079,12 @@ mov.b	$44,x
 call	swpadset
 jmp	_2B8B
 
-prog_code_01_end:
-
 warnpc $2BFF
 
 
 ; ===============================================
-dw prog_code_02_end-prog_code_02_start		; calculate size in bytes
-dw $3e20					; spc destination
-
-base $3e20
-
-prog_code_02_start:
+; PROG_CODE_02
+org $3e20
 
 mov	x,#$00
 incw	$2c
@@ -3178,13 +3163,4 @@ mov	y,#$4d
 call	$060d
 ret
 
-prog_code_02_end:
-
 warnpc $3ebb
-
-
-; ============================
-; end of data, start execution
-; ============================
-dw $0000
-dw $0400					; start execution here
