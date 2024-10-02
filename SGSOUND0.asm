@@ -813,13 +813,13 @@ tx15:
 	xcn	a			; kami
 	and	a,#$07
 	mov	y,a
-	mov	a,$3ee8+y		; Gate off (%) set
+	mov	a,gate+y		; Gate off (%) set
 	mov	!ngg+x,a
 ;
 	pop	a			; shimo
 	and	a,#$0f
 	mov	y,a
-	mov	a,$3ef0+y
+	mov	a,volt+y
 	mov	!vol+x,a		; vol set
 ;...................
 ;	mov	kkk,a			; X 2.5
@@ -1200,7 +1200,7 @@ ktpx:
 ptpx:
 	;call	data_in			;; x
 	mov	!_03d0+x,a
-	mov	a,$03a0+x
+	mov	a,!_03a0+x
 	bne	+
 	mov	a,!_03d0+x
 	mov	!ptps+x,a		; key trans. store
@@ -1296,7 +1296,7 @@ pv2x:
 ;************************************************
 tunx:
 	mov	!_03e0+x,a
-	mov	a,$03a0+x
+	mov	a,!_03a0+x
 	bne	+
 	mov	a,!_03e0+x
 	mov	!tund+x,a
@@ -1330,7 +1330,7 @@ addset:
 ;************************************************
 ecvx:
 	;call	data_in			; data in & inc add
-	mov	$03c3,a
+	mov	!_03c3,a
 	mov.b	!eons,a			; echo channel set
 ;
 	call	data_in			; data in & inc add
@@ -1543,7 +1543,7 @@ swpadsetr:
 swpdset:
 	mov	a,!swpd+x		; kkk sss <-- swpd swpdw
 	mov.b	!kkk,a
-	mov	a,$0360+x		;
+	mov	a,!swpdw+x		;
 	mov.b	!sss,a
 	ret
 ;................................................
@@ -1681,7 +1681,7 @@ pan30:
 	adc	a,pant+y		; pan data --> a
 	mov	y,a
 ;
-	mov	$0250+x,a
+	mov	!_0250+x,a
 	mov	a,!volx+x		; gain data set
 	mul	ya			;
 ;
@@ -1859,7 +1859,7 @@ viby:
 	beq	vib12
 ;
 	mov	a,!vibhs+x
-	cbne	!vibhc+x,$0dbe		; hold chu ?
+	cbne	!vibhc+x,vib11		; hold chu ?
 ;................................................
 	mov	a,!vibcc+x		;
 	cmp	a,!vibcs+x
@@ -1963,7 +1963,7 @@ pnny:
 	call	hokan			; kkk sss <-- data set
 ;...
 pnn04:
-	bbc7	!uuu,$0df0
+	bbc7	!uuu,sppy
 ;......
 	call	pan20			; vol data set
 ;................................................
@@ -1974,10 +1974,10 @@ sppy:
 ;
 	call	swpdset			; kkk sss <-- swpd swpdw
 ;...
-	mov.b	a,$a0+x			; sweep chu ?
+	mov.b	a,!swpc+x			; sweep chu ?
 	beq	vbby
 ;
-	mov.b	a,$a1+x			; hold chu?
+	mov.b	a,!swphc+x			; hold chu?
 	bne	vbby
 ;...................
 	mov	a,!swpad+x
@@ -2183,7 +2183,7 @@ _24FD:
 mov	a,#$80
 mov	y,#$5c
 call	apus
-mov	a,$03c3
+mov	a,!_03c3
 and	a,#$80
 beq	_2512
 set7	$4a
@@ -2194,46 +2194,46 @@ _2512:
 mov	$05,#$00
 clr7	$1a
 mov	x,#$0e
-mov	a,$021f
+mov	a,!_021f
 call	snox
 mov	a,#$00
-mov	$03c9,a
-mov.b	$d1,a
-mov.b	$ae,a
-mov.b	$9e,a
-mov	a,$03ee
-mov	$038f,a
-mov	a,$03ef
-mov	$028e,a
+mov	!_03c9,a
+mov.b	!_d1,a
+mov.b	!_ae,a
+mov.b	!_9e,a
+mov	a,!_03ee
+mov	!_038f,a
+mov	a,!_03ef
+mov	!_028e,a
 ret
 
 _2537:
 mov	x,#$60
-mov.b	$9e,x
-mov	$03c9,x
+mov.b	!_9e,x
+mov	!_03c9,x
 mov	a,#$00
-mov	$032e,a
-mov.b	x,$9e
+mov	!_032e,a
+mov.b	x,!_9e
 setc
-sbc	a,$030f
+sbc	a,!_030f
 call	divx
-mov	$031e,a
+mov	!_031e,a
 mov	a,y
-mov	$031f,a
+mov	!_031f,a
 _2553:
-mov.b	a,$9e
+mov.b	a,!_9e
 beq	_24FD
 cmp	a,#$01
 beq	_24FD
 mov	a,#$00
 mov	y,#$03
 mov	x,#$0e
-dec	$9e
+dec	!_9e
 call	_CC4
-mov	a,$030f
-mov	$032f,a
+mov	a,!_030f
+mov	!_032f,a
 mov	a,#$0a
-mov	$035f,a
+mov	!_035f,a
 mov.b	!kkk,a
 mov.b	!sss,#$00
 mov	x,#$0e
@@ -2243,60 +2243,60 @@ ret
 _257c:
 mov	a,!_03f8
 beq	+
-mov	$01,#$00
+mov.b	!fl1,#$00
 +
-mov	y,$09
-cmp	y,$01
+mov.b	y,!fl1s
+cmp.b	y,!fl1
 beq	_25a1
-mov.b	a,$01
-mov.b	$05,a
-mov.b	$09,a
+mov.b	a,!fl1
+mov.b	!sf1,a
+mov.b	!fl1s,a
 beq	_2537
 mov	a,y
 beq	_25b5
-eor.b	a,$01
+eor.b	a,!fl1
 and	a,#$c0
 bne	_25b5
-mov.b	a,$d1
+mov.b	a,!_d1
 
 bne	_25cc
 bra	_2618
 
 _25a1:
-mov.b	a,$01
+mov.b	a,!fl1
 bne	_25ac
-mov	x,$03c9
+mov	x,!_03c9
 beq	+
 bra	_2553
 _25ac:
-mov.b	a,$d1
+mov.b	a,!_d1
 bne	_25cc
-mov.b	a,$05
+mov.b	a,!sf1
 bne	_262f
 +
 ret
 
 _25b5:
-mov	$d1,#$02
+mov	!_d1,#$02
 mov	a,#$80
 mov	y,#$5c
 call	apus
-set7	$1a
+set7.b	!fkin
 mov	a,#$00
-mov	$028e,a
-mov.b	$ae,a
-mov	$038f,a
+mov	!_028e,a
+mov.b	!_ae,a
+mov	!_038f,a
 -
 ret
 
 _25cc:
-dbnz	$d1,-
+dbnz	!_d1,-
 call	_2671
 mov	a,#$80
 call	_3e79
-mov.b	a,$05
+mov.b	a,!sf1
 bmi	_25ee
-bbs6	$05,_25e6
+bbs6	!sf1,_25e6
 mov	y,#$70
 mov	x,#$96
 mov	a,#$a0
@@ -2309,7 +2309,7 @@ mov	a,#$ff
 bra	_25ff
 
 _25ee:
-bbs6	$05,_25f9
+bbs6	!sf1,_25f9
 mov	y,#$ff
 mov	x,#$b2
 mov	a,#$ff
@@ -2323,10 +2323,10 @@ mov	a,#$e0
 _25ff:
 mov	!_03cb,y
 mov	!_03c6,x
-mov	$03fc,a
+mov	!_03fc,a
 call	_648
-clr7	$4a
-mov.b	a,$4a
+clr7	!eons
+mov.b	a,!eons
 mov	y,#$4d
 call	apus
 mov	a,#$01
@@ -2334,28 +2334,28 @@ bne	+
 _2618:
 mov	a,#$30
 +
-mov.b	$ae,a
-mov	$af,#$00
-mov.b	a,$05
+mov.b	!_ae,a
+mov	!_af,#$00
+mov.b	a,!sf1
 and	a,#$3f
 mov	x,a
-mov	a,$26b4+x
+mov	a,_26b4+x
 mov	x,#$0e
-mov.b	$44,x
+mov.b	!chn,x
 call	swpadset
 ret
 
 _262f:
 clr7	$13
-mov.b	a,$ae
+mov.b	a,!_ae
 beq	_265c
 mov	x,#$0e
 call	_3e5f
-mov	a,$03fc
-mov	$032f,a
-mov	$030f,a
+mov	a,!_03fc
+mov	!_032f,a
+mov	!_030f,a
 mov	a,#$0a
-mov	$035f,a
+mov	!_035f,a
 mov	$033f,a
 mov	x,#$0e
 mov	a,$0331+x
@@ -2368,8 +2368,8 @@ ret
 
 _265c:
 mov	a,#$70
-mov.b	$ae,a
-mov	$af,#$00
+mov.b	!_ae,a
+mov	!_af,#$00
 mov.b	a,!rdm
 and	a,#$03
 or	 a,#$a4
@@ -2407,6 +2407,8 @@ _269C:
 	db $20, $00, $00, $E8, $04, $00, $20, $00
 	db $00, $EF, $00, $60, $20, $00, $00, $E5
 	db $00, $80, $20, $00, $00, $E8, $01, $C0
+
+_26b4:
 	db $A4, $A6, $A7, $A8, $A6, $A7, $A8, $A9
 	db $B0, $B0, $B0, $B0, $98, $98, $98, $98
 
@@ -2428,7 +2430,7 @@ clr6	$1a
 mov	x,#$0c
 mov	a,$021d
 call	snox
-mov	a,$03c3
+mov	a,!_03c3
 and	a,#$40
 beq	_26fd
 set6	$4a
@@ -2715,7 +2717,7 @@ xcn	a
 and	a,#$0f
 asl	a
 mov	y,a
-mov	a,$03a0+y
+mov	a,!_03a0+y
 beq	_2960
 mov	x,a
 mov	a,$0fdf+x
@@ -2727,7 +2729,7 @@ jmp	_3eba
 
 _2960:
 mov.b	a,!kkk
-mov	$03a0+y,a
+mov	!_03a0+y,a
 mov.b	!sss,y
 mov	a,#$01
 lsr.b	!sss
@@ -2793,7 +2795,7 @@ beq	_29A1
 cmp	a,#$02
 beq	_29b0
 _29d5:
-mov	$03a0+x,a
+mov	!_03a0+x,a
 cmp	a,#$0b
 bcc	_29eb
 cmp	a,#$0e
@@ -2809,7 +2811,7 @@ mov	a,#$03
 mov	$03a1+x,a
 mov	a,#$00
 mov	$0280+x,a
-mov.b	$a0+x,a
+mov.b	!swpc+x,a
 mov	$0381+x,a
 mov	!ptps+x,a
 mov	a,$03c1
@@ -2818,7 +2820,7 @@ mov	!sf3,a
 mov	a,$03c1
 mov	y,#$5c
 call	apus
-mov	a,$03a0+x
+mov	a,!_03a0+x
 mov	x,a
 mov	a,$0f20+x
 mov.b	$03,a
@@ -2843,7 +2845,7 @@ lsr	a
 mov	$03c2,a
 mov	a,$03a1+x
 bne	_2a52
-mov	a,$03a0+x
+mov	a,!_03a0+x
 beq	_2a4a
 jmp	_2b0c
 _2a4a:
@@ -2862,7 +2864,7 @@ mov	$03a1+x,a
 beq	+
 jmp	_2a4a
 +
-mov	a,$03a0+x
+mov	a,!_03a0+x
 asl	a
 mov	y,a
 bcs	_2a7b
@@ -2884,7 +2886,7 @@ jmp	_2b29
 
 _2a8e:
 mov	x,$03c0
-mov	a,$03a0+x
+mov	a,!_03a0+x
 cmp	a,#$0b
 bcc	_2aac
 cmp	a,#$0e
@@ -2900,8 +2902,8 @@ call	_3e96
 
 _2aac:
 mov	a,#$00
-mov	$03a0+x,a
-mov.b	$a0+x,a
+mov	!_03a0+x,a
+mov.b	!swpc+x,a
 mov	a,!_03d0+x
 mov	!ptps+x,a
 mov	a,!_03e0+x
@@ -2920,7 +2922,7 @@ mov.b	$44,x
 mov	a,$0211+x
 call	snox
 mov	a,$03c1
-and	a,$03c3
+and	a,!_03c3
 beq	_2b02
 and.b	a,$4a
 bne	_2b02
@@ -3029,7 +3031,7 @@ mov	$03b0+x,a
 _2b94:
 clr7	$13
 mov	x,$03c0
-mov.b	a,$a0+x
+mov.b	a,!swpc+x
 beq	+
 call	_3e5f
 bra	_2bb1
@@ -3064,12 +3066,12 @@ mov	x,#$00
 incw	$2c
 mov	a,($2c+x)
 mov	x,$03c0
-mov.b	$a1+x,a
+mov.b	!swphc+x,a
 mov	x,#$00
 incw	$2c
 mov	a,($2c+x)
 mov	x,$03c0
-mov.b	$a0+x,a
+mov.b	!swpc+x,a
 push	a
 mov	x,#$00
 incw	$2c
@@ -3127,11 +3129,11 @@ _3e5f:
 set7	$13
 mov	a,#$60
 mov	y,#$03
-dec.b	$a0+x
+dec.b	!swpc+x
 call	_CC4
 mov	a,$0361+x
 mov	y,a
-mov	a,$0360+x
+mov	a,!swpdw+x
 movw	!sss,ya
 mov	$47,#$00
 jmp	dssx
