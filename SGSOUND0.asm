@@ -2178,7 +2178,10 @@ _0f20:
 ;........................................
 
 
-incbin	0F21-109C.bin
+incbin	0F21-0FDE.bin
+
+_0fdf:
+incbin	0FDF-109C.bin
 
 ; $109D table begins (don't use first value 2F2E), 2 bytes, 192 pointers
 ; Names taken from SFEX 1.08.2
@@ -3762,7 +3765,7 @@ _2930:
 _293f:
 mov.b	x,!fl3
 mov.b	!kkk,x
-mov	a,!_0fdf+x
+mov	a,_0fdf+x
 mov.b	!sss,a
 xcn	a
 and	a,#$0f
@@ -3771,7 +3774,7 @@ mov	y,a
 mov	a,!_03a0+y
 beq	_2960
 mov	x,a
-mov	a,!_0fdf+x
+mov	a,_0fdf+x
 setc
 cmp.b	a,!sss
 beq	_2960

@@ -280,8 +280,6 @@
 ;
 !ptps = $02f0				; key transpose
 
-!_0fdf = $0fdf				; used twice
-
 !_3c80 = $3c80
 !_3c81 = $3c81
 !_3c82 = $3c82
