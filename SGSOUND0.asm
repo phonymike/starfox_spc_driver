@@ -441,11 +441,11 @@ rol.b	!rdm+1
 mov.b	a,!rdm+1
 and	a,!_03cb
 or	a,#$11
-mov	$fe00+y,a
+mov	!_fe00+y,a
 inc	y
 mov.b	a,!rdm
 or	a,#$11
-mov	$fe00+y,a
+mov	!_fe00+y,a
 inc	y
 dec	x
 bne	-
@@ -456,7 +456,7 @@ mov	y,#$00
 mov	x,#$1b
 mov	a,!_03c6
 -
-mov	$fe00+y,a
+mov	!_fe00+y,a
 inc	y
 inc	y
 inc	y
@@ -469,13 +469,13 @@ inc	y
 dec	x
 bne	-
 inc	a
-mov	$fe00+y,a
+mov	!_fe00+y,a
 mov	y,#$fe
 mov	a,#$00
-mov	$3c80,a
-mov	$3c81,y
-mov	$3c82,a
-mov	$3c83,y
+mov	!_3c80,a
+mov	!_3c81,y
+mov	!_3c82,a
+mov	!_3c83,y
 mov.b	a,!rdm
 or.b	a,!rdm+1
 bne	+
@@ -494,15 +494,16 @@ mov	y,#$5c
 call	apus
 call	ten00
 mov	a,#$00
-mov	$03ca,a
+mov	!_03ca,a
 mov.b	$04,a
-mov	$0005,a
-mov	$0006,a
-mov	$0007,a
+mov	!sf1,a
+mov	!sf2,a
+mov	!sf3,a
 mov.b	$1a,a
 mov	y,#$10
-mov	$039f+y,a
-dbnz	y,$06a5
+-
+mov	!_039f+y,a
+dbnz	y,-
 mov	a,#$96
 mov	!_03c6,a
 mov	a,#$bb
@@ -514,7 +515,7 @@ cmp	$04,#$11
 beq	_6CF
 mov	x,#$a0
 mov.b	!mvoc,x
-mov	$03ca,x
+mov	!_03ca,x
 mov	a,#$00
 mov.b	!mvom,a
 setc
@@ -525,21 +526,21 @@ _6CF:
 jmp	cha02				; finished with command
 ;................................................
 _6D2:
-mov	a,$03f1
+mov	a,!_03f1
 bne	_6F5
 mov.b	a,!mvo
-mov	$03f1,a
+mov	!_03f1,a
 mov	a,#$70
 mov.b	!mvo,a
 jmp	cha02				; finished with command
 ;................................................
 _6E3:
-mov	a,$03f1
+mov	a,!_03f1
 beq	_6F5
-mov	a,$03f1
+mov	a,!_03f1
 mov.b	!mvo,a
 mov	a,#$00
-mov	$03f1,a
+mov	!_03f1,a
 jmp	cha02				; finished with command
 _6F5:
 ret
@@ -572,9 +573,9 @@ mov	x,#$fe
 mov	a,#$09
 +
 mov	!tmpc,#$8f
-mov	$02f0,x
-mov	$02f2,x
-mov	$02f4,x
+mov	!ptps,x
+mov	!ptps+2,x
+mov	!ptps+4,x
 mov.b	!tmpm,a
 setc
 sbc.b	a,!tmp
@@ -584,7 +585,7 @@ movw	!tmpadw,ya
 jmp	cha02				; finished with command
 ;................................................
 _73C:
-dec	$03ca
+dec	!_03ca
 beq	_744
 jmp	_7E8
 _744:
@@ -611,20 +612,20 @@ adset:
 _766:
 clrc
 mov	x,#$00
-mov	$03ca,x
-mov	$03f1,x
+mov	!_03ca,x
+mov	!_03f1,x
 	mov.b	!sf0,a
 	asl	a
 ;	beq	ks04			; 000h = end
 ;......
 	mov	x,a			; shoki data set
-	mov	a,$fdbf+x		; block add. shoki set
+	mov	a,!_fdbf+x		; block add. shoki set
 	mov	y,a
 	bne	+
 	mov	$04,a
 	ret
 +
-	mov	a,$fdbe+x
+	mov	a,!_fdbe+x
 	movw	!ads,ya
 ;......
 	mov	!sf0c,#$02		; count
@@ -655,9 +656,9 @@ ks12:
 	mov	!tund+x,a		; tun shoki set
 	mov	!ptps+x,a		; part tran. set
 	mov	!swsc+x,a		; sweep count
-	mov	$03e1+x,a
-	mov	$03e0+x,a
-	mov	$03d0+x,a
+	mov	!_03e1+x,a
+	mov	!_03e0+x,a
+	mov	!_03d0+x,a
 	mov.b	!vibd+x,a		; vib depth
 	mov.b	!tred+x,a		; tre depth
 ;
@@ -688,7 +689,7 @@ cha:
 cha02:
 	mov.b	a,!sf0			; play chu ?
 	beq	char			;
-	mov	a,$03ca
+	mov	a,!_03ca
 	beq	_7E8
 	jmp	_73C
 ;........................................
@@ -1134,9 +1135,9 @@ vchx:
 ;************************************************
 mv1x:
 	;call	data_in			;;00
-	mov	a,$03ca
+	mov	a,!_03ca
 	bne	+
-	mov	a,$03f1
+	mov	a,!_03f1
 	bne	+
 	mov	a,#$00
 	movw	!mvow,ya		; main vol
@@ -1198,10 +1199,10 @@ ktpx:
 ;************************************************
 ptpx:
 	;call	data_in			;; x
-	mov	$03d0+x,a
+	mov	!_03d0+x,a
 	mov	a,$03a0+x
 	bne	+
-	mov	a,$03d0+x
+	mov	a,!_03d0+x
 	mov	!ptps+x,a		; key trans. store
 +
 	ret
@@ -1240,7 +1241,7 @@ swsx0:
 ;
 	call	data_in			; data in & inc add
 
-	mov	$03e1+x,a
+	mov	!_03e1+x,a
 	push	a
 	mov.b	a,!keyd
 	and.b	a,!fkin
@@ -1258,7 +1259,7 @@ swsx0:
 ;................................................
 sofx:
 	mov	!swsc+x,a		;
-	mov	$03e1+x,a
+	mov	!_03e1+x,a
 	ret
 ;************************************************
 ;		part vol set
@@ -1294,10 +1295,10 @@ pv2x:
 ;		part tune
 ;************************************************
 tunx:
-	mov	$03e0+x,a
+	mov	!_03e0+x,a
 	mov	a,$03a0+x
 	bne	+
-	mov	a,$03e0+x
+	mov	a,!_03e0+x
 	mov	!tund+x,a
 +
 	ret
@@ -2810,10 +2811,10 @@ mov	a,#$00
 mov	$0280+x,a
 mov.b	$a0+x,a
 mov	$0381+x,a
-mov	$02f0+x,a
+mov	!ptps+x,a
 mov	a,$03c1
-or	 a,$0007
-mov	$0007,a
+or	 a,!sf3
+mov	!sf3,a
 mov	a,$03c1
 mov	y,#$5c
 call	apus
@@ -2825,7 +2826,7 @@ bne	_29c2
 ret
 
 _2a1a:
-mov	a,$0007
+mov	a,!sf3
 mov	$03ce,a
 beq	_2a51
 mov	x,#$0a
@@ -2866,18 +2867,18 @@ asl	a
 mov	y,a
 bcs	_2a7b
 mov	a,$109e+y
-mov	$0391+x,a
+mov	!_0391+x,a
 mov.b	$2d,a
 mov	a,$109d+y
-mov	$0390+x,a
+mov	!_0390+x,a
 mov.b	$2c,a
 jmp	_2b29
 _2a7b:
 mov	a,$119e+y
-mov	$0391+x,a
+mov	!_0391+x,a
 mov.b	$2d,a
 mov	a,$119d+y
-mov	$0390+x,a
+mov	!_0390+x,a
 mov.b	$2c,a
 jmp	_2b29
 
@@ -2893,7 +2894,7 @@ bcc	_2aac
 cmp	a,#$18
 bcs	_2aac
 +
-mov	a,$03ca
+mov	a,!_03ca
 bne	_2aac
 call	_3e96
 
@@ -2901,20 +2902,20 @@ _2aac:
 mov	a,#$00
 mov	$03a0+x,a
 mov.b	$a0+x,a
-mov	a,$03d0+x
-mov	$02f0+x,a
-mov	a,$03e0+x
+mov	a,!_03d0+x
+mov	!ptps+x,a
+mov	a,!_03e0+x
 mov	$0381+x,a
-mov	a,$03e1+x
+mov	a,!_03e1+x
 mov	$0280+x,a
 mov.b	a,$1a
 setc
 sbc	a,$03c1
 mov.b	$1a,a
-mov	a,$0007
+mov	a,!sf3
 setc
 sbc	a,$03c1
-mov	$0007,a
+mov	!sf3,a
 mov.b	$44,x
 mov	a,$0211+x
 call	snox
@@ -2944,9 +2945,9 @@ jmp	_2a4a
 _2b0c:
 call	_3ea6
 mov	$03c0,x
-mov	a,$0391+x
+mov	a,!_0391+x
 mov	y,a
-mov	a,$0390+x
+mov	a,!_0390+x
 movw	$2c,ya
 mov	a,$03b0+x
 dec	a
@@ -3042,9 +3043,9 @@ call	apus
 _2bb1:
 mov	x,$03c0
 mov.b	a,$2d
-mov	$0391+x,a
+mov	!_0391+x,a
 mov.b	a,$2c
-mov	$0390+x,a
+mov	!_0390+x,a
 jmp	_2a4a
 
 _2BC1:
@@ -3145,21 +3146,21 @@ mov	y,#$4c
 jmp	apus
 
 _3e87:
-mov	a,$03f1
+mov	a,!_03f1
 bne	_3ea5
 mov.b	a,$59
-mov	$03f1,a
+mov	!_03f1,a
 mov	a,#$88
 mov.b	$59,a
 ret
 
 _3e96:
-mov	a,$03f1
+mov	a,!_03f1
 beq	_3ea5
-mov	a,$03f1
+mov	a,!_03f1
 mov.b	$59,a
 mov	a,#$00
-mov	$03f1,a
+mov	!_03f1,a
 _3ea5:
 ret
 
