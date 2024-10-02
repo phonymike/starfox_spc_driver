@@ -219,6 +219,7 @@
 !_ae = $ae
 !_af = $af				; used twice
 !_d1 = $d1
+!_d2 = $d2				; word
 
 !_038d = $038d				; used twice
 !_038f = $038f

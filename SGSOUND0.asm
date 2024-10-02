@@ -430,7 +430,8 @@ and	a,#$03
 mov	y,#$3f
 mul	ya
 mov	y,a
-mov	$12,#$07
+mov	!ttt,#$07
+_621:
 inc	y
 mov	x,#$04
 -
@@ -449,7 +450,7 @@ mov	!_fe00+y,a
 inc	y
 dec	x
 bne	-
-dbnz	$12,$0621
+dbnz	!ttt,_621
 ret
 _648:
 mov	y,#$00
@@ -495,7 +496,7 @@ call	apus
 call	ten00
 mov	a,#$00
 mov	!_03ca,a
-mov.b	$04,a
+mov.b	!sf0,a
 mov	!sf1,a
 mov	!sf2,a
 mov	!sf3,a
@@ -511,7 +512,7 @@ mov	!_03cb,a
 call	_648
 ;................................................
 _6B7:
-cmp	$04,#$11
+cmp	!sf0,#$11
 beq	_6CF
 mov	x,#$a0
 mov.b	!mvoc,x
@@ -592,7 +593,7 @@ _744:
 	mov.b	a,!fkin
 	eor	a,#$ff
 	tset	!keyoffs,a
-	mov	$04,#$00
+	mov	!sf0,#$00
 	mov	!keyd,#$00
 	mov	!mvo,#$c0		; main volume set
 	mov	!tmp,#$20		; tempo data set
@@ -622,7 +623,7 @@ mov	!_03f1,x
 	mov	a,!_fdbf+x		; block add. shoki set
 	mov	y,a
 	bne	+
-	mov	$04,a
+	mov.b	!sf0,a
 	ret
 +
 	mov	a,!_fdbe+x
@@ -3235,7 +3236,7 @@ call	apus
 mov	a,!_03c3
 and	a,#$80
 beq	_2512
-set7	$4a
+set7	!eons
 mov	y,#$4d
 call	apus
 
@@ -4146,18 +4147,18 @@ incw	!adk
 mov	a,(!adk+x)
 mov	y,#$06
 mul	ya
-mov	$d2,#$8f
-mov	$d3,#$23
-addw	ya,$d2
-movw	$d2,ya
+mov	!_d2,#$8f
+mov	!_d2+1,#$23
+addw	ya,!_d2
+movw	!_d2,ya
 mov	y,#$00
 mov	a,!_03c2
-or	 a,#$04
+or	a,#$04
 mov	x,a
-mov	$12,#$04
+mov	!ttt,#$04
 
 _3e3e:
-mov	a,($d2)+y
+mov	a,(!_d2)+y
 push	y
 push	x
 pop	y
@@ -4167,26 +4168,26 @@ pop	x
 pop	y
 inc	x
 inc	y
-dbnz	$12,_3e3e
-mov	a,($d2)+y
+dbnz	!ttt,_3e3e
+mov	a,(!_d2)+y
 mov	x,!_03c0
-mov	$0221+x,a
+mov	(!bls+1)+x,a
 inc	y
-mov	a,($d2)+y
-mov	$0220+x,a
+mov	a,(!_d2)+y
+mov	!bls+x,a
 jmp	_2B27
 
 _3e5f:
-set7	$13
+set7	!uuu
 mov	a,#$60
 mov	y,#$03
 dec.b	!swpc+x
 call	_CC4
-mov	a,$0361+x
+mov	a,!swpd+x
 mov	y,a
 mov	a,!swpdw+x
 movw	!sss,ya
-mov	$47,#$00
+mov	!keyd,#$00
 jmp	dssx
 
 _3e79:
@@ -4201,17 +4202,17 @@ jmp	apus
 _3e87:
 mov	a,!_03f1
 bne	_3ea5
-mov.b	a,$59
+mov.b	a,!mvo
 mov	!_03f1,a
 mov	a,#$88
-mov.b	$59,a
+mov.b	!mvo,a
 ret
 
 _3e96:
 mov	a,!_03f1
 beq	_3ea5
 mov	a,!_03f1
-mov.b	$59,a
+mov.b	!mvo,a
 mov	a,#$00
 mov	!_03f1,a
 _3ea5:
@@ -4219,12 +4220,12 @@ ret
 
 _3ea6:
 mov	a,!_03c1
-and.b	a,$4a
+and.b	a,!eons
 beq	_3eba
-mov.b	a,$4a
+mov.b	a,!eons
 setc
 sbc	a,!_03c1
-mov.b	$4a,a
+mov.b	!eons,a
 mov	y,#$4d
 call	apus
 
