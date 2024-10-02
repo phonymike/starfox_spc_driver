@@ -2180,7 +2180,1053 @@ _0f20:
 incbin	0F21-109C.bin
 
 _109d:
-incbin	109D-24FC.bin
+;incbin	109D-24FC.bin
+
+; $109D table begins (don't use first value 2F2E), 2 bytes, 192 pointers
+; Names taken from SFEX 1.08.2
+    dw $2F2E, _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2
+    dw _21EB, _236A, _2372, _2110, _213C, _13F8, _1B32, _2024
+    dw _207D, _205D, _2015, _1B05, _1A66, _1A46, _1A4F, _1A58
+    dw _169C, _21E5, _1650, _1633, _15FE, _1F73, _223B, _227D
+    dw _22BF, _2220, _222F, _2235, _2202, _220C, _2216, _2358
+    dw _235E, _2364, _1DBE, _1EF2, _1E9B, _1EC3, _1F9B, _1F06
+    dw _232A, _2341, _20F2, _2106, _15F6, _2324, _234A, _234A
+    dw _2001, _1FAF, _1FF9, _1FC3, _218D, _2193, _2199, _20A5
+    dw _20B5, _20C4, _20D4, _20E3, _21B7, _21BE, _21C4, _21CB
+    dw _21D1, _219F, _21A7, _21AF, _216D, _217D, _1E7A, _1E21
+    dw _1E82, _1E66, _1B8A, _1B9E, _1BB2, _1BC6, _1B84, _168B
+    dw _1C4A, _1C96, _1C87, _1CA5, _1D49, _1D5D, _1D71, _12A3
+    dw _1D85, _1886, _1920, _19A1, _1DA4, _1DB8, _15AE, _1DC7
+    dw _1DCD, _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37
+    dw _1C37, _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15
+    dw _1E1B, _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06
+    dw _1817, _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594
+    dw _157F, _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481
+    dw _1391, _1364, _132E, _1324, _131A, _1ABF, _182E, _130F
+    dw _12F1, _12E7, _1A92, _1F30, _129D, _126B, _1287, _1249
+    dw _122F, _121D, _1223, _1228, _12D2, _1578, _1281, _1379
+    dw _149E, _14D4, _1ABC, _166C, _1779, _182B, _1B1A, _1B5B
+    dw _208F, _206B, _203F, _1FDC, _1CF7, _22D1, _22E9, _228F
+    dw _22A7, _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
+
+; make sure pointer table isn't too big
+warnpc $121d
+
+; ===========================
+; begin sound effect patterns
+; ===========================
+
+_121D: ; Andross scream 4
+	db $E0, $2D, $7F, $7D, $64, $81
+
+_1223: ; Andross scream 3
+	db $E0, $2E, $60, $7D, $81
+
+_1228: ; Andross scream 2
+	db $E0, $2D, $5F, $64, $7D, $82, $00
+
+_122F: ; Andross shell explosion
+	db $E0, $06, $0C, $64, $C3, $BB, $0E, $A9
+	db $B2, $0F, $BC, $B3, $10, $AB, $AD, $12
+	db $9D, $A6, $A3, $13, $95, $90, $94, $60
+	db $90, $00
+
+_1249: ; Final score screen flight
+	db $E0, $03, $5F, $3C, $F9, $97, $00, $5F
+	db $9A, $7F, $46, $F1, $00, $7F, $9D, $7F
+	db $50, $F1, $00, $7F, $9F, $7F, $50, $F1
+	db $00, $7F, $A0, $7F, $5F, $F1, $00, $7D
+	db $A1, $00
+
+_126B:
+	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
+	db $BB, $2F, $6E, $F1, $00, $2F, $B7, $2F
+	db $7D, $F1, $00, $2D, $B7, $00
+
+_1281: ; Enemy hovering -unused-
+	db $E0, $08, $7F, $64, $A3, $00
+
+_1287:
+	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
+	db $BB, $2F, $3C, $F1, $00, $2F, $BE, $2F
+	db $1E, $F1, $00, $2D, $BE, $00
+
+_129D:
+	db $E0, $0D, $06, $14, $A6, $00
+
+_12A3: ; Pepper radio chat
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $2C, $18
+	db $7D, $85, $24, $87, $E0, $13, $24, $6E
+	db $84, $E0, $16, $26, $F9, $84, $00, $24
+	db $80, $00
+
+_12C5: ; Andross radio chat
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98
+
+_12D2: ; Andross scream 1
+	db $E0, $35, $22, $7D, $91, $16, $64, $91
+	db $14, $50, $91, $12, $3C, $90, $12, $28
+	db $8F, $12, $14, $8E, $00
+
+_12E7:
+	db $E0, $05, $7F, $78, $F9, $91, $00, $7C
+	db $98, $00
+
+_12F1:
+	db $E0, $1C, $7F, $78, $F9, $97, $00, $7F
+	db $8C, $7F, $F1, $00, $7F, $8C, $7F, $F1
+	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
+	db $7F, $F1, $00, $7D, $8C, $00
+
+_130F:
+	db $E0, $0A, $06, $28, $A2, $E0, $05, $08
+	db $46, $A9, $00
+
+_131A: ; Squid hit
+	db $E0, $23, $12, $46, $F9, $A8, $00, $10
+	db $B0, $00
+
+_1324: ; Stingray hit
+	db $E0, $2D, $18, $5A, $F9, $A8, $00, $16
+	db $BC, $00
+
+_132E: ; Whale scream
+	db $E0, $24, $0C, $0A, $F9, $BC, $00, $0C
+	db $BE, $06, $F1, $00, $04, $C0, $30, $0A
+	db $F9, $C0, $00, $30, $BE, $60, $F1, $00
+	db $5E, $BC, $24, $00, $A4, $0C, $14, $F9
+	db $BC, $00, $0C, $BE, $06, $F1, $00, $04
+	db $C0, $30, $14, $F9, $C0, $00, $30, $BE
+	db $60, $F1, $00, $5E, $BC, $00
+
+_1364: ; Comet fly-by
+	db $E0, $10, $1C, $00, $0A, $C7, $C5, $0F
+	db $05, $14, $C2, $C0, $0A, $1E, $C1, $BF
+	db $60, $28, $00, $BD, $00
+
+_1379: ; Shooting star -unused-
+	db $E0, $10, $08, $00, $A4, $1C, $0A, $C6
+	db $C4, $0F, $14, $C1, $BF, $0A, $1E, $C0
+	db $BE, $18, $14, $BC, $30, $0A, $BC, $00
+
+_1391: ; Bonus ring bird
+	db $E0, $01, $0C, $0A, $F9, $BE, $00, $0C
+	db $B4, $06, $F1, $00, $04, $C3, $0C, $14
+	db $F9, $BE, $00, $0C, $B4, $06, $F1, $00
+	db $04, $C3, $18, $00, $BE, $0C, $1E, $F9
+	db $BE, $00, $0A, $C5, $18, $00, $BE, $0C
+	db $F9, $BE, $00, $0C, $BB, $06, $F1, $00
+	db $04, $C3, $18, $00, $BE, $0C, $28, $F9
+	db $BE, $00, $0A, $C5, $0C, $F9, $BE, $00
+	db $0C, $BB, $06, $F1, $00, $04, $C3, $18
+	db $00, $BE, $0C, $32, $F9, $BE, $00, $0A
+	db $C5, $0C, $F9, $BE, $00, $0C, $BB, $06
+	db $F1, $00, $04, $C3, $18, $00, $BE, $0C
+	db $3C, $F9, $BE, $00, $0A, $C5, $00
+
+_13F8: ; Come in Corneria -BGM 34-
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $37, $6F
+	db $87, $E0, $15, $48, $7D, $98, $E0, $0F
+	db $06, $14, $BE, $06, $00, $BE, $06, $14
+	db $BE, $06, $00, $BE, $E0, $15, $18, $7D
+	db $98, $E0, $38, $7F, $F9, $8A, $00, $7F
+	db $8A, $1F, $F1, $00, $1D, $8A, $E0, $39
+	db $7F, $8A, $E0, $3A, $7F, $F9, $8A, $00
+	db $7F, $8A, $7F, $F1, $00, $7F, $8A, $2F
+	db $F1, $00, $2D, $8A, $E0, $15, $18, $7D
+	db $98, $E0, $0F, $06, $14, $BE, $06, $00
+	db $BE, $06, $14, $BE, $06, $00, $BE, $E0
+	db $15, $18, $7D, $98, $E0, $3B, $4F, $87
+	db $E0, $3C, $7F, $F9, $87, $00, $7F, $87
+	db $40, $F1, $00, $3E, $87, $E0, $0F, $06
+	db $14, $BE, $06, $00, $BE, $06, $14, $BE
+	db $06, $00, $BE, $E0, $15, $48, $7D, $98
+	db $00
+
+_1481: ; Blade barrier web attack
+	db $E0, $1A, $0C, $64, $A3, $E0, $23, $60
+	db $32, $F9, $8B, $00, $60, $A3, $60, $F1
+	db $00, $5E, $AF, $00
+
+_1495: ; Metal smasher close
+	db $E0, $1A, $0C, $7D, $A3, $30, $7D, $A3
+	db $00
+
+_149E: ; Object impact -unused-
+	db $E0, $0D, $0C, $78, $89, $24, $78, $F9
+	db $89, $00, $22, $82, $00
+
+_14AB: ; Metal smasher smashing
+	db $E0, $36, $24, $50, $00, $F9, $A3, $00
+	db $18, $9C, $24, $F9, $A3, $00, $18, $9C
+	db $24, $64, $28, $F9, $A3, $00, $18, $9C
+	db $24, $6E, $3C, $F9, $A3, $00, $18, $9C
+	db $24, $7D, $50, $F9, $A3, $00, $18, $9C
+	db $00
+
+_14D4: ; Enemy -unused-
+	db $E0, $36, $24, $00, $50, $F9, $A2, $00
+	db $18, $9B, $24, $F9, $A2, $00, $18, $99
+	db $24, $28, $64, $F9, $A2, $00, $18, $9B
+	db $24, $3C, $6E, $F9, $A2, $00, $18, $9B
+	db $24, $50, $7D, $F9, $A2, $00, $18, $9B
+	db $00
+
+_14FD: ; Pre-wing repaired
+	db $E0, $18, $12, $0A, $F9, $AB, $00, $12
+	db $BE, $0C, $F1, $00, $0A, $AD, $12, $14
+	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
+	db $0A, $AD, $12, $28, $F9, $AB, $00, $12
+	db $BE, $0C, $F1, $00, $0A, $AD, $12, $3C
+	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
+	db $0A, $AD, $12, $50, $F9, $AB, $00, $12
+	db $BE, $0C, $F1, $00, $0A, $A9, $12, $50
+	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
+	db $0A, $A9, $12, $3C, $F9, $AB, $00, $12
+	db $BE, $0C, $F1, $00, $0A, $A9, $12, $28
+	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
+	db $0A, $A9, $12, $14, $F9, $AB, $00, $12
+	db $BE, $0C, $F1, $00, $0A, $A9, $12, $0A
+	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
+	db $0A, $A9, $00
+
+_1578: ; Silence -BGM 10-
+	db $00
+
+_1579: ; Text ting
+	db $E0, $26, $06, $32, $BB, $00
+
+_157F: ; Andross hit
+	db $E0, $35, $12, $7D, $9A, $12, $64, $9A
+	db $12, $50, $9A, $12, $3C, $9A, $12, $28
+	db $9A, $12, $14, $9A, $00
+
+_1594: ; Andross appears
+	db $E0, $05, $0C, $00, $A4, $08, $28, $B9
+	db $E0, $10, $48, $46, $C7, $00
+
+_15A2: ; Pilon to ground
+	db $E0, $0D, $06, $78, $89, $04, $00, $89
+	db $18, $78, $89, $00
+
+_15AE: ; Destructor weapon head attack
+	db $E0, $1C, $20, $3C, $F9, $A4, $00, $14
+	db $AB, $1C, $50, $F9, $A4, $00, $10, $AB
+	db $1A, $64, $F9, $A4, $00, $0E, $AB, $18
+	db $78, $F9, $A4, $00, $0C, $AB, $18, $F9
+	db $A4, $00, $0C, $AB, $18, $64, $F9, $A4
+	db $00, $0C, $AB, $18, $5A, $F9, $A4, $00
+	db $0C, $AB, $18, $46, $F9, $A4, $00, $0C
+	db $AB, $18, $28, $F9, $A4, $00, $0C, $AB
+	db $18, $14, $F9, $A4, $00, $0C, $AB, $00
+
+_15F6: ; Player twin blaster shot
+	db $E0, $20, $0C, $3C, $94, $48, $94, $00
+
+_15FE: ; Big arwing damage alarm
+	db $E0, $26, $06, $46, $14, $F9, $B4, $00
+	db $06, $B7, $0C, $F1, $B5, $00, $06, $B7
+	db $06, $F9, $B4, $00, $06, $B7, $0C, $F1
+	db $B5, $00, $06, $B7, $06, $F9, $B4, $00
+	db $06, $B7, $0C, $F1, $B5, $00, $06, $B7
+	db $06, $F9, $B4, $00, $06, $B7, $0C, $F1
+	db $B5, $00, $06, $B7, $00
+
+_1633: ; Small arwing damage alarm
+	db $E0, $26, $0A, $3C, $14, $F9, $B0, $00
+	db $0A, $B4, $10, $F1, $B2, $00, $0A, $B4
+	db $0A, $F9, $B0, $00, $0A, $B4, $10, $F1
+	db $B2, $00, $0A, $B4, $00
+
+_1650: ; Slot machine coin
+	db $E0, $01, $08, $32, $B0, $B2, $08, $28
+	db $B5, $0C, $1E, $B7, $08, $32, $BC, $BE
+	db $08, $28, $C1, $18, $14, $08, $C3, $30
+	db $08, $00, $C3, $00
+
+_166C: ; Bonus -unused-
+	db $E0, $01, $0C, $00, $A4, $08, $32, $B0
+	db $B2, $08, $28, $B5, $0C, $1E, $B7, $08
+	db $32, $BC, $BE, $08, $28, $C1, $18, $14
+	db $08, $C3, $30, $08, $00, $C3, $00
+
+_168B: ; Blockade direction change
+	db $E0, $05, $06, $78, $9E, $E0, $00, $08
+	db $28, $F9, $A4, $00, $06, $A6, $18, $A6
+	db $00
+
+_169C: ; Bomb powerup
+	db $E0, $00, $24, $00, $A4, $08, $0A, $28
+	db $F9, $B7, $00, $06, $B9, $08, $00, $B9
+	db $08, $0A, $28, $F9, $B7, $00, $06, $B9
+	db $08, $00, $B9, $08, $0A, $28, $F9, $B7
+	db $00, $06, $B9, $08, $00, $B9, $00
+
+_16C3: ; Rock crusher uncover
+	db $E0, $32, $7F, $7D, $F9, $A3, $00, $7F
+	db $A3, $1F, $64, $F1, $00, $1F, $A3, $1F
+	db $50, $F1, $00, $1D, $A3, $00
+
+_16D9: ; Phantron appears
+	db $E0, $31, $5F, $64, $00, $F9, $A3, $00
+	db $5F, $A3, $5F, $64, $1E, $F1, $00, $5F
+	db $A3, $5F, $73, $46, $F1, $00, $5F, $A3
+	db $5F, $7D, $64, $F1, $00, $5F, $A3, $5F
+	db $50, $69, $F1, $00, $5F, $A3, $5F, $32
+	db $50, $F1, $00, $5F, $A3, $5F, $1E, $32
+	db $F1, $00, $5F, $A3, $5F, $0A, $1E, $F1
+	db $00, $5D, $A3, $00
+
+_1715: ; Destructor engine
+	db $E0, $30, $7F, $00, $64, $F9, $A3, $00
+	db $7F, $A3, $7F, $F1, $00, $7F, $A3, $7F
+	db $0A, $73, $F1, $00, $7F, $A3, $7F, $1E
+	db $7D, $F1, $00, $7F, $A3, $7F, $32, $7D
+	db $F1, $00, $7F, $A3, $7F, $46, $7D, $F1
+	db $00, $7F, $A3, $7F, $5A, $7D, $F1, $00
+	db $7F, $A3, $7F, $5A, $7D, $F1, $00, $7F
+	db $A3, $7F, $50, $69, $F1, $00, $7F, $A3
+	db $7F, $46, $5A, $F1, $00, $7F, $A3, $7F
+	db $3C, $50, $F1, $00, $7F, $A3, $7F, $28
+	db $41, $F1, $00, $7F, $A3, $7F, $1E, $32
+	db $F1, $00, $7F, $A3, $7F, $14, $1E, $F1
+	db $00, $7D, $A3, $00
+
+_1779: ; Destructor engine -unused-
+	db $E0, $30, $7F, $00, $64, $F9, $A1, $00
+	db $7F, $A1, $7F, $0A, $64, $F1, $00, $7F
+	db $A1, $7F, $1E, $73, $F1, $00, $7F, $A1
+	db $7F, $32, $7D, $F1, $00, $7F, $A1, $7F
+	db $46, $7D, $F1, $00, $7F, $A1, $7F, $5A
+	db $7D, $F1, $00, $7F, $A1, $7F, $5A, $7D
+	db $F1, $00, $7F, $A1, $7F, $7D, $5A, $F1
+	db $00, $7F, $A1, $7F, $69, $50, $F1, $00
+	db $7F, $A1, $7F, $5A, $46, $F1, $00, $7F
+	db $A1, $7F, $50, $3C, $F1, $00, $7F, $A1
+	db $7F, $41, $28, $F1, $00, $7F, $A1, $7F
+	db $32, $1E, $F1, $00, $7F, $A1, $7F, $1E
+	db $14, $F1, $00, $7D, $A1, $00
+
+_17DF: ; Rock crusher appears
+	db $E0, $2F, $5F, $64, $00, $F9, $A3, $00
+	db $5F, $A3, $5F, $64, $1E, $F1, $00, $5F
+	db $A3, $5F, $73, $46, $F1, $00, $5F, $A3
+	db $5F, $7D, $64, $F1, $00, $5F, $A3, $5F
+	db $69, $F1, $00, $5F, $A3, $5F, $50, $F1
+	db $00, $5F, $A3, $5F, $32, $F1, $00, $5F
+	db $A3, $5F, $1E, $F1, $00, $5D, $A3, $00
+
+_1817: ; Phantron 2 hit
+	db $E0, $12, $0C, $78, $F9, $98, $00, $0C
+	db $97, $0C, $F1, $00, $0C, $A2, $18, $F1
+	db $00, $15, $9F, $00
+
+_182B: ; Phantron scream -unused-
+	db $10, $00, $98
+
+_182E: ; Phantron 2 scream
+	db $E0, $12, $12, $78, $F9, $98, $00, $12
+	db $97, $18, $F1, $00, $18, $A7, $16, $F1
+	db $00, $13, $9F, $0F, $64, $F9, $95, $00
+	db $0F, $93, $15, $F1, $00, $15, $A3, $14
+	db $F1, $00, $11, $9C, $0C, $50, $F9, $91
+	db $00, $0C, $90, $12, $F1, $00, $12, $A0
+	db $12, $F1, $00, $0F, $98, $09, $3C, $F9
+	db $8E, $00, $09, $8C, $0F, $F1, $00, $0F
+	db $9C, $0F, $F1, $00, $0C, $95, $06, $28
+	db $F9, $8B, $00, $06, $89, $0C, $F1, $00
+	db $0C, $98, $1E, $F1, $00, $1B, $91, $00
+
+_1886: ; Falco radio chat
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $16, $10
+	db $7D, $80, $82, $E0, $14, $12, $7D, $84
+	db $18, $7D, $85, $E0, $16, $24, $7D, $85
+	db $18, $00, $85, $00
+
+_18AA: ; Falco radio chat hit
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $16, $18
+	db $7D, $85, $0C, $82, $E0, $2E, $0C, $7D
+	db $84, $82, $82, $E0, $16, $08, $7D, $82
+	db $0C, $00, $89, $E0, $16, $08, $7D, $82
+	db $E0, $2C, $18, $7D, $87, $E0, $14, $18
+	db $7D, $85, $00
+
+_18DD: ; Falco radio chat down
+	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
+	db $12, $14, $C0, $06, $00, $C0, $06, $14
+	db $C0, $04, $00, $C0, $12, $14, $C0, $06
+	db $00, $C0, $E0, $15, $18, $7D, $98, $E0
+	db $2D, $24, $7D, $85, $0C, $84, $0C, $00
+	db $85, $E0, $16, $0C, $7D, $89, $87, $85
+	db $0C, $00, $89, $E0, $16, $08, $7D, $85
+	db $E0, $14, $18, $7D, $85, $E0, $16, $18
+	db $7D, $84, $00
+
+_1920: ; Peppy radio chat
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $14, $0C
+	db $7D, $9C, $95, $24, $7D, $9C, $E0, $1F
+	db $0C, $7D, $93, $18, $7D, $91, $E0, $14
+	db $24, $7D, $97, $00
+
+_1944: ; Peppy radio chat hit
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $2C, $0C
+	db $7D, $9C, $E0, $14, $24, $7D, $9A, $E0
+	db $2E, $08, $7D, $93, $97, $18, $7D, $91
+	db $E0, $16, $0C, $7D, $97, $97, $00
+
+_196B: ; Peppy radio chat down
+	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
+	db $12, $14, $C0, $06, $00, $C0, $06, $14
+	db $C0, $04, $00, $C0, $12, $14, $C0, $06
+	db $00, $C0, $E0, $15, $18, $7D, $98, $E0
+	db $2D, $18, $7D, $A1, $9A, $10, $00, $A1
+	db $E0, $2E, $0C, $7D, $98, $0C, $7D, $97
+	db $E0, $1F, $24, $7D, $95, $00
+
+_19A1: ; Slippy radio chat
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $16, $08
+	db $7D, $89, $E0, $14, $08, $85, $E0, $16
+	db $08, $89, $E0, $14, $08, $8C, $E0, $16
+	db $12, $00, $87, $E0, $16, $08, $7D, $89
+	db $E0, $14, $08, $85, $E0, $16, $08, $89
+	db $E0, $14, $08, $8C, $E0, $16, $18, $00
+	db $87, $00
+
+_19DB: ; Slippy radio chat hit
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $14, $06
+	db $7D, $8C, $90, $06, $8C, $90, $0C, $00
+	db $85, $E0, $16, $06, $7D, $89, $8C, $89
+	db $8C, $12, $00, $85, $06, $7D, $87, $8B
+	db $87, $8B, $00
+
+_1A06: ; Slippy radio chat down
+	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
+	db $12, $14, $C0, $06, $00, $C0, $06, $14
+	db $C0, $04, $00, $C0, $12, $14, $C0, $06
+	db $00, $C0, $E0, $15, $18, $7D, $98, $E0
+	db $16, $08, $7D, $85, $89, $85, $89, $12
+	db $00, $85, $0A, $7D, $84, $87, $0B, $84
+	db $87, $12, $00, $85, $E0, $16, $0E, $7D
+	db $82, $85, $E0, $2D, $30, $7D, $89, $00
+
+_1A46: ; Twin blaster powerup
+	db $E0, $1F, $18, $00, $8C, $7F, $7D, $8C
+	db $00
+
+_1A4F: ; Shield powerup
+	db $E0, $2C, $18, $00, $8C, $30, $7D, $8C
+	db $00
+
+_1A58: ; Wing repaired powerup
+	db $E0, $14, $18, $00, $8C, $1C, $7D, $8B
+	db $E0, $2E, $60, $7D, $8C, $00
+
+_1A66: ; Cone hit
+	db $E0, $05, $06, $5A, $B0, $E0, $0A, $24
+	db $25, $84, $00
+
+_1A71: ; Background thunder -unused-
+	db $7F, $00, $90, $E0, $04, $7F, $7D, $F9
+	db $8C, $00, $7F, $90, $7F, $F1, $00, $7F
+	db $8E, $3F, $F1, $00, $3D, $8E, $7F, $F9
+	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
+	db $8C
+
+_1A92:
+	db $E0, $04, $3F, $7D, $F9, $8B, $00, $3F
+	db $8D, $7F, $F1, $00, $7D, $8C, $7F, $F9
+	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
+	db $8C, $7F, $F9, $87, $00, $7F, $8A, $7F
+	db $F1, $00, $7F, $89, $7F, $F1, $00, $7D
+	db $89, $00
+
+_1ABC: ; Background thunder -unused-
+	db $7F, $00, $8D
+
+_1ABF: ; Spinning core bg thunder
+	db $E0, $0C, $7F, $78, $F9, $8C, $00, $7F
+	db $8D, $7F, $F1, $00, $7F, $8C, $7F, $F1
+	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
+	db $7F, $F1, $00, $7F, $8C, $7F, $F1, $00
+	db $7F, $8C, $7F, $F1, $00, $7F, $8C, $7F
+	db $F1, $00, $7F, $8C, $7F, $F1, $00, $7F
+	db $8C, $7F, $F1, $00, $7F, $8C, $7F, $F1
+	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
+	db $7F, $F1, $00, $7D, $8C, $00
+
+_1B05:
+	db $E0, $01, $08, $1E, $B7, $B9, $08, $14
+	db $B9, $0C, $14, $B9, $0C, $0A, $08, $B9
+	db $18, $08, $00, $B9, $00
+
+_1B1A: ; Good luck -bgm 4- -unused-
+	db $E0, $01, $0C, $00, $A4, $08, $1E, $B7
+	db $B9, $08, $14, $B9, $0C, $14, $B9, $0C
+	db $0A, $08, $B9, $18, $08, $00, $B9, $00
+
+_1B32: ; Bonus credit
+	db $E0, $01, $08, $32, $B2, $B4, $B7, $BC
+	db $08, $2E, $1C, $BE, $18, $C0, $08, $24
+	db $16, $B2, $B4, $B7, $BC, $08, $1E, $12
+	db $BE, $18, $C0, $08, $16, $0C, $B2, $B4
+	db $B7, $BC, $08, $12, $02, $BE, $18, $C0
+	db $00
+
+_1B5B: ; Bonus -unused-
+	db $E0, $01, $18, $00, $A4, $08, $28, $B2
+	db $B4, $B7, $BC, $08, $0C, $1A, $BE, $0C
+	db $C0, $08, $12, $1E, $B2, $B4, $B7, $BC
+	db $08, $0C, $16, $BE, $18, $C0, $08, $02
+	db $12, $B2, $B4, $B7, $BC, $BE, $18, $C0
+	db $00
+
+_1B84: ; Player amoeba hit
+	db $E0, $2A, $0C, $64, $A1, $00
+
+_1B8A: ; Last base entry 2.door close
+	db $E0, $1C, $24, $7D, $F9, $91, $00, $24
+	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
+	db $08, $64, $99, $00
+
+_1B9E: ; Far last base entry 2.door close
+	db $E0, $1C, $24, $46, $F9, $91, $00, $24
+	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
+	db $08, $3C, $99, $00
+
+_1BB2: ; Last base entry 2.door open
+	db $E0, $1C, $24, $7D, $F9, $89, $00, $24
+	db $90, $18, $F1, $00, $16, $93, $E0, $05
+	db $08, $64, $99, $00
+
+_1BC6: ; Far last base entry 2.door open
+	db $E0, $1C, $24, $46, $F9, $89, $00, $24
+	db $90, $18, $F1, $00, $16, $93, $E0, $05
+	db $08, $3C, $99, $00
+
+_1BDA: ; Atomic base core close
+	db $E0, $1C, $24, $78, $F9, $9F, $00, $18
+	db $98, $24, $F9, $9F, $00, $18, $98, $24
+	db $64, $F9, $9F, $00, $18, $98, $24, $5A
+	db $F9, $9F, $00, $18, $98, $24, $46, $F9
+	db $9F, $00, $18, $98, $00
+
+_1BFF: ; Atomic base core open
+	db $E0, $1C, $24, $78, $F9, $98, $00, $18
+	db $9F, $24, $F9, $98, $00, $18, $9F, $24
+	db $64, $F9, $98, $00, $18, $9F, $24, $5A
+	db $F9, $98, $00, $18, $9F, $24, $46, $F9
+	db $98, $00, $18, $9F, $00
+
+_1C24: ; Atomic base power supply on
+	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
+	db $F9, $8C, $00, $18, $93, $24, $F1, $00
+	db $22, $98, $00
+
+_1C37: ; Atomic base power suppl yoff
+	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
+	db $F9, $98, $00, $18, $91, $24, $F1, $00
+	db $22, $8C, $00
+
+_1C4A: ; Hovering -unused-
+	db $E0, $29, $7F, $64, $F9, $A3, $00, $7F
+	db $A3, $7F, $F1, $00, $7F, $A3, $7F, $73
+	db $F1, $00, $7F, $A3, $7F, $7D, $F1, $00
+	db $7F, $A3, $7F, $F1, $00, $7F, $A3, $7F
+	db $F1, $00, $7F, $A3, $7F, $69, $F1, $00
+	db $7F, $A3, $7F, $50, $F1, $00, $7F, $A3
+	db $7F, $32, $F1, $00, $7F, $A3, $7F, $1E
+	db $F1, $00, $7D, $A3, $00
+
+_1C87: ; Door open -unused-
+	db $E0, $1C, $18, $64, $F9, $85, $00, $18
+	db $8C, $18, $F1, $00, $16, $8C, $00
+
+_1C96: ; Door close -unused-
+	db $E0, $1C, $18, $64, $F9, $90, $00, $18
+	db $89, $18, $F1, $00, $16, $89, $00
+
+_1CA5: ; Hovering -unused-
+	db $E0, $29, $7F, $5A, $F9, $A3, $00, $7F
+	db $A3, $7F, $5F, $F1, $00, $7F, $A3, $7F
+	db $64, $F1, $00, $7F, $A3, $7F, $6E, $F1
+	db $00, $7F, $A3, $7F, $7D, $F1, $00, $7F
+	db $A3, $7F, $78, $F1, $00, $7F, $A3, $7F
+	db $6E, $F1, $00, $7F, $A3, $7F, $64, $F1
+	db $00, $7F, $A3, $7F, $5F, $F1, $00, $7F
+	db $A3, $7F, $46, $F1, $00, $7F, $A3, $7F
+	db $3C, $F1, $00, $7F, $A3, $7F, $28, $F1
+	db $00, $7F, $A3, $7F, $1E, $F1, $00, $7D
+	db $A3, $00
+
+_1CF7:
+	db $E0, $29, $70, $5A, $F9, $99, $00, $70
+	db $99, $7F, $5F, $F1, $00, $7F, $99, $7F
+	db $64, $F1, $00, $7F, $99, $7F, $6E, $F1
+	db $00, $7F, $99, $7F, $7D, $F1, $00, $7F
+	db $99, $7F, $7D, $F1, $00, $7F, $99, $7F
+	db $6E, $F1, $00, $7F, $99, $7F, $69, $F1
+	db $00, $7F, $99, $7F, $5F, $F1, $00, $7F
+	db $99, $7F, $50, $F1, $00, $7F, $99, $7F
+	db $46, $F1, $00, $7F, $99, $7F, $32, $F1
+	db $00, $7F, $99, $7F, $1E, $F1, $00, $7D
+	db $99, $00
+
+_1D49: ; Near enemy ring shot
+	db $E0, $27, $12, $5A, $F9, $AD, $00, $12
+	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
+	db $00, $0A, $B0, $00
+
+_1D5D: ; Mid enemy ring shot
+	db $E0, $27, $12, $3C, $F9, $AD, $00, $12
+	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
+	db $00, $0A, $B0, $00
+
+_1D71: ; Far enemy ring shot
+	db $E0, $27, $12, $1E, $F9, $AD, $00, $12
+	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
+	db $00, $0A, $B0, $00
+
+_1D85: ; Fox radio chat
+	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
+	db $E0, $15, $18, $7D, $98, $E0, $16, $08
+	db $7D, $8B, $18, $90, $0C, $8E, $18, $8C
+	db $0C, $8E, $8D, $18, $00, $93, $00
+
+_1DA4: ; Radio chat quit
+	db $E0, $0F, $06, $14, $BE, $06, $00, $BE
+	db $06, $14, $BE, $06, $00, $BE, $E0, $15
+	db $18, $7D, $98, $00
+
+_1DB8: ; Player camera change
+	db $E0, $25, $48, $3C, $B6, $00
+
+_1DBE: ; Good luck -BGM 4-
+	db $E0, $22, $18, $00, $A4, $48, $78, $A0
+	db $00
+
+_1DC7: ; Continue let's go -BGM 30-
+	db $E0, $33, $48, $78, $A2, $00
+
+_1DCD: ; Left water splash out
+	db $E0, $2B, $30, $7D, $0A, $F9, $A6, $00
+	db $28, $9A, $00
+
+_1DD8: ; Centre water splash
+	db $E0, $2B, $30, $7D, $F9, $A6, $00, $28
+	db $9A, $00
+
+_1DE2: ; Right water splash
+	db $E0, $2B, $30, $0A, $7D, $F9, $A6, $00
+	db $28, $9A, $00
+
+_1DED: ; Mid water splash
+	db $E0, $2B, $30, $6E, $F9, $A6, $00, $28
+	db $9A, $00
+
+_1DF7: ; Far water splash
+	db $E0, $2B, $30, $5A, $F9, $A6, $00, $28
+	db $9A, $00
+
+_1E01: ; Left water splash in
+	db $E0, $21, $30, $7D, $0A, $A1, $00
+
+_1E08: ; Centre water splash in
+	db $E0, $21, $30, $7D, $A1, $00
+
+_1E0E: ; Right water splash in
+	db $E0, $21, $30, $0A, $7D, $A1, $00
+
+_1E15: ; Mid water splash in
+	db $E0, $21, $30, $6E, $A1, $00
+
+_1E1B: ; Far water splash in
+	db $E0, $21, $30, $5A, $A1, $00
+
+_1E21: ; Dancing insector propelling
+	db $E0, $1B, $0C, $78, $F9, $A1, $00, $0A
+	db $9D, $18, $64, $F9, $A1, $00, $18, $A4
+	db $24, $F1, $00, $18, $9D, $00
+
+_1E37: ; Right object fly-by
+	db $E0, $1E, $30, $00, $78, $F9, $B9, $00
+	db $30, $B9, $18, $F1, $00, $16, $B0, $00
+
+_1E47: ; Centre object fly-by
+	db $E0, $1E, $30, $64, $F9, $B9, $00, $30
+	db $B9, $18, $F1, $00, $16, $B0, $00
+
+_1E56: ; Left object fly-by
+	db $E0, $1E, $30, $78, $00, $F9, $B9, $00
+	db $30, $B9, $18, $F1, $00, $16, $B0, $00
+
+_1E66: ; Blade barrier player web hit
+	db $E0, $19, $0C, $78, $F9, $B9, $00, $0C
+	db $A4, $0C, $F1, $00, $0A, $9D, $E0, $05
+	db $06, $78, $9E, $00
+
+_1E7A: ; -unused-
+	db $E0, $05, $06, $78, $9E, $0C, $A1, $00
+
+_1E82: ; Blade barrier post-drill attack
+	db $E0, $1C, $12, $78, $F9, $95, $00, $12
+	db $98, $12, $F1, $00, $12, $96, $12, $F1
+	db $00, $12, $94, $12, $F1, $00, $10, $92
+	db $00
+
+_1E9B: ; Cone triangle
+	db $E0, $07, $12, $78, $F9, $95, $00, $12
+	db $98, $12, $F1, $00, $12, $97, $12, $F1
+	db $00, $12, $96, $12, $F1, $00, $12, $95
+	db $12, $F1, $00, $12, $94, $12, $F1, $00
+	db $12, $93, $12, $F1, $00, $10, $92, $00
+
+_1EC3: ; 1-6+2-3 Boss shadowing
+	db $E0, $07, $08, $78, $98, $08, $00, $98
+	db $08, $78, $98, $18, $64, $F9, $98, $00
+	db $16, $95, $18, $50, $F9, $98, $00, $16
+	db $95, $18, $3C, $F9, $98, $00, $16, $95
+	db $18, $32, $F9, $98, $00, $16, $95, $18
+	db $28, $F9, $98, $00, $16, $95, $00
+
+_1EF2: ; Enemy warp-in
+	db $E0, $07, $08, $78, $95, $18, $64, $F9
+	db $89, $00, $16, $98, $18, $50, $F9, $8B
+	db $00, $16, $9A, $00
+
+_1F06: ; Rock crusher roll
+	db $E0, $05, $05, $78, $8F, $8F, $90, $90
+	db $91, $91, $92, $92, $93, $93, $94, $94
+	db $95, $95, $96, $96, $97, $97, $98, $98
+	db $99, $99, $9A, $9A, $9B, $9B, $9C, $9C
+	db $9D, $9D, $9E, $9E, $9F, $9F, $A0, $A0
+	db $A1, $A1
+
+_1F30:
+	db $E0, $05, $05, $78, $A2, $A2, $A2, $A3
+	db $A3, $A4, $A4, $A5, $A5, $A6, $A6, $A7
+	db $A7, $A8, $A8, $A9, $A9, $06, $78, $92
+	db $30, $95, $00
+
+_1F4B:
+	db $E0, $05, $0C, $78, $9C, $18, $9C, $30
+	db $78, $F9, $8E, $00, $30, $8F, $30, $F1
+	db $00, $30, $90, $30, $F1, $00, $30, $91
+	db $30, $F1, $00, $30, $92, $48, $F1, $00
+	db $48, $91, $48, $F1, $00, $45, $90, $00
+
+_1F73: ; Small boss explosion
+	db $E0, $12, $30, $78, $F9, $8C, $00, $30
+	db $8D, $30, $F1, $00, $30, $8E, $30, $F1
+	db $00, $30, $8F, $30, $F1, $00, $30, $90
+	db $30, $F1, $00, $30, $91, $30, $F1, $00
+	db $30, $92, $30, $F1, $00, $2E, $93, $00
+
+_1F9B: ; Plasma hydra arm hit
+	db $E0, $02, $0C, $78, $F9, $9C, $00, $0C
+	db $9B, $0C, $F1, $00, $0C, $A5, $18, $F1
+	db $00, $15, $A3, $00
+
+_1FAF: ; Enemy rocket player hit
+	db $E0, $06, $12, $78, $F9, $93, $00, $12
+	db $8F, $24, $F1, $00, $24, $9B, $24, $F1
+	db $00, $21, $98, $00
+
+_1FC3: ; Dodora hit
+	db $E0, $02, $12, $78, $F9, $91, $00, $12
+	db $96, $0C, $F1, $00, $0C, $A2, $24, $F1
+	db $00, $24, $9F, $24, $F1, $00, $21, $97
+	db $00
+
+_1FDC:
+	db $E0, $02, $10, $00, $8C, $12, $3C, $50
+	db $F9, $91, $00, $12, $96, $0C, $F1, $00
+	db $0C, $A2, $24, $F1, $00, $24, $9F, $24
+	db $F1, $00, $21, $97, $00
+
+_1FF9: ; Dodora egg crack + bird
+	db $E0, $15, $08, $78, $B4, $B9, $24, $BE
+
+_2001: ; Bird scream -unused-
+	db $E0, $07, $0C, $78, $F9, $A1, $00, $0C
+	db $A5, $0C, $F1, $00, $0C, $B1, $24, $F1
+	db $00, $21, $AF, $00
+
+_2015: ; Percentage ring
+	db $E0, $00, $03, $28, $B7, $B9, $B7, $B9
+	db $B7, $B9, $08, $BB, $18, $BE, $00
+
+_2024: ; Big support ring
+	db $E0, $01, $0C, $1E, $BC, $BE, $BC, $BE
+	db $0C, $1E, $0F, $C1, $24, $C6, $0C, $14
+	db $08, $C1, $24, $C6, $0C, $0A, $00, $C1
+	db $24, $C6, $00
+
+_203F:
+	db $E0, $01, $15, $00, $A4, $0C, $1E, $BC
+	db $BE, $BC, $BE, $0C, $0F, $1E, $C1, $24
+	db $C6, $0C, $08, $14, $C1, $24, $C6, $0C
+	db $00, $0A, $C1, $24, $C6, $00
+
+_205D: ; Controls select
+	db $E0, $01, $08, $3C, $BE, $18, $C3, $08
+	db $00, $0A, $BE, $18, $C3, $00
+
+_206B:
+	db $E0, $01, $18, $00, $A4, $08, $14, $00
+	db $BE, $18, $C3, $08, $05, $00, $BE, $18
+	db $C3, $00
+
+_207D: ; 1up ring hit
+	db $E0, $00, $08, $28, $BB, $BE, $C0, $18
+	db $C3, $08, $00, $0A, $BB, $BE, $C0, $0C
+	db $C3, $00
+
+_208F:
+	db $E0, $00, $18, $00, $A4, $08, $14, $00
+	db $BB, $BE, $C0, $18, $C3, $08, $05, $00
+	db $BB, $BE, $C0, $0C, $C3, $00
+
+_20A5: ; Left gate moving
+	db $E0, $08, $18, $78, $00, $F9, $98, $00
+	db $18, $9D, $24, $F1, $00, $21, $A1, $00
+
+_20B5: ; Centre gate moving
+	db $E0, $08, $18, $64, $F9, $98, $00, $18
+	db $9D, $24, $F1, $00, $21, $A1, $00
+
+_20C4: ; Right gate moving
+	db $E0, $08, $18, $00, $78, $F9, $98, $00
+	db $18, $9D, $24, $F1, $00, $21, $A1, $00
+
+_20D4: ; Mid gate moving
+	db $E0, $08, $18, $3C, $F9, $98, $00, $18
+	db $9D, $24, $F1, $00, $21, $A1, $00
+
+_20E3: ; Far gate moving
+	db $E0, $08, $18, $1E, $F9, $98, $00, $18
+	db $9D, $24, $F1, $00, $21, $A1, $00
+
+_20F2: ; Player boost
+	db $E0, $05, $48, $78, $F9, $95, $00, $45
+	db $A1, $00
+
+_20FC:
+	db $E0, $11, $60, $3C, $F9, $91, $00, $5D
+	db $AB, $00
+
+_2106: ; Player brake
+	db $E0, $03, $30, $78, $F9, $A3, $00, $2D
+	db $95, $00
+
+_2110: ; Incoming enemy
+	db $E0, $26, $0C, $28, $F9, $B6, $00, $0A
+	db $B9, $24, $F9, $B6, $00, $10, $B9, $0C
+	db $28, $F9, $B6, $00, $0A, $B9, $24, $F9
+	db $B6, $00, $10, $B9, $E0, $15, $24, $7D
+	db $98, $E0, $13, $70, $7D, $8C, $E0, $15
+	db $0C, $7D, $98, $00
+
+_213C: ; Wing damaged
+	db $E0, $26, $30, $00, $A4, $0C, $28, $F9
+	db $B6, $00, $0A, $B9, $0C, $28, $F9, $B6
+	db $00, $0A, $B9, $18, $00, $A4, $E0, $15
+	db $24, $7D, $98, $E0, $14, $20, $7D, $8C
+	db $E0, $16, $40, $7D, $8C, $E0, $15, $0C
+	db $7D, $98, $00, $E0, $0E, $30, $32, $B7
+	db $00
+
+_216D: ; Phantron 2 landing
+	db $E0, $0D, $06, $78, $89, $04, $00, $89
+	db $24, $78, $F9, $89, $00, $22, $82, $00
+
+_217D: ; Phantron 2 jump
+	db $E0, $1D, $0C, $78, $F9, $A9, $00, $0A
+	db $9D, $24, $F9, $9D, $00, $21, $AB, $00
+
+_218D: ; Near enemy rocket shot
+	db $E0, $0B, $30, $64, $95, $00
+
+_2193: ; Mid enemy rocket shot
+	db $E0, $0B, $30, $3C, $95, $00
+
+_2199: ; Far enemy rocket shot
+	db $E0, $0B, $30, $1E, $95, $00
+
+_219F: ; Near enemy battery
+	db $E0, $19, $08, $78, $9A, $48, $98, $00
+
+_21A7: ; Mid enemy battery
+	db $E0, $19, $08, $46, $9A, $48, $98, $00
+
+_21AF: ; Far enemy battery
+	db $E0, $19, $08, $28, $9A, $48, $98, $00
+
+_21B7: ; Left enemy laser shot
+	db $E0, $09, $30, $5A, $0A, $95, $00
+
+_21BE: ; Centre enemy laser shot
+	db $E0, $09, $30, $50, $95, $00
+
+_21C4: ; Right enemy laser shot
+	db $E0, $09, $30, $0A, $5A, $95, $00
+
+_21CB: ; Mid enemy laser shot
+	db $E0, $09, $30, $28, $95, $00
+
+_21D1: ; Far enemy laser shot
+	db $E0, $09, $30, $1E, $95, $00
+
+_21D7:
+	db $E0, $05, $30, $0A, $5A, $A9, $00
+
+_21DE:
+	db $E0, $05, $30, $5A, $0A, $A9, $00
+
+_21E5: ; Wingless arwing collision
+	db $E0, $05, $18, $5A, $B5, $00
+
+_21EB: ; Right wing crash
+	db $E0, $05, $18, $0A, $5A, $B5, $00
+
+_21F2: ; Left wing crash
+	db $E0, $05, $18, $5A, $0A, $B5, $00
+
+_21F9: ; Player crash
+	db $E0, $0D, $06, $64, $9D, $60, $78, $9D
+	db $00
+
+_2202: ; Near enemy hit
+	db $E0, $0D, $20, $46, $F9, $8E, $00, $1E
+	db $85, $00
+
+_220C: ; Mid enemy hit
+	db $E0, $0D, $20, $28, $F9, $8E, $00, $1E
+	db $85, $00
+
+_2216: ; Far enemy hit
+	db $E0, $0D, $20, $1E, $F9, $8E, $00, $1E
+	db $85, $00
+
+_2220: ; Near enemy explosion
+	db $E0, $06, $60, $78, $98, $00
+
+_2226:
+	db $E0, $06, $18, $00, $98, $60, $50, $95
+	db $00
+
+_222F: ; Mid enemy explosion
+	db $E0, $06, $70, $5A, $95, $00
+
+_2235: ; Far enemy explosion
+	db $E0, $06, $70, $46, $95, $00
+
+_223B: ; Near big boss explosion
+	db $E0, $0D, $0C, $78, $97, $12, $97, $0C
+	db $64, $95, $12, $95, $0C, $50, $90, $60
+	db $90, $00
+
+_224D:
+	db $E0, $0D, $24, $00, $98, $0C, $64, $00
+	db $97, $12, $97, $0C, $50, $00, $95, $18
+	db $95, $0C, $3C, $00, $90, $60, $90, $00
+
+_2265:
+	db $E0, $0D, $24, $00, $98, $0C, $00, $64
+	db $97, $18, $97, $0C, $00, $50, $95, $18
+	db $95, $0C, $00, $3C, $90, $60, $90, $00
+
+_227D: ; Mid big boss explosion
+	db $E0, $0D, $0C, $64, $97, $12, $97, $0C
+	db $50, $95, $12, $95, $0C, $3C, $90, $60
+	db $90, $00
+
+_228F:
+	db $E0, $0D, $24, $00, $98, $0C, $50, $00
+	db $97, $12, $97, $0C, $3C, $00, $95, $18
+	db $95, $0C, $28, $00, $90, $60, $90, $00
+
+_22A7:
+	db $E0, $0D, $24, $00, $98, $0C, $00, $50
+	db $97, $18, $97, $0C, $00, $3C, $95, $18
+	db $95, $0C, $00, $28, $90, $60, $90, $00
+
+_22BF: ; Far big boss explosion
+	db $E0, $0D, $0C, $3C, $97, $12, $97, $0C
+	db $32, $95, $12, $95, $0C, $1E, $90, $60
+	db $90, $00
+
+_22D1:
+	db $E0, $0D, $24, $00, $98, $0C, $32, $00
+	db $97, $12, $97, $0C, $1E, $00, $95, $18
+	db $95, $0C, $14, $00, $90, $60, $90, $00
+
+_22E9:
+	db $E0, $0D, $24, $00, $98, $0C, $00, $32
+	db $97, $18, $97, $0C, $00, $1E, $95, $18
+	db $95, $0C, $00, $14, $90, $60, $90, $00
+
+_2301:
+	db $E0, $0D, $0C, $78, $9C, $9C, $60, $9C
+	db $00
+
+_230A: ; Player down
+	db $E0, $0D, $06, $00, $98, $0C, $00, $64
+	db $98, $0C, $5A, $00, $98, $0C, $00, $50
+	db $98, $48, $46, $00, $95, $60, $00, $28
+	db $95, $00
+
+_2324: ; Player laser shot
+	db $E0, $20, $48, $32, $92, $00
+
+_232A: ; Player bomb explosion
+	db $E0, $05, $0C, $64, $9C, $30, $9C, $E0
+	db $12, $60, $64, $F9, $85, $00, $60, $86
+	db $60, $7D, $F1, $00, $5E, $87, $00
+
+_2341: ; Player bomb shot
+	db $E0, $0B, $06, $78, $98, $18, $78, $9D
+	db $00
+
+_234A: ; Dual beam shot
+	db $E0, $19, $08, $5A, $A1, $E0, $17, $24
+	db $F9, $98, $00, $22, $B0, $00
+
+_2358: ; Near laser deflect
+	db $E0, $0A, $24, $21, $B2, $00
+
+_235E: ; Mid laser deflect
+	db $E0, $0A, $24, $11, $B2, $00
+
+_2364: ; Far laser deflect
+	db $E0, $0A, $24, $0D, $B2, $00
+
+_236A: ; Left wing scratch
+	db $E0, $05, $06, $5A, $00, $BC, $BC, $00
+
+_2372: ; Right wing scratch
+	db $E0, $05, $06, $00, $5A, $BC, $BC, $00
+
+_237A:
+	db $E0, $00, $10, $1E, $B4, $30, $1E, $B7
+	db $00
+
+_2383: ; Pause
+	db $E0, $00, $08, $00, $B0, $10, $1E, $B0
+	db $30, $1E, $BC, $00
+	
+; make sure patterns aren't too big
+warnpc $238f
+
+incbin	238F-24FC.bin
 
 
 _24FD:
@@ -2828,26 +3874,27 @@ call	apus
 mov	a,!_03a0+x
 mov	x,a
 mov	a,_0f20+x
-mov.b	$03,a
+mov.b	!fl3,a
 bne	_29c2
 ret
 
 _2a1a:
 mov	a,!sf3
-mov	$03ce,a
+mov	!_03ce,a
 beq	_2a51
 mov	x,#$0a
 mov	a,#$20
 mov	!_03c1,a
-asl	$03ce
-asl	$03ce
-asl	$03ce
+asl	!_03ce
+asl	!_03ce
+_2a2f:
+asl	!_03ce
 bcc	_2a4a
 mov	!_03c0,x
 mov	a,x
 xcn	a
 lsr	a
-mov	$03c2,a
+mov	!_03c2,a
 mov	a,!_03a1+x
 bne	_2a52
 mov	a,!_03a0+x
@@ -2857,7 +3904,7 @@ _2a4a:
 lsr	!_03c1
 dec	x
 dec	x
-bpl	$2a2f
+bpl	_2a2f
 _2a51:
 ret
 
@@ -2875,18 +3922,18 @@ mov	y,a
 bcs	_2a7b
 mov	a,$109e+y
 mov	!_0391+x,a
-mov.b	$2d,a
+mov.b	!adk+1,a
 mov	a,_109d+y
 mov	!_0390+x,a
-mov.b	$2c,a
+mov.b	!adk,a
 jmp	_2b29
 _2a7b:
 mov	a,$119e+y
 mov	!_0391+x,a
-mov.b	$2d,a
+mov.b	!adk+1,a
 mov	a,$119d+y
 mov	!_0390+x,a
-mov.b	$2c,a
+mov.b	!adk,a
 jmp	_2b29
 
 _2a8e:
@@ -2955,7 +4002,7 @@ mov	!_03c0,x
 mov	a,!_0391+x
 mov	y,a
 mov	a,!_0390+x
-movw	$2c,ya
+movw	!adk,ya
 mov	a,$03b0+x
 dec	a
 mov	$03b0+x,a
@@ -2963,14 +4010,14 @@ beq	_2B27
 jmp	_2b94
 
 _2B27:					; Jumped to from PROG_CODE_02.asm
-incw	$2c				; sound effect data pointer
+incw	!adk				; sound effect data pointer
 _2b29:
 mov	a,!_03c0				; Get audio channel
 xcn	a
 lsr	a
-mov	$03c2,a
+mov	!_03c2,a
 mov	x,#$00				; reset X
-mov	a,($2c+x)			; Get next byte of sound effect data
+mov	a,(!adk+x)			; Get next byte of sound effect data
 beq	_2B06				; 00 is end of sound effect data
 bmi	_2B6F				; Pitch and commands are 80 and over
 
@@ -2978,23 +4025,23 @@ _2B39:
 ; Sample duration
 mov	y,!_03c0				; Get audio channel
 mov	$03b1+y,a			; store duration
-incw	$2c				; sound effect data pointer
-mov	a,($2c+x)			; Get next byte of sound effect data
+incw	!adk				; sound effect data pointer
+mov	a,(!adk+x)			; Get next byte of sound effect data
 mov.b	!sss,a				; Store it as volume
 bmi	_2B6F
 
 ; Value is under 80
-mov	y,$03c2				; Get DSP register address
+mov	y,!_03c2				; Get DSP register address
 call	apus				; Set DSP register (which?)
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)			; Get next byte of sound effect data
+incw	!adk
+mov	a,(!adk+x)			; Get next byte of sound effect data
 bpl	_2B62				; Branch if byte is a volume setting (under $80)
 
 ; Set default volume
 mov	x,a				; store data byte
 mov.b	a,!sss				; Get last volume used
-mov	y,$03c2				; Get DSP register address
+mov	y,!_03c2				; Get DSP register address
 inc	y
 call	apus				; Set DSP register (volume)
 mov	a,x				; restore data byte
@@ -3002,12 +4049,12 @@ bra	_2B6F
 
 _2B62:
 ; Set new volume level
-mov	y,$03c2				; Get DSP register address
+mov	y,!_03c2				; Get DSP register address
 inc	y
 call	apus				; Set DSP register (volume)
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)
+incw	!adk
+mov	a,(!adk+x)
 
 _2B6F:
 ; Pitch and commands
@@ -3049,16 +4096,16 @@ mov	y,#$5c
 call	apus
 _2bb1:
 mov	x,!_03c0
-mov.b	a,$2d
+mov.b	a,!adk+1
 mov	!_0391+x,a
-mov.b	a,$2c
+mov.b	a,!adk
 mov	!_0390+x,a
 jmp	_2a4a
 
 _2BC1:
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)
+incw	!adk
+mov	a,(!adk+x)
 mov	x,!_03c0
 mov.b	$44,x
 mov	y,a
@@ -3068,19 +4115,19 @@ call	_3e79
 
 _2BD6:
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)
+incw	!adk
+mov	a,(!adk+x)
 mov	x,!_03c0
 mov.b	!swphc+x,a
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)
+incw	!adk
+mov	a,(!adk+x)
 mov	x,!_03c0
 mov.b	!swpc+x,a
 push	a
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)
+incw	!adk
+mov	a,(!adk+x)
 pop	y
 mov	x,!_03c0
 mov.b	$44,x
@@ -3096,8 +4143,8 @@ org $3e20
 
 _3e20:
 mov	x,#$00
-incw	$2c
-mov	a,($2c+x)
+incw	!adk
+mov	a,(!adk+x)
 mov	y,#$06
 mul	ya
 mov	$d2,#$8f
@@ -3105,7 +4152,7 @@ mov	$d3,#$23
 addw	ya,$d2
 movw	$d2,ya
 mov	y,#$00
-mov	a,$03c2
+mov	a,!_03c2
 or	 a,#$04
 mov	x,a
 mov	$12,#$04
