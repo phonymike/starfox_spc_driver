@@ -1,7 +1,9 @@
-org $008000
+org $00A823
 arch spc700
 
 base $3e20
+
+prog_code_02_start:
 
 mov	x,#$00
 incw	$2c
@@ -79,5 +81,7 @@ mov.b	$4a,a
 mov	y,#$4d
 call	$060d
 ret
+
+prog_code_02_end:
 
 warnpc $3ebb

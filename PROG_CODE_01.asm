@@ -1,10 +1,13 @@
-org $008000
+org $008020
 arch spc700
 
 incsrc defines.asm
 incsrc KAN.asm
 
 base $400
+
+prog_code_01_start:
+
 	clrp				; clear direct page flag
 ;................................................
 	mov	x,#$cf			; stack pointer 
@@ -1846,7 +1849,7 @@ viby:
 	bne	vib15			; change chu ?
 ;...
 	mov	a,!vibdm+x		; vib change end !
-	bra	$0d94
+	bra	vib17
 ;......
 vib15:
 	setp				; change chu
@@ -2113,7 +2116,7 @@ ten02:
 	mov	a,!port0			; flag O.K. ?
 	cmp	a,#$cc			;
 	bne	ten02			;
-	bra	$0f08			;
+	bra	ten40			;
 ;........................................
 ten16:
 	mov	y,!port0		;
@@ -2200,6 +2203,7 @@ call	divx
 mov	$031e,a
 mov	a,y
 mov	$031f,a
+_2553:
 mov.b	a,$9e
 beq	_24FD
 cmp	a,#$01
@@ -2239,14 +2243,14 @@ bne	_25b5
 mov.b	a,$d1
 
 bne	_25cc
-bra	$2618
+bra	_2618
 
 _25a1:
 mov.b	a,$01
 bne	_25ac
 mov	x,$03c9
 beq	+
-bra	$2553
+bra	_2553
 _25ac:
 mov.b	a,$d1
 bne	_25cc
@@ -2310,6 +2314,7 @@ mov	y,#$4d
 call	apus
 mov	a,#$01
 bne	+
+_2618:
 mov	a,#$30
 +
 mov.b	$ae,a
@@ -2513,9 +2518,9 @@ and	a,#$0f
 setc
 sbc	a,#$01
 mov	x,a
-mov	a,$2921+x
+mov	a,_2921+x
 mov	$03f6,a
-mov	a,$2930+x
+mov	a,_2930+x
 mov	$03f9,a
 mov	a,x
 call	_289d
@@ -2540,7 +2545,7 @@ mov.b	a,$06
 and	a,#$30
 xcn	a
 mov	x,a
-mov	a,$291d+x
+mov	a,_291d+x
 mov	$032d,a
 mov	$030d,a
 mov.b	a,$06
@@ -2549,7 +2554,7 @@ xcn	a
 lsr	a
 lsr	a
 mov	x,a
-mov	a,$2919+x
+mov	a,_2919+x
 mov	$033d,a
 
 _27ff:
@@ -2572,7 +2577,7 @@ mov.b	a,$06
 and	a,#$30
 xcn	a
 mov	x,a
-mov	a,$291d+x
+mov	a,_291d+x
 mov	$032c,a
 mov.b	x,$9c
 setc
@@ -2588,7 +2593,7 @@ xcn	a
 lsr	a
 lsr	a
 mov	x,a
-mov	a,$2919+x
+mov	a,_2919+x
 mov	$03fb,a
 mov	$035c,a
 setc
@@ -2642,11 +2647,12 @@ mul	ya
 mov	x,a
 mov	y,#$64
 mov	$12,#$04
+_28a6:
 mov	a,_28BF+x
 call	apus
 inc	x
 inc	y
-dbnz	$12,$28a6
+dbnz	$12,_28a6
 mov	a,_28BF+x
 mov	$022d,a
 inc	x
@@ -2666,11 +2672,21 @@ _28BF:
 	db $00, $60, $0B, $0E, $E0, $60, $05, $00
 	db $02, $0E, $E0, $7F, $01, $80, $13, $0E
 	db $E0, $70, $01, $00, $02, $0E, $E0, $40
-	db $08, $00, $0A, $14, $0A, $00, $FF, $90
-	db $60, $30, $30, $18, $40, $40, $50, $28
-	db $20, $60, $40, $40, $40, $40, $48, $20
-	db $20, $AB, $A1, $AD, $AD, $AD, $A9, $AC
-	db $AD, $AD, $AD, $AD, $AD, $AD, $AD, $AB
+	db $08, $00
+
+_2919:	
+	db $0A, $14, $0A, $00
+
+_291d:
+	db $FF, $90, $60, $30
+
+_2921:
+	db $30, $18, $40, $40, $50, $28, $20, $60
+	db $40, $40, $40, $40, $48, $20, $20
+
+_2930:
+	db $AB, $A1, $AD, $AD, $AD, $A9, $AC, $AD
+	db $AD, $AD, $AD, $AD, $AD, $AD, $AB
 
 
 _293f:
@@ -2748,7 +2764,7 @@ call	apus
 
 _29be:
 mov.b	a,$03
-bra	$29d5
+bra	_29d5
 _29c2:
 jmp	_293f
 _29c5:
@@ -2759,6 +2775,7 @@ cmp	a,#$01
 beq	_29A1
 cmp	a,#$02
 beq	_29b0
+_29d5:
 mov	$03a0+x,a
 cmp	a,#$0b
 bcc	_29eb
@@ -3045,5 +3062,7 @@ mov	x,$03c0
 mov.b	$44,x
 call	swpadset
 jmp	_2B8B
+
+prog_code_01_end:
 
 warnpc $2BFF
