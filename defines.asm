@@ -155,12 +155,15 @@
 !_021f = $021f
 ;........................................
 !bls = $0220				; block su (2byte)
+!_022c = $022c				; used once
+!_022d = $022d				; used once
 !_022e = $022e				; used once
 !_022f = $022f				; used once
 ;........................................
 !adt = $0230				; add taihi (2byte)
 !adp = $0240				; add store (2byte)
 !_0250 = $0250
+!_0280 = $0280				; used twice
 !_028c = $028c				; used twice
 ;........................................
 !ptc = $0080				; pattern count
@@ -186,11 +189,16 @@
 !panc = $0091				; (@)
 !pandw = $0330				; (addw)
 !pand = $0331				; (addw)
+!_033c = $033c				; used once
+!_033d = $033d
 !_033f = $033f				; used once
 !panadw = $0340				; (addw)
 !panad = $0341				; (addw)
+!_034c = $034c				; used once
+!_034d = $034d				; used once
 !panm = $0350				; (addw)
 !panf = $0351				; pan phase
+!_035c = $035c				; used once
 !_035d = $035d				; used once
 !_035f = $035f				; used twice
 ;
@@ -207,6 +215,7 @@
 !_9d = $9d
 !_9e = $9e
 !_ac = $ac
+!_ad = $ad				; used once
 !_ae = $ae
 !_af = $af				; used twice
 !_d1 = $d1
@@ -217,6 +226,9 @@
 !_0391 = $0391
 !_039f = $039f
 !_03a0 = $03a0
+!_03a1 = $03a1
+!_03c0 = $03c0
+!_03c1 = $03c1
 !_03c3 = $03c3
 !_03c6 = $03c6
 !_03c7 = $03c7
@@ -233,6 +245,8 @@
 !_03f1 = $03f1
 !_03f6 = $03f6
 !_03f8 = $03f8
+!_03f9 = $03f9
+!_03fb = $03fb				; used twice
 !_03fc = $03fc				; used twice
 ;........................................
 !swsc = $0280				;
@@ -259,6 +273,8 @@
 !trehs = $02e0				; hold store (!)
 ;
 !ptps = $02f0				; key transpose
+
+!_0fdf = $0fdf				; used twice
 
 !_3c80 = $3c80
 !_3c81 = $3c81
