@@ -2177,7 +2177,10 @@ _0f20:
 ;........................................
 
 
-incbin	0F21-24FC.bin
+incbin	0F21-109C.bin
+
+_109d:
+incbin	109D-24FC.bin
 
 
 _24FD:
@@ -2873,7 +2876,7 @@ bcs	_2a7b
 mov	a,$109e+y
 mov	!_0391+x,a
 mov.b	$2d,a
-mov	a,$109d+y
+mov	a,_109d+y
 mov	!_0390+x,a
 mov.b	$2c,a
 jmp	_2b29
