@@ -39,12 +39,12 @@ start10:
 ;........................................
 mov	x,#$00
 -
-mov	$0200+x,a
+mov	!ngs+x,a
 inc	x
 bne	-
 
 -
-mov	$0300+x,a
+mov	!pvodw+x,a
 inc	x
 bne	-
 ;........................................
@@ -54,7 +54,7 @@ bne	-
 	set5	!flgs			; echo off
 ;................................................
 mov	a,#$96
-mov	$03c6,a
+mov	!_03c6,a
 mov	a,#$bb
 mov	$03cb,a
 call	_648
@@ -454,7 +454,7 @@ ret
 _648:
 mov	y,#$00
 mov	x,#$1b
-mov	a,$03c6
+mov	a,!_03c6
 -
 mov	$fe00+y,a
 inc	y
@@ -504,7 +504,7 @@ mov	y,#$10
 mov	$039f+y,a
 dbnz	y,$06a5
 mov	a,#$96
-mov	$03c6,a
+mov	!_03c6,a
 mov	a,#$bb
 mov	$03cb,a
 call	_648
@@ -2292,7 +2292,7 @@ _25cc:
 dbnz	$d1,-
 call	_2671
 mov	a,#$80
-call	$3e79
+call	_3e79
 mov.b	a,$05
 bmi	_25ee
 bbs6	$05,_25e6
@@ -2321,7 +2321,7 @@ mov	a,#$e0
 
 _25ff:
 mov	$03cb,y
-mov	$03c6,x
+mov	!_03c6,x
 mov	$03fc,a
 call	_648
 clr7	$4a
@@ -2349,7 +2349,7 @@ clr7	$13
 mov.b	a,$ae
 beq	_265c
 mov	x,#$0e
-call	$3e5f
+call	_3e5f
 mov	a,$03fc
 mov	$032f,a
 mov	$030f,a
@@ -2552,7 +2552,7 @@ mov	$44,#$0c
 mov	x,#$0c
 call	dss
 mov	a,#$40
-call	$3e79
+call	_3e79
 clr6	$4a
 mov.b	a,$4a
 mov	y,#$4d
@@ -2637,7 +2637,7 @@ clr7	$13
 mov.b	a,$ac
 beq	+
 mov	x,#$0c
-call	$3e5f
+call	_3e5f
 
 +
 mov.b	a,$9d
@@ -2722,7 +2722,7 @@ setc
 cmp.b	a,$10
 beq	_2960
 bcc	_2960
-jmp	$3eba
+jmp	_3eba
 
 _2960:
 mov.b	a,$11
@@ -2767,7 +2767,7 @@ mov	a,$03f8
 beq	_29be
 mov	a,#$00
 mov	$03f8,a
-call	$3e96
+call	_3e96
 bra	_29be
 
 _29b0:
@@ -2784,7 +2784,7 @@ bra	_29d5
 _29c2:
 jmp	_293f
 _29c5:
-call	$3ea6
+call	_3ea6
 mov	x,$03c0
 mov.b	a,$03
 cmp	a,#$01
@@ -2802,7 +2802,7 @@ bcc	_29eb
 cmp	a,#$18
 bcs	_29eb
 +
-call	$3e87
+call	_3e87
 _29eb:
 mov	a,#$03
 mov	$03a1+x,a
@@ -2895,7 +2895,7 @@ bcs	_2aac
 +
 mov	a,$03ca
 bne	_2aac
-call	$3e96
+call	_3e96
 
 _2aac:
 mov	a,#$00
@@ -2942,7 +2942,7 @@ _2B06:
 call	_2a8e
 jmp	_2a4a
 _2b0c:
-call	$3ea6
+call	_3ea6
 mov	$03c0,x
 mov	a,$0391+x
 mov	y,a
@@ -3005,7 +3005,7 @@ _2B6F:
 ; Pitch and commands
 cmp	a,#$e0				; Command: sample change
 bne	+
-jmp	$3e20				; PROG_CODE_02.asm, returns to _2B27
+jmp	_3e20				; PROG_CODE_02.asm, returns to _2B27
 
 +
 cmp	a,#$f9				; Command Note + Pitch Slide To Note
@@ -3019,7 +3019,7 @@ mov	x,$03c0				; Get audio channel
 mov	y,a
 call	dss
 mov	a,$03c1
-call	$3e79
+call	_3e79
 
 _2B8B:
 mov	x,$03c0
@@ -3030,7 +3030,7 @@ clr7	$13
 mov	x,$03c0
 mov.b	a,$a0+x
 beq	+
-call	$3e5f
+call	_3e5f
 bra	_2bb1
 +
 mov	a,#$02
@@ -3056,7 +3056,7 @@ mov.b	$44,x
 mov	y,a
 call	dss
 mov	a,$03c1
-call	$3e79
+call	_3e79
 
 _2BD6:
 mov	x,#$00
@@ -3086,6 +3086,7 @@ warnpc $2BFF
 ; PROG_CODE_02
 org $3e20
 
+_3e20:
 mov	x,#$00
 incw	$2c
 mov	a,($2c+x)
@@ -3100,67 +3101,80 @@ mov	a,$03c2
 or	 a,#$04
 mov	x,a
 mov	$12,#$04
+
+_3e3e:
 mov	a,($d2)+y
 push	y
 push	x
 pop	y
-call	$060d
+call	apus
 push	y
 pop	x
 pop	y
 inc	x
 inc	y
-dbnz	$12,$3e3e
+dbnz	$12,_3e3e
 mov	a,($d2)+y
 mov	x,$03c0
 mov	$0221+x,a
 inc	y
 mov	a,($d2)+y
 mov	$0220+x,a
-jmp	$2b27
+jmp	_2B27
+
+_3e5f:
 set7	$13
 mov	a,#$60
 mov	y,#$03
 dec.b	$a0+x
-call	$0cc4
+call	_CC4
 mov	a,$0361+x
 mov	y,a
 mov	a,$0360+x
 movw	$10,ya
 mov	$47,#$00
-jmp	$0582
+jmp	dssx
+
+_3e79:
 push	a
 mov	y,#$5c
 mov	a,#$00
-call	$060d
+call	apus
 pop	a
 mov	y,#$4c
-jmp	$060d
+jmp	apus
+
+_3e87:
 mov	a,$03f1
-bne	$3ea5
+bne	_3ea5
 mov.b	a,$59
 mov	$03f1,a
 mov	a,#$88
 mov.b	$59,a
 ret
 
+_3e96:
 mov	a,$03f1
-beq	$3ea5
+beq	_3ea5
 mov	a,$03f1
 mov.b	$59,a
 mov	a,#$00
 mov	$03f1,a
+_3ea5:
 ret
 
+_3ea6:
 mov	a,$03c1
 and.b	a,$4a
-beq	$3eba
+beq	_3eba
 mov.b	a,$4a
 setc
 sbc	a,$03c1
 mov.b	$4a,a
 mov	y,#$4d
-call	$060d
+call	apus
+
+_3eba:
 ret
 
 warnpc $3ebb
