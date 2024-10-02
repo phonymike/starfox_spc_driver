@@ -56,7 +56,7 @@ bne	-
 mov	a,#$96
 mov	!_03c6,a
 mov	a,#$bb
-mov	$03cb,a
+mov	!_03cb,a
 call	_648
 ;................................................
 	mov	a,#$60
@@ -144,9 +144,9 @@ call	_2981
 ;........................................
 	cmp	(!ekin),(!eclr)
 	beq	start50
-	inc	$03c7
+	inc	!_03c7
 ;................................................
-	mov	a,$03c7
+	mov	a,!_03c7
 	lsr	a
 	bcs	start50
 	inc.b	!ekin
@@ -161,7 +161,7 @@ start50:
 	mov.b	!tmpd,a
 	bcc	start60
 ;...................
-	mov	a,$03f8
+	mov	a,!_03f8
 	bne	+
 start55:
 	call	cha			; music
@@ -434,16 +434,16 @@ mov	$12,#$07
 inc	y
 mov	x,#$04
 -
-mov1 c,$0019.6
-eor1	c,$0019.5
-rol	$18
-rol	$19
-mov.b	a,$19
-and	a,$03cb
+mov1	c,!rdm+1.6
+eor1	c,!rdm+1.5
+rol.b	!rdm
+rol.b	!rdm+1
+mov.b	a,!rdm+1
+and	a,!_03cb
 or	a,#$11
 mov	$fe00+y,a
 inc	y
-mov.b	a,$18
+mov.b	a,!rdm
 or	a,#$11
 mov	$fe00+y,a
 inc	y
@@ -476,10 +476,10 @@ mov	$3c80,a
 mov	$3c81,y
 mov	$3c82,a
 mov	$3c83,y
-mov.b	a,$18
-or.b	a,$19
+mov.b	a,!rdm
+or.b	a,!rdm+1
 bne	+
-inc	$18
+inc.b	!rdm
 +
 ret
 ;................................................
@@ -506,7 +506,7 @@ dbnz	y,$06a5
 mov	a,#$96
 mov	!_03c6,a
 mov	a,#$bb
-mov	$03cb,a
+mov	!_03cb,a
 call	_648
 ;................................................
 _6B7:
@@ -1485,7 +1485,7 @@ _B5D:
 	and.b	a,!fkin			; kinshi flag check
 	pop	a
 	beq	swpx
-	mov	$10,#$02
+	mov	!sss,#$02
 	bra	_B7D
 ;................................................
 ;************** sweep check (next data) *********
@@ -1501,10 +1501,10 @@ swpch:
 	mov.b	a,!keyd
 	and.b	a,!fkin
 	beq	+
-	mov	$10,#$04
+	mov	!sss,#$04
 _B7D:
 	call	add_inc			; inc add
-	dbnz	$10,_B7D
+	dbnz	!sss,_B7D
 	bra	swpadsetr
 ;......
 +
@@ -2233,14 +2233,14 @@ mov	a,$030f
 mov	$032f,a
 mov	a,#$0a
 mov	$035f,a
-mov.b	$11,a
-mov	$10,#$00
+mov.b	!kkk,a
+mov.b	!sss,#$00
 mov	x,#$0e
 call	pan20
 ret
 
 _257c:
-mov	a,$03f8
+mov	a,!_03f8
 beq	+
 mov	$01,#$00
 +
@@ -2320,7 +2320,7 @@ mov	x,#$96
 mov	a,#$e0
 
 _25ff:
-mov	$03cb,y
+mov	!_03cb,y
 mov	!_03c6,x
 mov	$03fc,a
 call	_648
@@ -2360,7 +2360,7 @@ mov	x,#$0e
 mov	a,$0331+x
 mov	y,a
 mov	a,$0330+x
-movw	$10,ya
+movw	!sss,ya
 mov	a,#$0e
 call	pan20
 ret
@@ -2369,7 +2369,7 @@ _265c:
 mov	a,#$70
 mov.b	$ae,a
 mov	$af,#$00
-mov.b	a,$18
+mov.b	a,!rdm
 and	a,#$03
 or	 a,#$a4
 mov	x,#$0e
@@ -2469,14 +2469,14 @@ mov	a,$030d
 mov	$032d,a
 mov	a,$03fb
 mov	$035d,a
-mov.b	$11,a
-mov	$10,#$00
+mov.b	!kkk,a
+mov.b	!sss,#$00
 mov	x,#$0c
 call	pan20
 ret
 
 _2749:
-mov	a,$03f8
+mov	a,!_03f8
 beq	+
 mov	$02,#$00
 
@@ -2617,7 +2617,7 @@ sbc	a,$033d
 mov	x,$03f6
 mov.b	$9d,x
 call	divx
-movw	$10,ya
+movw	!sss,ya
 mov	$034c,a
 mov	a,y
 mov	$034d,a
@@ -2650,7 +2650,7 @@ call	_CC4
 mov	a,$033d
 mov	y,a
 mov	a,$033c
-movw	$10,ya
+movw	!sss,ya
 mov	x,#$0c
 call	pan20
 
@@ -2707,9 +2707,9 @@ _2930:
 
 _293f:
 mov.b	x,$03
-mov.b	$11,x
+mov.b	!kkk,x
 mov	a,$0fdf+x
-mov.b	$10,a
+mov.b	!sss,a
 xcn	a
 and	a,#$0f
 asl	a
@@ -2719,21 +2719,21 @@ beq	_2960
 mov	x,a
 mov	a,$0fdf+x
 setc
-cmp.b	a,$10
+cmp.b	a,!sss
 beq	_2960
 bcc	_2960
 jmp	_3eba
 
 _2960:
-mov.b	a,$11
+mov.b	a,!kkk
 mov	$03a0+y,a
-mov.b	$10,y
+mov.b	!sss,y
 mov	a,#$01
-lsr	$10
+lsr.b	!sss
 beq	_2971
 -
 asl	a
-dbnz	$10,-
+dbnz	!sss,-
 
 _2971:
 mov	$03c1,a
@@ -2763,10 +2763,10 @@ bcc	_29c2
 ret
 
 _29A1:
-mov	a,$03f8
+mov	a,!_03f8
 beq	_29be
 mov	a,#$00
-mov	$03f8,a
+mov	!_03f8,a
 call	_3e96
 bra	_29be
 
@@ -2774,7 +2774,7 @@ _29b0:
 mov.b	a,$1a
 and	a,#$c0
 eor	a,#$ff
-mov	$03f8,a
+mov	!_03f8,a
 mov	y,#$5c
 call	apus
 
@@ -2972,7 +2972,7 @@ mov	y,$03c0				; Get audio channel
 mov	$03b1+y,a			; store duration
 incw	$2c				; sound effect data pointer
 mov	a,($2c+x)			; Get next byte of sound effect data
-mov.b	$10,a				; Store it as volume
+mov.b	!sss,a				; Store it as volume
 bmi	_2B6F
 
 ; Value is under 80
@@ -2985,7 +2985,7 @@ bpl	_2B62				; Branch if byte is a volume setting (under $80)
 
 ; Set default volume
 mov	x,a				; store data byte
-mov.b	a,$10				; Get last volume used
+mov.b	a,!sss				; Get last volume used
 mov	y,$03c2				; Get DSP register address
 inc	y
 call	apus				; Set DSP register (volume)
@@ -3131,7 +3131,7 @@ call	_CC4
 mov	a,$0361+x
 mov	y,a
 mov	a,$0360+x
-movw	$10,ya
+movw	!sss,ya
 mov	$47,#$00
 jmp	dssx
 
