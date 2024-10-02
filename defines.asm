@@ -151,36 +151,47 @@
 ;
 !vol = $0210				; vol store
 !snos = $0211				; sno store
+!_021d = $021d				; used once
 !_021f = $021f
 ;........................................
 !bls = $0220				; block su (2byte)
+!_022e = $022e				; used once
+!_022f = $022f				; used once
 ;........................................
 !adt = $0230				; add taihi (2byte)
 !adp = $0240				; add store (2byte)
 !_0250 = $0250
+!_028c = $028c				; used twice
 ;........................................
 !ptc = $0080				; pattern count
 ;........................................
 !pvoc = $0090				; (@)
 !pvodw = $0300				; (addw)
 !pvod = $0301				; (addw)
+!_030d = $030d
 !_030f = $030f
 !pvoadw = $0310				; (addw)
 !pvoad = $0311				; (addw)
+!_031c = $031c				; used twice
+!_031d = $031d				; used twice
 !_031e = $031e				; used once
 !_031f = $031f				; used once
 !pvom = $0320				; (addw)
 !volx = $0321				; tre x mvo x pvo x vol
+!_032c = $032c				; used twice
+!_032d = $032d
 !_032f = $032f
 !_032e = $032e
 ;
 !panc = $0091				; (@)
 !pandw = $0330				; (addw)
 !pand = $0331				; (addw)
+!_033f = $033f				; used once
 !panadw = $0340				; (addw)
 !panad = $0341				; (addw)
 !panm = $0350				; (addw)
 !panf = $0351				; pan phase
+!_035d = $035d				; used once
 !_035f = $035f				; used twice
 ;
 !swpc = $00a0				; (@)
@@ -192,11 +203,15 @@
 !swpm = $0380				; (addw)
 !tund = $0381				; part tun
 
+!_9c = $9c
+!_9d = $9d
 !_9e = $9e
+!_ac = $ac
 !_ae = $ae
 !_af = $af				; used twice
 !_d1 = $d1
 
+!_038d = $038d				; used twice
 !_038f = $038f
 !_0390 = $0390
 !_0391 = $0391
@@ -211,9 +226,12 @@
 !_03d0 = $03d0
 !_03e0 = $03e0
 !_03e1 = $03e1
+!_03ec = $03ec				; used once
+!_03ed = $03ed				; used once
 !_03ee = $03ee
 !_03ef = $03ef
 !_03f1 = $03f1
+!_03f6 = $03f6
 !_03f8 = $03f8
 !_03fc = $03fc				; used twice
 ;........................................

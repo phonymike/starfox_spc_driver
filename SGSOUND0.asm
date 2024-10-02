@@ -2346,7 +2346,7 @@ call	swpadset
 ret
 
 _262f:
-clr7	$13
+clr7	!uuu
 mov.b	a,!_ae
 beq	_265c
 mov	x,#$0e
@@ -2356,11 +2356,11 @@ mov	!_032f,a
 mov	!_030f,a
 mov	a,#$0a
 mov	!_035f,a
-mov	$033f,a
+mov	!_033f,a
 mov	x,#$0e
-mov	a,$0331+x
+mov	a,!pand+x
 mov	y,a
-mov	a,$0330+x
+mov	a,!pandw+x
 movw	!sss,ya
 mov	a,#$0e
 call	pan20
@@ -2372,14 +2372,14 @@ mov.b	!_ae,a
 mov	!_af,#$00
 mov.b	a,!rdm
 and	a,#$03
-or	 a,#$a4
+or	a,#$a4
 mov	x,#$0e
-mov.b	$44,x
+mov.b	!chn,x
 call	swpadset
 ret
 
 _2671:
-mov.b	a,$05
+mov.b	a,!sf1
 and	a,#$c0
 clrc
 rol	a
@@ -2390,17 +2390,18 @@ mov	y,#$06
 mul	ya
 mov	x,a
 mov	y,#$74
-mov	$12,#$04
+mov	!ttt,#$04
+-
 mov	a,_269C+x
 call	apus
 inc	x
 inc	y
-dbnz	$12,$2683
+dbnz	!ttt,-
 mov	a,_269C+x
-mov	$022f,a
+mov	!_022f,a
 inc	x
 mov	a,_269C+x
-mov	$022e,a
+mov	!_022e,a
 ret
 
 _269C:
@@ -2414,26 +2415,26 @@ _26b4:
 
 _26c4:
 mov	a,#$00
-mov.b	$06,a
-mov.b	$0d,a
-mov	$03f6,a
-mov.b	$ac,a
-mov.b	$9c,a
-mov.b	$9d,a
-mov	$032d,a
-mov	$030d,a
-mov	a,$03ec
-mov	$038d,a
-mov	a,$03ed
-mov	$028c,a
-clr6	$1a
+mov.b	!sf2,a
+mov.b	!sf3c,a
+mov	!_03f6,a
+mov.b	!_ac,a
+mov.b	!_9c,a
+mov.b	!_9d,a
+mov	!_032d,a
+mov	!_030d,a
+mov	a,!_03ec
+mov	!_038d,a
+mov	a,!_03ed
+mov	!_028c,a
+clr6	!fkin
 mov	x,#$0c
-mov	a,$021d
+mov	a,!_021d
 call	snox
 mov	a,!_03c3
 and	a,#$40
 beq	_26fd
-set6	$4a
+set6	!eons
 mov	y,#$4d
 call	apus
 
@@ -2443,20 +2444,20 @@ mov	y,#$5c
 jmp	apus
 
 _2704:
-mov	x,$03f6
-mov.b	$9c,x
+mov	x,!_03f6
+mov.b	!_9c,x
 mov	a,#$00
-mov	$032c,a
-mov.b	x,$9c
+mov	!_032c,a
+mov.b	x,!_9c
 setc
-sbc	a,$030d
+sbc	a,!_030d
 call	divx
-mov	$031c,a
+mov	!_031c,a
 mov	a,y
-mov	$031d,a
+mov	!_031d,a
 
 _271e:
-mov.b	a,$9c
+mov.b	a,!_9c
 bne	+
 ret
 
@@ -2466,12 +2467,12 @@ beq	_26c4
 mov	a,#$00
 mov	y,#$03
 mov	x,#$0c
-dec	$9c
+dec	!_9c
 call	_CC4
-mov	a,$030d
-mov	$032d,a
+mov	a,!_030d
+mov	!_032d,a
 mov	a,$03fb
-mov	$035d,a
+mov	!_035d,a
 mov.b	!kkk,a
 mov.b	!sss,#$00
 mov	x,#$0c
@@ -2484,61 +2485,61 @@ beq	+
 mov	$02,#$00
 
 +
-mov	y,$0a
-cmp	y,$02
+mov.b	y,!fl2s
+cmp.b	y,!fl2
 beq	_277d
-mov.b	a,$02
-mov.b	$06,a
-mov.b	$0a,a
+mov.b	a,!fl2
+mov.b	!sf2,a
+mov.b	!fl2s,a
 and	a,#$c0
 beq	_2704
 mov	a,y
-eor.b	a,$02
+eor.b	a,!fl2
 and	a,#$0f
 bne	_2779
-mov.b	a,$0d
+mov.b	a,!sf3c
 bne	_27a4
 mov	a,y
-eor.b	a,$02
+eor.b	a,!fl2
 and	a,#$30
 beq	+
 jmp	_27ff
 +
 jmp	_2839
 _2779:
-mov.b	a,$02
+mov.b	a,!fl2
 bne	_278D
 
 _277d:
-mov.b	a,$02
+mov.b	a,!fl2
 beq	_271e
-mov.b	a,$0d
+mov.b	a,!sf3c
 bne	_27a4
-mov.b	a,$06
+mov.b	a,!sf2
 beq	_278C
 jmp	_285f
 _278C:
 ret
 _278D:
-mov	$0d,#$02
+mov	!sf3c,#$02
 mov	a,#$40
 mov	y,#$5c
 call	apus
-set6	$1a
+set6	!fkin
 mov	a,#$00
-mov	$028c,a
-mov.b	$ac,a
-mov	$038d,a
+mov	!_028c,a
+mov.b	!_ac,a
+mov	!_038d,a
 ret
 _27a4:
 dbnz	$0d,_278C
-mov.b	a,$06
+mov.b	a,!sf2
 and	a,#$0f
 setc
 sbc	a,#$01
 mov	x,a
 mov	a,_2921+x
-mov	$03f6,a
+mov	!_03f6,a
 mov	a,_2930+x
 mov	$03f9,a
 mov	a,x
@@ -2565,8 +2566,8 @@ and	a,#$30
 xcn	a
 mov	x,a
 mov	a,_291d+x
-mov	$032d,a
-mov	$030d,a
+mov	!_032d,a
+mov	!_030d,a
 mov.b	a,$06
 and	a,#$c0
 xcn	a
@@ -2577,8 +2578,8 @@ mov	a,_2919+x
 mov	$033d,a
 
 _27ff:
-mov	x,$03f6
-mov.b	$9c,x
+mov	x,!_03f6
+mov.b	!_9c,x
 mov.b	a,$06
 and	a,#$30
 bne	_280f
@@ -2587,7 +2588,7 @@ bne	_2811
 _280f:
 mov	a,#$ad
 _2811:
-mov.b	$ac,x
+mov.b	!_ac,x
 mov	$ad,#$00
 mov	x,#$0c
 mov.b	$44,x
@@ -2597,14 +2598,14 @@ and	a,#$30
 xcn	a
 mov	x,a
 mov	a,_291d+x
-mov	$032c,a
-mov.b	x,$9c
+mov	!_032c,a
+mov.b	x,!_9c
 setc
-sbc	a,$030d
+sbc	a,!_030d
 call	divx
-mov	$031c,a
+mov	!_031c,a
 mov	a,y
-mov	$031d,a
+mov	!_031d,a
 _2839:
 mov.b	a,$06
 and	a,#$c0
@@ -2617,38 +2618,38 @@ mov	$03fb,a
 mov	$035c,a
 setc
 sbc	a,$033d
-mov	x,$03f6
-mov.b	$9d,x
+mov	x,!_03f6
+mov.b	!_9d,x
 call	divx
 movw	!sss,ya
 mov	$034c,a
 mov	a,y
 mov	$034d,a
 _285f:
-mov.b	a,$9c
+mov.b	a,!_9c
 beq	_2874
 mov	a,#$00
 mov	y,#$03
 mov	x,#$0c
-dec	$9c
+dec	!_9c
 call	_CC4
-mov	a,$030d
-mov	$032d,a
+mov	a,!_030d
+mov	!_032d,a
 
 _2874:
 clr7	$13
-mov.b	a,$ac
+mov.b	a,!_ac
 beq	+
 mov	x,#$0c
 call	_3e5f
 
 +
-mov.b	a,$9d
+mov.b	a,!_9d
 beq	_289c
 mov	a,#$30
 mov	y,#$03
 mov	x,#$0c
-dec	$9d
+dec	!_9d
 call	_CC4
 mov	a,$033d
 mov	y,a
