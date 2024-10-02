@@ -1711,7 +1711,7 @@ panr:
 	ret
 ;................................................
 _CC1:
-or	(!vols),(!keyd)		; vol set flag 
+or	(!vols),(!keyd)			; vol set flag 
 _CC4:
 movw	!adx,ya
 movw	!adx+2,ya
@@ -1974,10 +1974,10 @@ sppy:
 ;
 	call	swpdset			; kkk sss <-- swpd swpdw
 ;...
-	mov.b	a,!swpc+x			; sweep chu ?
+	mov.b	a,!swpc+x		; sweep chu ?
 	beq	vbby
 ;
-	mov.b	a,!swphc+x			; hold chu?
+	mov.b	a,!swphc+x		; hold chu?
 	bne	vbby
 ;...................
 	mov	a,!swpad+x
@@ -2179,35 +2179,34 @@ _0f20:
 
 incbin	0F21-109C.bin
 
-_109d:
-;incbin	109D-24FC.bin
-
 ; $109D table begins (don't use first value 2F2E), 2 bytes, 192 pointers
 ; Names taken from SFEX 1.08.2
-    dw $2F2E, _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2
-    dw _21EB, _236A, _2372, _2110, _213C, _13F8, _1B32, _2024
-    dw _207D, _205D, _2015, _1B05, _1A66, _1A46, _1A4F, _1A58
-    dw _169C, _21E5, _1650, _1633, _15FE, _1F73, _223B, _227D
-    dw _22BF, _2220, _222F, _2235, _2202, _220C, _2216, _2358
-    dw _235E, _2364, _1DBE, _1EF2, _1E9B, _1EC3, _1F9B, _1F06
-    dw _232A, _2341, _20F2, _2106, _15F6, _2324, _234A, _234A
-    dw _2001, _1FAF, _1FF9, _1FC3, _218D, _2193, _2199, _20A5
-    dw _20B5, _20C4, _20D4, _20E3, _21B7, _21BE, _21C4, _21CB
-    dw _21D1, _219F, _21A7, _21AF, _216D, _217D, _1E7A, _1E21
-    dw _1E82, _1E66, _1B8A, _1B9E, _1BB2, _1BC6, _1B84, _168B
-    dw _1C4A, _1C96, _1C87, _1CA5, _1D49, _1D5D, _1D71, _12A3
-    dw _1D85, _1886, _1920, _19A1, _1DA4, _1DB8, _15AE, _1DC7
-    dw _1DCD, _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37
-    dw _1C37, _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15
-    dw _1E1B, _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06
-    dw _1817, _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594
-    dw _157F, _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481
-    dw _1391, _1364, _132E, _1324, _131A, _1ABF, _182E, _130F
-    dw _12F1, _12E7, _1A92, _1F30, _129D, _126B, _1287, _1249
-    dw _122F, _121D, _1223, _1228, _12D2, _1578, _1281, _1379
-    dw _149E, _14D4, _1ABC, _166C, _1779, _182B, _1B1A, _1B5B
-    dw _208F, _206B, _203F, _1FDC, _1CF7, _22D1, _22E9, _228F
-    dw _22A7, _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
+_109d:
+	dw $2F2E, _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2
+	dw _21EB, _236A, _2372, _2110, _213C, _13F8, _1B32, _2024
+	dw _207D, _205D, _2015, _1B05, _1A66, _1A46, _1A4F, _1A58
+	dw _169C, _21E5, _1650, _1633, _15FE, _1F73, _223B, _227D
+	dw _22BF, _2220, _222F, _2235, _2202, _220C, _2216, _2358
+	dw _235E, _2364, _1DBE, _1EF2, _1E9B, _1EC3, _1F9B, _1F06
+	dw _232A, _2341, _20F2, _2106, _15F6, _2324, _234A, _234A
+	dw _2001, _1FAF, _1FF9, _1FC3, _218D, _2193, _2199, _20A5
+	dw _20B5, _20C4, _20D4, _20E3, _21B7, _21BE, _21C4, _21CB
+	dw _21D1, _219F, _21A7, _21AF, _216D, _217D, _1E7A, _1E21
+	dw _1E82, _1E66, _1B8A, _1B9E, _1BB2, _1BC6, _1B84, _168B
+	dw _1C4A, _1C96, _1C87, _1CA5, _1D49, _1D5D, _1D71, _12A3
+	dw _1D85, _1886, _1920, _19A1, _1DA4, _1DB8, _15AE, _1DC7
+	dw _1DCD, _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37
+	dw _1C37, _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15
+	dw _1E1B, _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06
+_119d:
+	dw _1817, _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594
+	dw _157F, _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481
+	dw _1391, _1364, _132E, _1324, _131A, _1ABF, _182E, _130F
+	dw _12F1, _12E7, _1A92, _1F30, _129D, _126B, _1287, _1249
+	dw _122F, _121D, _1223, _1228, _12D2, _1578, _1281, _1379
+	dw _149E, _14D4, _1ABC, _166C, _1779, _182B, _1B1A, _1B5B
+	dw _208F, _206B, _203F, _1FDC, _1CF7, _22D1, _22E9, _228F
+	dw _22A7, _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
 
 ; make sure pointer table isn't too big
 warnpc $121d
@@ -3920,7 +3919,7 @@ mov	a,!_03a0+x
 asl	a
 mov	y,a
 bcs	_2a7b
-mov	a,$109e+y
+mov	a,_109d+1+y
 mov	!_0391+x,a
 mov.b	!adk+1,a
 mov	a,_109d+y
@@ -3928,10 +3927,10 @@ mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
 _2a7b:
-mov	a,$119e+y
+mov	a,_119d+1+y
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,$119d+y
+mov	a,_119d+y
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
@@ -3970,24 +3969,24 @@ mov	a,!sf3
 setc
 sbc	a,!_03c1
 mov	!sf3,a
-mov.b	$44,x
-mov	a,$0211+x
+mov.b	!chn,x
+mov	a,!snos+x
 call	snox
 mov	a,!_03c1
 and	a,!_03c3
 beq	_2b02
-and.b	a,$4a
+and.b	a,!eons
 bne	_2b02
-mov.b	a,$4a
+mov.b	a,!eons
 clrc
 adc	a,!_03c1
-mov.b	$4a,a
+mov.b	!eons,a
 mov	y,#$4d
 call	apus
-mov	a,$03f3
+mov	a,!_03f3
 setc
 sbc	a,!_03c1
-mov	$03f3,a
+mov	!_03f3,a
 _2b02:
 mov	x,!_03c0
 ret
@@ -4003,16 +4002,16 @@ mov	a,!_0391+x
 mov	y,a
 mov	a,!_0390+x
 movw	!adk,ya
-mov	a,$03b0+x
+mov	a,!_03b0+x
 dec	a
-mov	$03b0+x,a
+mov	!_03b0+x,a
 beq	_2B27
 jmp	_2b94
 
 _2B27:					; Jumped to from PROG_CODE_02.asm
 incw	!adk				; sound effect data pointer
 _2b29:
-mov	a,!_03c0				; Get audio channel
+mov	a,!_03c0			; Get audio channel
 xcn	a
 lsr	a
 mov	!_03c2,a
@@ -4023,15 +4022,15 @@ bmi	_2B6F				; Pitch and commands are 80 and over
 
 _2B39:
 ; Sample duration
-mov	y,!_03c0				; Get audio channel
-mov	$03b1+y,a			; store duration
+mov	y,!_03c0			; Get audio channel
+mov	!_03b1+y,a			; store duration
 incw	!adk				; sound effect data pointer
 mov	a,(!adk+x)			; Get next byte of sound effect data
 mov.b	!sss,a				; Store it as volume
 bmi	_2B6F
 
 ; Value is under 80
-mov	y,!_03c2				; Get DSP register address
+mov	y,!_03c2			; Get DSP register address
 call	apus				; Set DSP register (which?)
 mov	x,#$00
 incw	!adk
@@ -4041,7 +4040,7 @@ bpl	_2B62				; Branch if byte is a volume setting (under $80)
 ; Set default volume
 mov	x,a				; store data byte
 mov.b	a,!sss				; Get last volume used
-mov	y,!_03c2				; Get DSP register address
+mov	y,!_03c2			; Get DSP register address
 inc	y
 call	apus				; Set DSP register (volume)
 mov	a,x				; restore data byte
@@ -4049,7 +4048,7 @@ bra	_2B6F
 
 _2B62:
 ; Set new volume level
-mov	y,!_03c2				; Get DSP register address
+mov	y,!_03c2			; Get DSP register address
 inc	y
 call	apus				; Set DSP register (volume)
 mov	x,#$00
@@ -4070,7 +4069,7 @@ cmp	a,#$f1				; Command Note Pitch Envelope
 beq	_2BD6
 
 ; Pitch
-mov	x,!_03c0				; Get audio channel
+mov	x,!_03c0			; Get audio channel
 mov	y,a
 call	dss
 mov	a,!_03c1
@@ -4078,8 +4077,8 @@ call	_3e79
 
 _2B8B:
 mov	x,!_03c0
-mov	a,$03b1+x
-mov	$03b0+x,a
+mov	a,!_03b1+x
+mov	!_03b0+x,a
 _2b94:
 clr7	$13
 mov	x,!_03c0
@@ -4089,7 +4088,7 @@ call	_3e5f
 bra	_2bb1
 +
 mov	a,#$02
-cmp	a,$03b0+x
+cmp	a,!_03b0+x
 bne	_2bb1
 mov	a,!_03c1
 mov	y,#$5c
