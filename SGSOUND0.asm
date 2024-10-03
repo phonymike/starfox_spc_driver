@@ -2666,7 +2666,7 @@ _1ABF: ; Spinning core bg thunder
 	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
 	db $7F, $F1, $00, $7D, $8C, $00
 
-_1B05:
+_1B05: ; Jingle + good luck -bgm 4-
 	db $E0, $01, $08, $1E, $B7, $B9, $08, $14
 	db $B9, $0C, $14, $B9, $0C, $0A, $08, $B9
 	db $18, $08, $00, $B9, $00
@@ -3225,12 +3225,12 @@ _237A:
 _2383: ; Pause
 	db $E0, $00, $08, $00, $B0, $10, $1E, $B0
 	db $30, $1E, $BC, $00
-	
+
 ; make sure patterns aren't too big
 warnpc $238f
 
-incbin	238F-24FC.bin			; 61 instrument params?
-
+;incbin	238F-24FC.bin			; 61 instrument params?
+incsrc patches.asm
 
 _24FD:
 mov	a,#$80
