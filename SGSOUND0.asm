@@ -424,8 +424,8 @@ apusr:
 ;
 ;................................................
 _614:
-dec	$d0
-mov.b	a,$d0
+dec	!_d0
+mov.b	a,!_d0
 and	a,#$03
 mov	y,#$3f
 mul	ya
@@ -684,7 +684,7 @@ char:
 ;		music enso routin
 ;************************************************
 cha:
-	mov.b	a,$00
+	mov.b	a,!fl0
 	beq	cha02
 	jmp	decode_commands
 cha02:
@@ -1581,7 +1581,7 @@ spft:
 	dw snox,panx,pamx,vibx,vofx,mv1x,mv2x,tp1x,tp2x
 	dw ktpx,ptpx,trex,tofx,pv1x,pv2x,patx,vchx,swkx,swsx,sofx
 	;dw tunx,ecvx,eofx,edlx,ev2x,swpx,wavx
-	dw $0A82,ecvx,eofx,edlx,ev2x,_B5D,wavx
+	dw tunx,ecvx,eofx,edlx,ev2x,_B5D,wavx
 	;dw                                    selx,cutx,fftx,plyx	; !! test !!
 spfp:
 	db $01, $01, $02, $03, $00, $01, $02, $01, $02
@@ -1769,7 +1769,7 @@ key10:
 -
 	inc	y
 	bmi	key20
-	mov	a,($14)+y
+	mov	a,(!adx)+y
 	bpl	-
 ;
 key14:
@@ -3244,7 +3244,7 @@ mov	y,#$4d
 call	apus
 
 _2512:
-mov	$05,#$00
+mov	!sf1,#$00
 clr7	!fkin
 mov	x,#$0e
 mov	a,!_021f
@@ -3535,7 +3535,7 @@ ret
 _2749:
 mov	a,!_03f8
 beq	+
-mov	$02,#$00
+mov	!fl2,#$00
 
 +
 mov.b	y,!fl2s
@@ -3585,7 +3585,7 @@ mov.b	!_ac,a
 mov	!_038d,a
 ret
 _27a4:
-dbnz	$0d,_278C
+dbnz	!sf3c,_278C
 mov.b	a,!sf2
 and	a,#$0f
 setc
@@ -4084,7 +4084,7 @@ mov	x,!_03c0
 mov	a,!_03b1+x
 mov	!_03b0+x,a
 _2b94:
-clr7	$13
+clr7	!uuu
 mov	x,!_03c0
 mov.b	a,!swpc+x
 beq	+
@@ -4110,7 +4110,7 @@ mov	x,#$00
 incw	!adk
 mov	a,(!adk+x)
 mov	x,!_03c0
-mov.b	$44,x
+mov.b	!chn,x
 mov	y,a
 call	dss
 mov	a,!_03c1
@@ -4133,7 +4133,7 @@ incw	!adk
 mov	a,(!adk+x)
 pop	y
 mov	x,!_03c0
-mov.b	$44,x
+mov.b	!chn,x
 call	swpadset
 jmp	_2B8B
 

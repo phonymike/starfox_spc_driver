@@ -218,6 +218,7 @@
 !_ad = $ad				; used once
 !_ae = $ae
 !_af = $af				; used twice
+!_d0 = $d0				; used twice
 !_d1 = $d1
 !_d2 = $d2				; word
 
