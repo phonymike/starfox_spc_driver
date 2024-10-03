@@ -3088,10 +3088,10 @@ _21CB: ; Mid enemy laser shot
 _21D1: ; Far enemy laser shot
 	db $E0, $09, $30, $1E, $95, $00
 
-_21D7:
+_21D7: ; Right wing damaged
 	db $E0, $05, $30, $0A, $5A, $A9, $00
 
-_21DE:
+_21DE: ; Left wing damaged
 	db $E0, $05, $30, $5A, $0A, $A9, $00
 
 _21E5: ; Wingless arwing collision
@@ -3229,7 +3229,7 @@ _2383: ; Pause
 ; make sure patterns aren't too big
 warnpc $238f
 
-incbin	238F-24FC.bin
+incbin	238F-24FC.bin			; 61 instrument params?
 
 
 _24FD:
@@ -3923,10 +3923,10 @@ mov	a,!_03a0+x
 asl	a
 mov	y,a
 bcs	_2a7b
-mov	a,_109d+1+y
+mov	a,_109d+1+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_109d+y
+mov	a,_109d+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
