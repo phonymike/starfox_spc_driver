@@ -2183,7 +2183,7 @@ incbin	0F21-0FDE.bin
 _0fdf:
 incbin	0FDF-109C.bin
 
-; $109D table begins (don't use first value 2F2E), 2 bytes, 192 pointers
+; $109D table begins (don't use first value 2F2E), 2 bytes, 191 pointers
 ; Names taken from SFEX 1.08.2
 _109d:
 	dw $2F2E, _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2
