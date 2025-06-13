@@ -2204,7 +2204,6 @@ _109d:
 	dw _1DCD, _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37
 	dw _1C37, _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15
 	dw _1E1B, _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06
-_119d:
 	dw _1817, _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594
 	dw _157F, _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481
 	dw _1391, _1364, _132E, _1324, _131A, _1ABF, _182E, _130F
@@ -3921,9 +3920,9 @@ mov	!_03a1+x,a
 beq	+
 jmp	_2a4a
 +
-mov	a,!_03a0+x
-asl	a
-mov	y,a
+mov	a,!_03a0+x			; get sound effect index number
+asl	a				; double it to get pointer
+mov	y,a				; check if over 255
 bcs	_2a7b
 mov	a,_109d+1+y			; sound effect data pointer high
 mov	!_0391+x,a
@@ -3933,10 +3932,10 @@ mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
 _2a7b:
-mov	a,_119d+1+y
+mov	a,_109d+256+1+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_119d+y
+mov	a,_109d+256+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
