@@ -15,7 +15,7 @@ volt:
 	db $19, $32, $4C, $65, $72, $7F, $8C, $98
 	db $A5, $B2, $BF, $CB, $D8, $E5, $F2, $FC
 
-warnpc $3f00
+assert pc() <= $3f00, "Used too much space"
 
 
 ; ===============================================
@@ -2214,7 +2214,7 @@ _119d:
 	dw _22A7, _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
 
 ; make sure pointer table isn't too big
-warnpc $121d
+assert pc() <= $121d, "Used too much space"
 
 ; ===========================
 ; begin sound effect patterns
@@ -3228,7 +3228,7 @@ _2383: ; Pause
 	db $30, $1E, $BC, $00
 
 ; make sure patterns aren't too big
-warnpc $238f
+assert pc() <= $238f, "Used too much space"
 
 ;incbin	238F-24FC.bin			; 61 instrument params?
 incsrc patches.asm
@@ -4138,7 +4138,7 @@ mov.b	!chn,x
 call	swpadset
 jmp	_2B8B
 
-warnpc $2BFF
+assert pc() <= $2bff, "Used too much space"
 
 
 ; ===============================================
@@ -4236,4 +4236,4 @@ call	apus
 _3eba:
 ret
 
-warnpc $3ebb
+assert pc() <= $3ebb, "Used too much space"
