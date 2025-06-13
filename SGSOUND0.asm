@@ -1,12 +1,11 @@
 ; Asar 1.91
 org $008000
-arch spc700-inline
-startpos $400
+arch spc700
 
 
 ; ===============================================
 ; PROG_CODE_00
-org $3ee8
+spcblock $3ee8 nspc
 
 gate:
 	db $32, $65, $7F, $98, $B2, $CB, $E5, $FC
@@ -17,10 +16,12 @@ volt:
 
 assert pc() <= $3f00, "Used too much space"
 
+endspcblock
+
 
 ; ===============================================
 ; PROG_CODE_01
-org $400
+spcblock $400 nspc
 
 incsrc defines.asm
 incsrc KAN.asm
@@ -4140,10 +4141,12 @@ jmp	_2B8B
 
 assert pc() <= $2bff, "Used too much space"
 
+endspcblock
+
 
 ; ===============================================
 ; PROG_CODE_02
-org $3e20
+spcblock $3e20 nspc
 
 _3e20:
 mov	x,#$00
@@ -4237,3 +4240,5 @@ _3eba:
 ret
 
 assert pc() <= $3ebb, "Used too much space"
+
+endspcblock execute $400
