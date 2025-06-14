@@ -825,10 +825,10 @@ tx15:
 	mov	a,volt+y
 	mov	!vol+x,a		; vol set
 ;...................
-;	mov	kkk,a			; X 2.5
-;	lsr	kkk
+;	mov	!kkk,a			; X 2.5
+;	lsr	!kkk
 ;	asl	a
-;	adc	a,kkk
+;	adc	a,!kkk
 ;	mov	!ngg+x,a		; Gate off (%) set
 ;... 
 ;	call	data_in			; data in & inc add
@@ -1351,7 +1351,7 @@ ecvx:
 ;		echo volume move
 ;************************************************
 ev2x:
-	;call	!data_in		; data in & inc add
+	;call	data_in		; data in & inc add
 	mov.b	!evoc,a			; evol (count)
 ;......
 	call	data_in			; data in & inc add
