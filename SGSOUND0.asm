@@ -3815,7 +3815,7 @@ mov	y,#$00
 mov.b	!fl3,y
 mov.b	a,!fl3
 beq	+
-cmp	a,#$b0
+cmp	a,#$b0				; Sound FX ID overflow check, thanks KungFuFurby
 bcc	_29c2
 +
 ret
