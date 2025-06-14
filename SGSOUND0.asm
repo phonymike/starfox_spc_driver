@@ -2175,43 +2175,42 @@ ten40:
 	mov	x,#$31			; in port clear
 	mov	!cont,x
 
-_0f20:
 	ret
 ;........................................
 
+_0f21:
+incbin	0F21-0FDF.bin
 
-incbin	0F21-0FDE.bin
+_0fe0:
+incbin	0FE0-109E.bin
 
-_0fdf:
-incbin	0FDF-109C.bin
-
-; $109D table begins (don't use first value 2F2E), 2 bytes, 191 pointers
+; $109F table begins, 2 bytes, 191 pointers
 ; Names taken from SFEX 1.08.2
-_109d:
-	dw $2F2E, _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2
-	dw _21EB, _236A, _2372, _2110, _213C, _13F8, _1B32, _2024
-	dw _207D, _205D, _2015, _1B05, _1A66, _1A46, _1A4F, _1A58
-	dw _169C, _21E5, _1650, _1633, _15FE, _1F73, _223B, _227D
-	dw _22BF, _2220, _222F, _2235, _2202, _220C, _2216, _2358
-	dw _235E, _2364, _1DBE, _1EF2, _1E9B, _1EC3, _1F9B, _1F06
-	dw _232A, _2341, _20F2, _2106, _15F6, _2324, _234A, _234A
-	dw _2001, _1FAF, _1FF9, _1FC3, _218D, _2193, _2199, _20A5
-	dw _20B5, _20C4, _20D4, _20E3, _21B7, _21BE, _21C4, _21CB
-	dw _21D1, _219F, _21A7, _21AF, _216D, _217D, _1E7A, _1E21
-	dw _1E82, _1E66, _1B8A, _1B9E, _1BB2, _1BC6, _1B84, _168B
-	dw _1C4A, _1C96, _1C87, _1CA5, _1D49, _1D5D, _1D71, _12A3
-	dw _1D85, _1886, _1920, _19A1, _1DA4, _1DB8, _15AE, _1DC7
-	dw _1DCD, _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37
-	dw _1C37, _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15
-	dw _1E1B, _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06
-	dw _1817, _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594
-	dw _157F, _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481
-	dw _1391, _1364, _132E, _1324, _131A, _1ABF, _182E, _130F
-	dw _12F1, _12E7, _1A92, _1F30, _129D, _126B, _1287, _1249
-	dw _122F, _121D, _1223, _1228, _12D2, _1578, _1281, _1379
-	dw _149E, _14D4, _1ABC, _166C, _1779, _182B, _1B1A, _1B5B
-	dw _208F, _206B, _203F, _1FDC, _1CF7, _22D1, _22E9, _228F
-	dw _22A7, _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
+_109f:
+	dw _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2, _21EB
+	dw _236A, _2372, _2110, _213C, _13F8, _1B32, _2024, _207D
+	dw _205D, _2015, _1B05, _1A66, _1A46, _1A4F, _1A58, _169C
+	dw _21E5, _1650, _1633, _15FE, _1F73, _223B, _227D, _22BF
+	dw _2220, _222F, _2235, _2202, _220C, _2216, _2358, _235E
+	dw _2364, _1DBE, _1EF2, _1E9B, _1EC3, _1F9B, _1F06, _232A
+	dw _2341, _20F2, _2106, _15F6, _2324, _234A, _234A, _2001
+	dw _1FAF, _1FF9, _1FC3, _218D, _2193, _2199, _20A5, _20B5
+	dw _20C4, _20D4, _20E3, _21B7, _21BE, _21C4, _21CB, _21D1
+	dw _219F, _21A7, _21AF, _216D, _217D, _1E7A, _1E21, _1E82
+	dw _1E66, _1B8A, _1B9E, _1BB2, _1BC6, _1B84, _168B, _1C4A
+	dw _1C96, _1C87, _1CA5, _1D49, _1D5D, _1D71, _12A3, _1D85
+	dw _1886, _1920, _19A1, _1DA4, _1DB8, _15AE, _1DC7, _1DCD
+	dw _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37, _1C37
+	dw _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15, _1E1B
+	dw _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06, _1817
+	dw _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594, _157F
+	dw _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481, _1391
+	dw _1364, _132E, _1324, _131A, _1ABF, _182E, _130F, _12F1
+	dw _12E7, _1A92, _1F30, _129D, _126B, _1287, _1249, _122F
+	dw _121D, _1223, _1228, _12D2, _1578, _1281, _1379, _149E
+	dw _14D4, _1ABC, _166C, _1779, _182B, _1B1A, _1B5B, _208F
+	dw _206B, _203F, _1FDC, _1CF7, _22D1, _22E9, _228F, _22A7
+	dw _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
 
 ; make sure pointer table isn't too big
 assert pc() <= $121d, "Used too much space"
@@ -3766,7 +3765,7 @@ _2930:
 _293f:
 mov.b	x,!fl3
 mov.b	!kkk,x
-mov	a,_0fdf+x
+mov	a,_0fe0-1+x
 mov.b	!sss,a
 xcn	a
 and	a,#$0f
@@ -3775,7 +3774,7 @@ mov	y,a
 mov	a,!_03a0+y
 beq	_2960
 mov	x,a
-mov	a,_0fdf+x
+mov	a,_0fe0-1+x
 setc
 cmp.b	a,!sss
 beq	_2960
@@ -3877,7 +3876,7 @@ mov	y,#$5c
 call	apus
 mov	a,!_03a0+x
 mov	x,a
-mov	a,_0f20+x
+mov	a,_0f21-1+x
 mov.b	!fl3,a
 bne	_29c2
 ret
@@ -3924,18 +3923,18 @@ mov	a,!_03a0+x			; get sound effect index number
 asl	a				; double it to get pointer
 mov	y,a				; check if over 255
 bcs	_2a7b
-mov	a,_109d+1+y			; sound effect data pointer high
+mov	a,_109f-1+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_109d+y			; sound effect data pointer low
+mov	a,_109f-2+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
 _2a7b:
-mov	a,_109d+256+1+y			; sound effect data pointer high
+mov	a,_109f-1+256+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_109d+256+y			; sound effect data pointer low
+mov	a,_109f-2+256+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
