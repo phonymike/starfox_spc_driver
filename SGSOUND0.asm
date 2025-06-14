@@ -2734,7 +2734,7 @@ _1C24: ; Atomic base power supply on
 	db $F9, $8C, $00, $18, $93, $24, $F1, $00
 	db $22, $98, $00
 
-_1C37: ; Atomic base power suppl yoff
+_1C37: ; Atomic base power supply off
 	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
 	db $F9, $98, $00, $18, $91, $24, $F1, $00
 	db $22, $8C, $00
