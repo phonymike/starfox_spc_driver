@@ -620,13 +620,13 @@ mov	!_03f1,x
 ;	beq	ks04			; 000h = end
 ;......
 	mov	x,a			; shoki data set
-	mov	a,!_fdbf+x		; block add. shoki set
+	mov	a,!gft-2+1+x		; block add. shoki set
 	mov	y,a
 	bne	+
 	mov.b	!sf0,a
 	ret
 +
-	mov	a,!_fdbe+x
+	mov	a,!gft-2+x
 	movw	!ads,ya
 ;......
 	mov	!sf0c,#$02		; count
@@ -3227,9 +3227,10 @@ _2383: ; Pause
 	db $30, $1E, $BC, $00
 
 ; make sure patterns aren't too big
-warnpc $238f
+;warnpc $238f
 
 ;incbin	238F-24FC.bin			; 61 instrument params?
+patches:
 incsrc patches.asm
 
 _24FD:
@@ -4150,8 +4151,8 @@ incw	!adk
 mov	a,(!adk+x)
 mov	y,#$06
 mul	ya
-mov	!_d2,#$8f
-mov	!_d2+1,#$23
+mov	!_d2,#patches
+mov	!_d2+1,#patches>>8
 addw	ya,!_d2
 movw	!_d2,ya
 mov	y,#$00

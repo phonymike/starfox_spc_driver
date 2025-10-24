@@ -286,6 +286,5 @@
 !_3c82 = $3c82
 !_3c83 = $3c83
 
+!gft = $fdc0
 !_fe00 = $fe00
-!_fdbe = $fdbe
-!_fdbf = $fdbf
