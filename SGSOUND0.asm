@@ -1007,8 +1007,8 @@ snoset1:
 	mul	ya
 	movw	!adx,ya
 	clrc
-	adc	!adx,#$00		; #low sod
-	adc	!adx+1,#$3d		; #high sod
+	adc	!adx,#!inst_tab		; #low sod
+	adc	!adx+1,#!inst_tab>>8		; #high sod
 ;...
 	mov.b	a,!fkin			; kinshi flag check
 	and.b	a,!keyd
