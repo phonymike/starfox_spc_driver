@@ -839,10 +839,10 @@ tx15:
 	mov	a,volt+y
 	mov	!vol+x,a		; vol set ; set per-note vol from low nybble
 ;...................
-;	mov	kkk,a			; X 2.5
-;	lsr	kkk
+;	mov	!kkk,a			; X 2.5
+;	lsr	!kkk
 ;	asl	a
-;	adc	a,kkk
+;	adc	a,!kkk
 ;	mov	!ngg+x,a		; Gate off (%) set
 ;... 
 ;	call	data_in			; data in & inc add
@@ -1388,7 +1388,7 @@ ecvx:
 ;************************************************
 ; vcmd f8 - echo volume fade
 ev2x:
-	;call	!data_in		; data in & inc add
+	;call	data_in		; data in & inc add
 	mov.b	!evoc,a			; evol (count)
 ;......
 	call	data_in			; data in & inc add
@@ -4073,16 +4073,16 @@ _2930:
 _293f:
 	mov.b	x,!fl3
 	mov.b	!kkk,x
-	mov	a,sfx_parameters-1+x
+	mov	a,sfx_parameters-1+x			; get voice ID and SFX priority
 	mov.b	!sss,a
-	xcn	a
-	and	a,#$0f
+	xcn	a				; swap nibbles
+	and	a,#$0f				; get voice ID only
 	asl	a
 	mov	y,a
 	mov	a,!_03a0+y
 	beq	_2960
 	mov	x,a
-	mov	a,sfx_parameters-1+x
+	mov	a,sfx_parameters-1+x			; get voice ID and SFX priority
 	setc
 	cmp.b	a,!sss
 	beq	_2960
