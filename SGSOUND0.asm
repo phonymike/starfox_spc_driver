@@ -1,13 +1,10 @@
 ; Asar 1.91
-; Asar 1.91
 org $008000
-arch spc700
 arch spc700
 
 
 ; ===============================================
 ; PROG_CODE_00
-spcblock $3ee8 nspc
 spcblock $3ee8 nspc
 
 gate:
@@ -20,14 +17,10 @@ volt:
 assert pc() <= $3f00, "Used too much space"
 
 endspcblock
-assert pc() <= $3f00, "Used too much space"
-
-endspcblock
 
 
 ; ===============================================
 ; PROG_CODE_01
-spcblock $400 nspc
 spcblock $400 nspc
 
 incsrc defines.asm
@@ -2187,15 +2180,10 @@ ten40:
 
 _0f21:
 incbin	0F21-0FDF.bin
-_0f21:
-incbin	0F21-0FDF.bin
 
 _0fe0:
 incbin	0FE0-109E.bin
-_0fe0:
-incbin	0FE0-109E.bin
 
-; $109F table begins, 2 bytes, 191 pointers
 ; $109F table begins, 2 bytes, 191 pointers
 ; Names taken from SFEX 1.08.2
 _109f:
@@ -2392,7 +2380,6 @@ _109f:
 	dw _2383	; $BF PAUSE
 
 ; make sure pointer table isn't too big
-assert pc() <= $121d, "Used too much space"
 assert pc() <= $121d, "Used too much space"
 
 ; ===========================
@@ -2915,7 +2902,6 @@ _1C24: ; Atomic base power supply on
 	db $22, $98, $00
 
 _1C37: ; Atomic base power supply off
-_1C37: ; Atomic base power supply off
 	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
 	db $F9, $98, $00, $18, $91, $24, $F1, $00
 	db $22, $8C, $00
@@ -3408,7 +3394,6 @@ _2383: ; Pause
 	db $30, $1E, $BC, $00
 
 ; make sure patterns aren't too big
-assert pc() <= $238f, "Used too much space"
 assert pc() <= $238f, "Used too much space"
 
 ;incbin	238F-24FC.bin			; 61 instrument params?
@@ -3949,7 +3934,6 @@ _293f:
 mov.b	x,!fl3
 mov.b	!kkk,x
 mov	a,_0fe0-1+x
-mov	a,_0fe0-1+x
 mov.b	!sss,a
 xcn	a
 and	a,#$0f
@@ -3958,7 +3942,6 @@ mov	y,a
 mov	a,!_03a0+y
 beq	_2960
 mov	x,a
-mov	a,_0fe0-1+x
 mov	a,_0fe0-1+x
 setc
 cmp.b	a,!sss
@@ -4062,7 +4045,6 @@ call	apus
 mov	a,!_03a0+x
 mov	x,a
 mov	a,_0f21-1+x
-mov	a,_0f21-1+x
 mov.b	!fl3,a
 bne	_29c2
 ret
@@ -4108,25 +4090,18 @@ jmp	_2a4a
 mov	a,!_03a0+x			; get sound effect index number
 asl	a				; double it to get pointer
 mov	y,a				; check if over 255
-mov	a,!_03a0+x			; get sound effect index number
-asl	a				; double it to get pointer
-mov	y,a				; check if over 255
 bcs	_2a7b
-mov	a,_109f-1+y			; sound effect data pointer high
 mov	a,_109f-1+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_109f-2+y			; sound effect data pointer low
 mov	a,_109f-2+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
 _2a7b:
 mov	a,_109f-1+256+y			; sound effect data pointer high
-mov	a,_109f-1+256+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_109f-2+256+y			; sound effect data pointer low
 mov	a,_109f-2+256+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
@@ -4333,14 +4308,10 @@ jmp	_2B8B
 assert pc() <= $2bff, "Used too much space"
 
 endspcblock
-assert pc() <= $2bff, "Used too much space"
-
-endspcblock
 
 
 ; ===============================================
 ; PROG_CODE_02
-spcblock $3e20 nspc
 spcblock $3e20 nspc
 
 _3e20:
@@ -4434,9 +4405,6 @@ call	apus
 _3eba:
 ret
 
-assert pc() <= $3ebb, "Used too much space"
-
-endspcblock execute $400
 assert pc() <= $3ebb, "Used too much space"
 
 endspcblock execute $400
