@@ -3933,16 +3933,16 @@ _2930:
 _293f:
 mov.b	x,!fl3
 mov.b	!kkk,x
-mov	a,_0fe0-1+x
+mov	a,_0fe0-1+x			; get voice ID and SFX priority
 mov.b	!sss,a
-xcn	a
-and	a,#$0f
+xcn	a				; swap nibbles
+and	a,#$0f				; get voice ID only
 asl	a
 mov	y,a
 mov	a,!_03a0+y
 beq	_2960
 mov	x,a
-mov	a,_0fe0-1+x
+mov	a,_0fe0-1+x			; get voice ID and SFX priority
 setc
 cmp.b	a,!sss
 beq	_2960
@@ -4044,7 +4044,7 @@ mov	y,#$5c
 call	apus
 mov	a,!_03a0+x
 mov	x,a
-mov	a,_0f21-1+x
+mov	a,_0f21-1+x			;  get SFX ID to trigger alongside the SFX ID that was called
 mov.b	!fl3,a
 bne	_29c2
 ret
