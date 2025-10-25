@@ -289,5 +289,4 @@
 
 !gft = $fdc0
 !_fe00 = $fe00
-
 !max_sfx = $b0				; Max number of sound effects

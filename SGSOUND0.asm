@@ -1,11 +1,11 @@
+; Asar 1.91
 org $008000
-arch spc700-inline
-startpos $400
+arch spc700
 
 
 ; ===============================================
 ; PROG_CODE_00
-org $3ee8
+spcblock $3ee8 nspc
 
 gate:
 	db $32, $65, $7F, $98, $B2, $CB, $E5, $FC
@@ -14,12 +14,14 @@ volt:
 	db $19, $32, $4C, $65, $72, $7F, $8C, $98
 	db $A5, $B2, $BF, $CB, $D8, $E5, $F2, $FC
 
-warnpc $3f00
+assert pc() <= $3f00, "Used too much space"
+
+endspcblock
 
 
 ; ===============================================
 ; PROG_CODE_01
-org $400
+spcblock $400 nspc
 
 incsrc defines.asm
 incsrc KAN.asm
@@ -2173,215 +2175,45 @@ ten40:
 	mov	x,#$31			; in port clear
 	mov	!cont,x
 
-_0f20:
 	ret
 ;........................................
 
+_0f21:
+incbin	0F21-0FDF.bin
 
-incbin	0F21-0FDE.bin
+_0fe0:
+incbin	0FE0-109E.bin
 
-_0fdf:
-incbin	0FDF-109C.bin
-
-; $109D table begins (don't use first value 2F2E), 2 bytes, 191 pointers
+; $109F table begins, 2 bytes, 191 pointers
 ; Names taken from SFEX 1.08.2
-_109d:
-	dw $2F2E
-	dw _237A	; $01 UNPAUSE
-	dw _237A	; $02 PAUSE
-	dw _2301	; $03 PLAYER DOWN
-	dw _21F9	; $04 PLAYER DAMAGE
-	dw _21DE	; $05 LEFT WING DAMAGED
-	dw _21D7	; $06 RIGHT WING DAMAGED
-	dw _21F2	; $07 LEFT WING CRASH
-	dw _21EB	; $08 RIGHT WING CRASH
-	dw _236A	; $09 LEFT WING SCRATCH
-	dw _2372	; $0A RIGHT WING SCRATCH
-	dw _2110	; $0B INCOMING ENEMY
-	dw _213C	; $0C WING DAMAGED
-	dw _13F8	; $0D COME IN CORNERIA
-	dw _1B32	; $0E BONUS CREDIT
-	dw _2024	; $0F BIG SUPPORT RING
-	dw _207D	; $10 1UP RING HIT
-	dw _205D	; $11 CONTROLS SELECT
-	dw _2015	; $12 PERCENTAGE RING
-	dw _1B05	; $13 JINGLE + GOOD LUCK
-	dw _1A66	; $14 CONE HIT
-	dw _1A46	; $15 TWIN BLASTER POWERUP
-	dw _1A4F	; $16 SHIELD POWERUP
-	dw _1A58	; $17 WING REPAIRED POWERUP
-	dw _169C	; $18 BOMB POWERUP
-	dw _21E5	; $19 WINGLESS ARWING COLLISION
-	dw _1650	; $1A SLOT MACHINE COIN
-	dw _1633	; $1B SMALL ARWING DAMAGE ALARM
-	dw _15FE	; $1C BIG ARWING DAMAGE ALARM
-	dw _1F73	; $1D SMALL BOSS EXPLOSION
-	dw _223B	; $1E NEAR BIG BOSS EXPLOSION
-	dw _227D	; $1F MID BIG BOSS EXPLOSION
-	dw _22BF	; $20 FAR BIG BOSS EXPLOSION
-	dw _2220	; $21 NEAR ENEMY EXPLOSION
-	dw _222F	; $22 MID ENEMY EXPLOSION
-	dw _2235	; $23 FAR ENEMY EXPLOSION
-	dw _2202	; $24 NEAR ENEMY HIT
-	dw _220C	; $25 MID ENEMY HIT
-	dw _2216	; $26 FAR ENEMY HIT
-	dw _2358	; $27 NEAR LASER DEFLECT
-	dw _235E	; $28 MID LASER DEFLECT
-	dw _2364	; $29 FAR LASER DEFLECT
-	dw _1DBE	; $2A GOOD LUCK -BGM 4-
-	dw _1EF2	; $2B ENEMY WARP-IN
-	dw _1E9B	; $2C CONE TRIANGLE
-	dw _1EC3	; $2D 1-6+2-3 BOSS SHADOWING
-	dw _1F9B	; $2E PLASMA HYDRA ARM HIT
-	dw _1F06	; $2F ROCK CRUSHER ROLL
-	dw _232A	; $30 PLAYER BOMB EXPLOSION
-	dw _2341	; $31 PLAYER BOMB SHOT
-	dw _20F2	; $32 PLAYER BOOST
-	dw _2106	; $33 PLAYER BRAKE
-	dw _15F6	; $34 PLAYER TWIN BLASTER SHOT
-	dw _2324	; $35 PLAYER LASER SHOT
-	dw _234A	; $36 DUAL BEAM SHOT
-	dw _234A	; $37 DUAL BEAM SHOT
-	dw _2001	; $38 BIRD SCREAM
-	dw _1FAF	; $39 ENEMY ROCKET PLAYER HIT
-	dw _1FF9	; $3A DODORA EGG CRACK + BIRD
-	dw _1FC3	; $3B DODORA HIT
-	dw _218D	; $3C NEAR ENEMY ROCKET SHOT
-	dw _2193	; $3D MID ENEMY ROCKET SHOT
-	dw _2199	; $3E FAR ENEMY ROCKET SHOT
-	dw _20A5	; $3F LEFT GATE MOVING
-	dw _20B5	; $40 CENTRE GATE MOVING
-	dw _20C4	; $41 RIGHT GATE MOVING
-	dw _20D4	; $42 MID GATE MOVING
-	dw _20E3	; $43 FAR GATE MOVING
-	dw _21B7	; $44 LEFT ENEMY LASER SHOT
-	dw _21BE	; $45 CENTRE ENEMY LASER SHOT
-	dw _21C4	; $46 RIGHT ENEMY LASER SHOT
-	dw _21CB	; $47 MID ENEMY LASER SHOT
-	dw _21D1	; $48 FAR ENEMY LASER SHOT
-	dw _219F	; $49 NEAR ENEMY BATTERY
-	dw _21A7	; $4A MID ENEMY BATTERY
-	dw _21AF	; $4B FAR ENEMY BATTERY
-	dw _216D	; $4C PHATRON 2 LANDING
-	dw _217D	; $4D PHATRON 2 JUMP
-	dw _1E7A	; $4E -UNUSED-
-	dw _1E21	; $4F DANCING INSECTOR PROPELLING
-	dw _1E82	; $50 BLADE BARRIER POST-DRILL ATK
-	dw _1E66	; $51 BLADE BARRIER PLAYER WEB HIT
-	dw _1B8A	; $52 LAST BASE ENTRY 2.DOOR CLOSE
-	dw _1B9E	; $53 FAR LAST BASE ENTRY 2.DOOR CLOSE
-	dw _1BB2	; $54 LAST BASE ENTRY 2.DOOR OPEN
-	dw _1BC6	; $55 FAR LAST BASE ENTRY 2.DOOR OPEN
-	dw _1B84	; $56 PLAYER AMOEBA HIT
-	dw _168B	; $57 BLOCKADE DIRECTION CHANGE
-	dw _1C4A	; $58 HOVERING -UNUSED-
-	dw _1C96	; $59 DOOR CLOSE
-	dw _1C87	; $5A DOOR OPEN
-	dw _1CA5	; $5B HOVERING -UNUSED-
-	dw _1D49	; $5C NEAR ENEMY RING SHOT
-	dw _1D5D	; $5D MID ENEMY RING SHOT
-	dw _1D71	; $5E FAR ENEMY RING SHOT
-	dw _12A3	; $5F PEPPER RADIO CHAT
-	dw _1D85	; $60 FOX RADIO CHAT
-	dw _1886	; $61 FALCO RADIO CHAT
-	dw _1920	; $62 PEPPY RADIO CHAT
-	dw _19A1	; $63 SLIPPY RADIO CHAT
-	dw _1DA4	; $64 RADIO CHAT QUIT
-	dw _1DB8	; $65 PLAYER CAMERA CHANGE
-	dw _15AE	; $66 DESTRUCTOR WEAPON HEAD ATTACK
-	dw _1DC7	; $67 CONTINUE LET'S GO -BGM 30-
-	dw _1DCD	; $68 LEFT WATER SPLASH OUT
-	dw _1DD8	; $69 CENTRE WATER SPLASH
-	dw _1DE2	; $6A RIGHT WATER SPLASH
-	dw _1DED	; $6B MID WATER SPLASH
-	dw _1DF7	; $6C FAR WATER SPLASH
-	dw _1E56	; $6D LEFT OBJECT FLY-BY
-	dw _1E47	; $6E CENTRE OBJECT FLY-BY
-	dw _1E37	; $6F RIGHT OBJECT FLY-BY
-	dw _1C37	; $70 ATOMIC BASE POWER SUPPLY OFF
-	dw _1C24	; $71 ATOMIC BASE POWER SUPPLY ON
-	dw _1BDA	; $72 ATOMIC BASE CORE CLOSE
-	dw _1BFF	; $73 ATOMIC BASE CORE OPEN
-	dw _1E01	; $74 LEFT WATER SPLASH IN
-	dw _1E08	; $75 CENTRE WATER SPLASH IN
-	dw _1E0E	; $76 RIGHT WATER SPLASH IN
-	dw _1E15	; $77 MID WATER SPLASH IN
-	dw _1E1B	; $78 FAR WATER SPLASH IN
-	dw _1A71	; $79 BACKGROUND THUNDER
-	dw _18AA	; $7A FALCO RADIO CHAT HIT
-	dw _18DD	; $7B FALCO RADIO CHAT DOWN
-	dw _1944	; $7C PEPPY RADIO CHAT HIT
-	dw _196B	; $7D PEPPY RADIO CHAT DOWN
-	dw _19DB	; $7E SLIPPY RADIO CHAT HIT
-	dw _1A06	; $7F SLIPPY RADIO CHAT DOWN
-_119d:
-	dw _1817	; $80 PHANTRON 2 HIT
-	dw _182E	; $81 PHANTRON 2 SCREAM
-	dw _17DF	; $82 ROCK CRUSHER APPEARS
-	dw _1715	; $83 DESTRUCTOR ENGINE
-	dw _16D9	; $84 PHANTRON APPEARS
-	dw _16C3	; $85 ROCK CRUSHER UNCOVER
-	dw _15A2	; $86 PILON TO GROUND
-	dw _1594	; $87 ANDROSS APPEARS
-	dw _157F	; $88 ANDROSS HIT
-	dw _1579	; $89 TEXT TING
-	dw _1578	; $8A SILENCE -BGM 10-
-	dw _14FD	; $8B PRE-WING REPAIRED
-	dw _12C5	; $8C ANDROSS RADIO CHAT
-	dw _14AB	; $8D METAL SMASHER SMASHING
-	dw _1495	; $8E METAL SMASHER CLOSE
-	dw _1481	; $8F BLADE BARRIER WEB ATTACK
-	dw _1391	; $90 BONUS RING BIRD
-	dw _1364	; $91 COMET FLY-BY
-	dw _132E	; $92 WHALE SCREAM
-	dw _1324	; $93 STINGRAY HIT
-	dw _131A	; $94 SQUID HIT
-	dw _1ABF	; $95 SPINNING CORE BG THUNDER
-	dw _182E	; $96 PHANTRON 2 SCREAM
-	dw _130F	; $97 DANCING INSECTOR MOVEMENT
-	dw _12F1	; $98 DANCING INSECTOR FIRE SHOT
-	dw _12E7	; $99 DANCING INSECTOR FIRE FLY-BY
-	dw _1A92	; $9A VOLCANO FIRE
-	dw _1F30	; $9B SLOT MACHINE HANDLE DOWN
-	dw _129D	; $9C SLOT MACHINE SLOT SPINNING
-	dw _126B	; $9D PROFESSOR HANGER APPEARS
-	dw _1287	; $9E PROFESSOR HANGER DISAPPEARS
-	dw _1249	; $9F FINAL SCORE SCREEN FLIGHT
-	dw _122F	; $A0 ANDROSS SHELL EXPLOSION
-	dw _121D	; $A1 ANDROSS SCREAM 4
-	dw _1223	; $A2 ANDROSS SCREAM 3
-	dw _1228	; $A3 ANDROSS SCREAM 2
-	dw _12D2	; $A4 ANDROSS SCREAM 1
-	dw _1578	; $A5 SILENCE -BGM 10-
-	dw _1281	; $A6 ENEMY HOVERING -unused-
-	dw _1379	; $A7 SHOOTING STAR -unused-
-	dw _149E	; $A8 OBJECT IMPACT -unused-
-	dw _14D4	; $A9 ENEMY -unused-
-	dw _1ABC	; $AA BACKGROUND THUNDER -unused-
-	dw _166C	; $AB BONUS -unused-
-	dw _1779	; $AC DESTRUCTOR ENGINE -unused-
-	dw _182B	; $AD PHANTRON SCREAM
-	dw _1B1A	; $AE GOOD LUCK -BGM 4- -unused-
-	dw _1B5B	; $AF BONUS -unused-
-	dw _208F	; $B0 UNKNOWN
-	dw _206B	; $B1 UNKNOWN
-	dw _203F	; $B2 UNKNOWN
-	dw _1FDC	; $B3 UNKNOWN
-	dw _1CF7	; $B4 UNKNOWN
-	dw _22D1	; $B5 UNKNOWN
-	dw _22E9	; $B6 UNKNOWN
-	dw _228F	; $B7 UNKNOWN
-	dw _22A7	; $B8 UNKNOWN
-	dw _20FC	; $B9 UNKNOWN
-	dw _2226	; $BA UNKNOWN
-	dw _2265	; $BB UNKNOWN
-	dw _224D	; $BC UNKNOWN
-	dw _1F4B	; $BD UNKNOWN
-	dw _230A	; $BE PLAYER DOWN
-	dw _2383	; $BF PAUSE
+_109f:
+	dw _237A, _237A, _2301, _21F9, _21DE, _21D7, _21F2, _21EB
+	dw _236A, _2372, _2110, _213C, _13F8, _1B32, _2024, _207D
+	dw _205D, _2015, _1B05, _1A66, _1A46, _1A4F, _1A58, _169C
+	dw _21E5, _1650, _1633, _15FE, _1F73, _223B, _227D, _22BF
+	dw _2220, _222F, _2235, _2202, _220C, _2216, _2358, _235E
+	dw _2364, _1DBE, _1EF2, _1E9B, _1EC3, _1F9B, _1F06, _232A
+	dw _2341, _20F2, _2106, _15F6, _2324, _234A, _234A, _2001
+	dw _1FAF, _1FF9, _1FC3, _218D, _2193, _2199, _20A5, _20B5
+	dw _20C4, _20D4, _20E3, _21B7, _21BE, _21C4, _21CB, _21D1
+	dw _219F, _21A7, _21AF, _216D, _217D, _1E7A, _1E21, _1E82
+	dw _1E66, _1B8A, _1B9E, _1BB2, _1BC6, _1B84, _168B, _1C4A
+	dw _1C96, _1C87, _1CA5, _1D49, _1D5D, _1D71, _12A3, _1D85
+	dw _1886, _1920, _19A1, _1DA4, _1DB8, _15AE, _1DC7, _1DCD
+	dw _1DD8, _1DE2, _1DED, _1DF7, _1E56, _1E47, _1E37, _1C37
+	dw _1C24, _1BDA, _1BFF, _1E01, _1E08, _1E0E, _1E15, _1E1B
+	dw _1A71, _18AA, _18DD, _1944, _196B, _19DB, _1A06, _1817
+	dw _182E, _17DF, _1715, _16D9, _16C3, _15A2, _1594, _157F
+	dw _1579, _1578, _14FD, _12C5, _14AB, _1495, _1481, _1391
+	dw _1364, _132E, _1324, _131A, _1ABF, _182E, _130F, _12F1
+	dw _12E7, _1A92, _1F30, _129D, _126B, _1287, _1249, _122F
+	dw _121D, _1223, _1228, _12D2, _1578, _1281, _1379, _149E
+	dw _14D4, _1ABC, _166C, _1779, _182B, _1B1A, _1B5B, _208F
+	dw _206B, _203F, _1FDC, _1CF7, _22D1, _22E9, _228F, _22A7
+	dw _20FC, _2226, _2265, _224D, _1F4B, _230A, _2383
 
 ; make sure pointer table isn't too big
-;warnpc $121d
+assert pc() <= $121d, "Used too much space"
 
 ; ===========================
 ; begin sound effect patterns
@@ -2902,7 +2734,7 @@ _1C24: ; Atomic base power supply on
 	db $F9, $8C, $00, $18, $93, $24, $F1, $00
 	db $22, $98, $00
 
-_1C37: ; Atomic base power suppl yoff
+_1C37: ; Atomic base power supply off
 	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
 	db $F9, $98, $00, $18, $91, $24, $F1, $00
 	db $22, $8C, $00
@@ -3386,7 +3218,7 @@ _236A: ; Left wing scratch
 _2372: ; Right wing scratch
 	db $E0, $05, $06, $00, $5A, $BC, $BC, $00
 
-_237A: ; Pause
+_237A:
 	db $E0, $00, $10, $1E, $B4, $30, $1E, $B7
 	db $00
 
@@ -3395,7 +3227,7 @@ _2383: ; Pause
 	db $30, $1E, $BC, $00
 
 ; make sure patterns aren't too big
-;warnpc $238f
+assert pc() <= $238f, "Used too much space"
 
 ;incbin	238F-24FC.bin			; 61 instrument params?
 patches:
@@ -3934,7 +3766,7 @@ _2930:
 _293f:
 mov.b	x,!fl3
 mov.b	!kkk,x
-mov	a,_0fdf+x
+mov	a,_0fe0-1+x
 mov.b	!sss,a
 xcn	a
 and	a,#$0f
@@ -3943,7 +3775,7 @@ mov	y,a
 mov	a,!_03a0+y
 beq	_2960
 mov	x,a
-mov	a,_0fdf+x
+mov	a,_0fe0-1+x
 setc
 cmp.b	a,!sss
 beq	_2960
@@ -3983,7 +3815,7 @@ mov	y,#$00
 mov.b	!fl3,y
 mov.b	a,!fl3
 beq	+
-cmp	a,#!max_sfx
+cmp	a,#!max_sfx				; Sound FX ID overflow check, thanks KungFuFurby
 bcc	_29c2
 +
 ret
@@ -4045,7 +3877,7 @@ mov	y,#$5c
 call	apus
 mov	a,!_03a0+x
 mov	x,a
-mov	a,_0f20+x
+mov	a,_0f21-1+x
 mov.b	!fl3,a
 bne	_29c2
 ret
@@ -4088,22 +3920,22 @@ mov	!_03a1+x,a
 beq	+
 jmp	_2a4a
 +
-mov	a,!_03a0+x
-asl	a
-mov	y,a
+mov	a,!_03a0+x			; get sound effect index number
+asl	a				; double it to get pointer
+mov	y,a				; check if over 255
 bcs	_2a7b
-mov	a,_109d+1+y			; sound effect data pointer high
+mov	a,_109f-1+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_109d+y			; sound effect data pointer low
+mov	a,_109f-2+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
 _2a7b:
-mov	a,_119d+1+y
+mov	a,_109f-1+256+y			; sound effect data pointer high
 mov	!_0391+x,a
 mov.b	!adk+1,a
-mov	a,_119d+y
+mov	a,_109f-2+256+y			; sound effect data pointer low
 mov	!_0390+x,a
 mov.b	!adk,a
 jmp	_2b29
@@ -4306,12 +4138,14 @@ mov.b	!chn,x
 call	swpadset
 jmp	_2B8B
 
-warnpc $2BFF
+assert pc() <= $2bff, "Used too much space"
+
+endspcblock
 
 
 ; ===============================================
 ; PROG_CODE_02
-org $3e20
+spcblock $3e20 nspc
 
 _3e20:
 mov	x,#$00
@@ -4404,4 +4238,6 @@ call	apus
 _3eba:
 ret
 
-warnpc $3ebb
+assert pc() <= $3ebb, "Used too much space"
+
+endspcblock execute $400
