@@ -1003,12 +1003,12 @@ data_inr:
 ;************************************************
 ;		sound no.
 ;************************************************
+; vcmd e0 - set instrument
 snox:
 	;call	data_in			; data in & inc add
 ;************************************************
 ;		Sound No. data set
 ;************************************************
-; vcmd e0 - set instrument
 snoset:
 	mov	!snos+x,a		; sno store
 snoset0:
@@ -3763,13 +3763,15 @@ _2671:
 	inc	x
 	mov	a,_269C+x
 	mov	!_022e,a
-ret
+	ret
 
+  ;related to determining wavering in pitch?
 _269C:
 	db $20, $00, $00, $E8, $04, $00, $20, $00
 	db $00, $EF, $00, $60, $20, $00, $00, $E5
 	db $00, $80, $20, $00, $00, $E8, $01, $C0
 
+  ;note pitch table for motor
 _26b4:
 	db $A4, $A6, $A7, $A8, $A6, $A7, $A8, $A9
 	db $B0, $B0, $B0, $B0, $98, $98, $98, $98
@@ -4184,7 +4186,7 @@ _29eb:
 	call	apus
 	mov	a,!_03a0+x
 	mov	x,a
-	mov	a,sfx_chain_table-1+x
+	mov	a,sfx_chain_table-1+x			;  get SFX ID to trigger alongside the SFX ID that was called
 	mov.b	!fl3,a
 	bne	_29c2
 	ret
