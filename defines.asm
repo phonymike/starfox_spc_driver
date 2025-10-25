@@ -285,7 +285,8 @@
 !_3c81 = $3c81
 !_3c82 = $3c82
 !_3c83 = $3c83
+!inst_tab = $3d00
 
+!gft = $fdc0
 !_fe00 = $fe00
-!_fdbe = $fdbe
-!_fdbf = $fdbf
+!max_sfx = $b0				; Max number of sound effects
