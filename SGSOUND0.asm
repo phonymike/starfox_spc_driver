@@ -39,27 +39,27 @@ start10:
 	cmp	x,#$df+1
 	bne	start10
 ;........................................
-mov	x,#$00
+	mov	x,#$00
 -
-mov	!ngs+x,a
-inc	x
-bne	-
+	mov	!ngs+x,a
+	inc	x
+	bne	-
 
 -
-mov	!pvodw+x,a
-inc	x
-bne	-
+	mov	!pvodw+x,a
+	inc	x
+	bne	-
 ;........................................
 	inc	a
 	call	esaset			; EDL & ESA set
 ;
 	set5	!flgs			; echo off
 ;................................................
-mov	a,#$96
-mov	!_03c6,a
-mov	a,#$bb
-mov	!_03cb,a
-call	_648
+	mov	a,#$96
+	mov	!_03c6,a
+	mov	a,#$bb
+	mov	!_03cb,a
+	call	_648
 ;................................................
 	mov	a,#$60
 	mov	y,#$0c			; MVOL
@@ -68,7 +68,7 @@ call	_648
 	mov	y,#$1c			; MVOR
 	call	apus
 ;
-	mov	a,#$3c
+	mov	a,#!src_dir		; source dir = $3c00
 	mov	y,#$5d			; DIR
 	call	apus			; 19 byte
 ;........................................
@@ -134,15 +134,15 @@ start40:
 	mov.b	!cnt,a
 	bcc	start50
 ;.......................................; 16mS
-call	_257c
-mov	x,#$01
-call	flset
-call	_2749
+	call	_257c
+	mov	x,#$01
+	call	flset
+	call	_2749
 ;
 	mov	x,#$02			; fl2 & port2 check
-	call	flset			; x = fl?
-call	_2a1a
-call	_2981
+	call	flset		; x = fl?
+	call	chd			; sound effect
+	call	_2981
 ;........................................
 	cmp	(!ekin),(!eclr)
 	beq	start50
@@ -233,16 +233,19 @@ _4FE:
 ;************************************************ 
 ;		Freq. data set
 ;************************************************ 
+; handle a note vcmd (80-df)
 dss:
-	cmp	y,#!dd0			; drams check
+	cmp	y,#!dd0			; drums check
 	bcc	dss0
 ;************************************************ 
-;		drams set    ; x=channel  a=sno 
+;		drums set    ; x=channel  a=sno 
 ;************************************************ 
+; vcmds ca-df - percussion note
 dds:
 	call	snoset			; sno data set
 	mov	y,#!c30			; (takasa)
 ;................................................
+; vcmds 80-c7,c8,c9 - note/tie/rest
 dss0:
 	cmp	y,#!xxx			; tai or yyy ? 
 	bcs	dssr
@@ -251,6 +254,7 @@ dss0:
 	and.b	a,!keyd
 	bne	dssr
 ;......
+; vcmds 80-c7 - note (note number in Y)
 	mov	a,y
 	and	a,#$7f			; fre. set & flag set
 	clrc				; key trans. add.
@@ -295,6 +299,7 @@ dss0:
 dss3:
 	mov	a,!swss+x		; + ? (swk)
 	clrc
+; set DSP pitch from $10/1
 	adc	a,!swpd+x		; now + @
 ;......
 	call	swpadset		; sweep data set
@@ -326,7 +331,7 @@ dssx04:
 dssx10:
 	push	x			; ontei store (kkk,sss) 
 	mov.b	a,!kkk
-;
+; get pitch from note number in A (with octave correction)
 	asl	a
 	mov	y,#00
 	mov	x,#24			; decimal
@@ -405,6 +410,7 @@ dssx14:
 ;************************************************
 ;		APU data out   acc = write data   y = write add
 ;************************************************
+; write A to DSP reg Y if vbit clear in $1a
 apusx:
 	push	a
 	mov.b	a,!keyd
@@ -412,6 +418,7 @@ apusx:
 	pop	a
 	bne	apusr
 ;................................................
+; write A to DSP reg Y
 apus:
 	mov	!apuadd,y		; write address
 	mov	!apudt,a		; data write
@@ -426,182 +433,183 @@ apusr:
 ;
 ;................................................
 _614:
-dec	!_d0
-mov.b	a,!_d0
-and	a,#$03
-mov	y,#$3f
-mul	ya
-mov	y,a
-mov	!ttt,#$07
-_621:
-inc	y
-mov	x,#$04
+	dec	!_d0
+	mov.b	a,!_d0
+	and	a,#$03
+	mov	y,#$3f
+	mul	ya
+	mov	y,a
+	mov	!ttt,#$07
+	_621:
+	inc	y
+	mov	x,#$04
 -
-mov1	c,!rdm+1.6
-eor1	c,!rdm+1.5
-rol.b	!rdm
-rol.b	!rdm+1
-mov.b	a,!rdm+1
-and	a,!_03cb
-or	a,#$11
-mov	!_fe00+y,a
-inc	y
-mov.b	a,!rdm
-or	a,#$11
-mov	!_fe00+y,a
-inc	y
-dec	x
-bne	-
-dbnz	!ttt,_621
-ret
-_648:
-mov	y,#$00
-mov	x,#$1b
-mov	a,!_03c6
+	mov1	c,!rdm+1.6
+	eor1	c,!rdm+1.5
+	rol.b	!rdm
+	rol.b	!rdm+1
+	mov.b	a,!rdm+1
+	and	a,!_03cb
+	or	a,#$11
+	mov	!_fe00+y,a
+	inc	y
+	mov.b	a,!rdm
+	or	a,#$11
+	mov	!_fe00+y,a
+	inc	y
+	dec	x
+	bne	-
+	dbnz	!ttt,_621
+	ret
+	_648:
+	mov	y,#$00
+	mov	x,#$1b
+	mov	a,!_03c6
 -
-mov	!_fe00+y,a
-inc	y
-inc	y
-inc	y
-inc	y
-inc	y
-inc	y
-inc	y
-inc	y
-inc	y
-dec	x
-bne	-
-inc	a
-mov	!_fe00+y,a
-mov	y,#$fe
-mov	a,#$00
-mov	!_3c80,a
-mov	!_3c81,y
-mov	!_3c82,a
-mov	!_3c83,y
-mov.b	a,!rdm
-or.b	a,!rdm+1
-bne	+
-inc.b	!rdm
+	mov	!_fe00+y,a
+	inc	y
+	inc	y
+	inc	y
+	inc	y
+	inc	y
+	inc	y
+	inc	y
+	inc	y
+	inc	y
+	dec	x
+	bne	-
+	inc	a
+	mov	!_fe00+y,a
+	mov	y,#$fe
+	mov	a,#$00
+	mov	!_3c80,a
+	mov	!_3c81,y
+	mov	!_3c82,a
+	mov	!_3c83,y
+	mov.b	a,!rdm
+	or.b	a,!rdm+1
+	bne	+
+	inc.b	!rdm
 +
 ret
 ;................................................
 _67B:
-mov	a,#$00
-mov	y,#$2c
-call	apus
-mov	y,#$3c
-call	apus
-mov	a,#$ff
-mov	y,#$5c
-call	apus
-call	ten00
-mov	a,#$00
-mov	!_03ca,a
-mov.b	!sf0,a
-mov	!sf1,a
-mov	!sf2,a
-mov	!sf3,a
-mov.b	!fkin,a
-mov	y,#$10
+	mov	a,#$00
+	mov	y,#$2c
+	call	apus
+	mov	y,#$3c
+	call	apus
+	mov	a,#$ff
+	mov	y,#$5c
+	call	apus
+	call	ten00
+	mov	a,#$00
+	mov	!_03ca,a
+	mov.b	!sf0,a
+	mov	!sf1,a
+	mov	!sf2,a
+	mov	!sf3,a
+	mov.b	!fkin,a
+	mov	y,#$10
 -
-mov	!_039f+y,a
-dbnz	y,-
-mov	a,#$96
-mov	!_03c6,a
-mov	a,#$bb
-mov	!_03cb,a
-call	_648
+	mov	!_039f+y,a
+	dbnz	y,-
+	mov	a,#$96
+	mov	!_03c6,a
+	mov	a,#$bb
+	mov	!_03cb,a
+	call	_648
 ;................................................
 _6B7:
-cmp	!sf0,#$11
-beq	_6CF
-mov	x,#$a0
-mov.b	!mvoc,x
-mov	!_03ca,x
-mov	a,#$00
-mov.b	!mvom,a
-setc
-sbc.b	a,!mvo
-call	divx
-movw	!mvoadw,ya
-_6CF:
-jmp	cha02				; finished with command
+	cmp	!sf0,#$11
+	beq	_6CF
+	mov	x,#$a0
+	mov.b	!mvoc,x
+	mov	!_03ca,x
+	mov	a,#$00
+	mov.b	!mvom,a
+	setc
+	sbc.b	a,!mvo
+	call	divx
+	movw	!mvoadw,ya
+	_6CF:
+	jmp	cha02				; finished with command
 ;................................................
 _6D2:
-mov	a,!_03f1
-bne	_6F5
-mov.b	a,!mvo
-mov	!_03f1,a
-mov	a,#$70
-mov.b	!mvo,a
-jmp	cha02				; finished with command
+	mov	a,!_03f1
+	bne	_6F5
+	mov.b	a,!mvo
+	mov	!_03f1,a
+	mov	a,#$70
+	mov.b	!mvo,a
+	jmp	cha02				; finished with command
 ;................................................
 _6E3:
-mov	a,!_03f1
-beq	_6F5
-mov	a,!_03f1
-mov.b	!mvo,a
-mov	a,#$00
-mov	!_03f1,a
-jmp	cha02				; finished with command
+	mov	a,!_03f1
+	beq	_6F5
+	mov	a,!_03f1
+	mov.b	!mvo,a
+	mov	a,#$00
+	mov	!_03f1,a
+	jmp	cha02				; finished with command
 _6F5:
-ret
+	ret
 ;................................................
 decode_commands:
-cmp	a,#$ff
-beq	_67B
-cmp	a,#$f1				; fade song volume
-beq	_6B7
-cmp	a,#$f2				; restore song volume
-beq	_6D2
-cmp	a,#$f3
-beq	_6E3
-cmp	a,#$f4
-beq	_71D
-cmp	a,#$f5
-beq	_717
-cmp	a,#$f0				; stop music
-beq	_744
-cmp	a,#$14
-bcc	_766
-ret
+	cmp	a,#$ff
+	beq	_67B
+	cmp	a,#$f1				; fade song volume
+	beq	_6B7
+	cmp	a,#$f2				; restore song volume
+	beq	_6D2
+	cmp	a,#$f3
+	beq	_6E3
+	cmp	a,#$f4
+	beq	_71D
+	cmp	a,#$f5
+	beq	_717
+	cmp	a,#$f0				; stop music
+	beq	_744
+	cmp	a,#$14
+	bcc	_766
+	ret
 
 _717:
-mov	x,#$03
-mov	a,#$30
-bne	+
+	mov	x,#$03
+	mov	a,#$30
+	bne	+
 _71D:
-mov	x,#$fe
-mov	a,#$09
+	mov	x,#$fe
+	mov	a,#$09
 +
-mov	!tmpc,#$8f
-mov	!ptps,x
-mov	!ptps+2,x
-mov	!ptps+4,x
-mov.b	!tmpm,a
-setc
-sbc.b	a,!tmp
-mov.b	x,!tmpc
-call	divx
-movw	!tmpadw,ya
-jmp	cha02				; finished with command
+	mov	!tmpc,#$8f
+	mov	!ptps,x
+	mov	!ptps+2,x
+	mov	!ptps+4,x
+	mov.b	!tmpm,a
+	setc
+	sbc.b	a,!tmp
+	mov.b	x,!tmpc
+	call	divx
+	movw	!tmpadw,ya
+	jmp	cha02				; finished with command
 ;................................................
 _73C:
-dec	!_03ca
-beq	_744
-jmp	_7E8
+	dec	!_03ca
+	beq	_744
+	jmp	_7E8
 _744:
 	mov.b	a,!fkin
 	eor	a,#$ff
 	tset	!keyoffs,a
 	mov	!sf0,#$00
 	mov	!keyd,#$00
-	mov	!mvo,#$c0		; main volume set
-	mov	!tmp,#$20		; tempo data set
+	mov	!mvo,#!main_vol		; main volume set
+	mov	!tmp,#!tempo		; tempo data set
 	ret
 ;................................................
 adset:
+; read $ads/1 into YA with advancing the ptr
 	mov	y,#00			; block address set
 	mov	a,(!ads)+y
 	incw	!ads
@@ -612,11 +620,12 @@ adset:
 	pop	a
 	ret
 ;................................................
+; play song in A
 _766:
-clrc
-mov	x,#$00
-mov	!_03ca,x
-mov	!_03f1,x
+	clrc
+	mov	x,#$00
+	mov	!_03ca,x
+	mov	!_03f1,x
 	mov.b	!sf0,a
 	asl	a
 ;	beq	ks04			; 000h = end
@@ -639,9 +648,10 @@ ks04:
 	tset	!keyoffs,a		; keyoff set
 	ret
 ;................................................ 
+; reset song params
 ks10:
 	mov	x,#14			; shoki data set
-	mov	!keyd,#$80
+	mov	!keyd,#$80		; last voice
 
 ks12:
 	mov.b	a,!keyd
@@ -649,7 +659,7 @@ ks12:
 	and	a,#$c0
 	bne	_7BC
 ;
-	mov	a,#$ff
+	mov	a,#!voice_vol	;voice volume = $ff
 	mov	!pvod+x,a		; part vol
 ;
 	mov	a,#10			; pan data set
@@ -669,7 +679,7 @@ _7BC:
 	dec	x
 	dec	x			; - 2
 	lsr.b	!keyd
-	bne	ks12
+	bne	ks12				;loop for each voice
 ;......
 	mov.b	!mvoc,a			; mvol count (a=0)
 	mov.b	!evoc,a			; evol count 
@@ -678,8 +688,8 @@ _7BC:
 	mov.b	!blc,a			; block count
 	mov.b	!wavs,a			; source
 ;
-	mov	!mvo,#$c0		; main volume set
-	mov	!tmp,#$20		; tempo data set
+	mov	!mvo,#!main_vol		; main volume set
+	mov	!tmp,#!tempo		; tempo data set
 char:
 	ret
 ;************************************************
@@ -713,6 +723,7 @@ ks20:
 ;************************************************
 	jmp	_744
 ;************************************************
+; set/dec repeat count
 ks24:
 	dec.b	!blc
 	bpl	ks26
@@ -728,6 +739,7 @@ ks26:
 	movw	!ads,ya			; kurikaeshi ads set
 	bra	ks20
 ;........................................
+; load start addresses - hi-byte not zero
 ks40:
 	movw	!adx+2,ya		; adx+2,+3 set
 	mov	y,#15			; shoki address set (8ch)
@@ -736,24 +748,24 @@ ks42:
 	mov	a,(!adx+2)+y		; part sento add. set
 	mov	!add+y,a		; add.
 	dec	y
-	bpl	ks42
+	bpl	ks42	; set all reading ptrs
 ;........................................
 	mov	x,#$00			; shoki data set
-	mov	!keyd,#$01
+	mov	!keyd,#$01		; first voice
 ;
 ks44:
 	mov.b	a,!add+1+x
-	beq	ks46
+	beq	ks46			; if vptr hi != 0
 ;
 	mov	a,!snos+x
 	bne	ks46
 ;
 	mov	a,#$00
-	call	snoset			; sno data set
+	call	snoset			; sno data set ; set instrument #0 if not set
 ;
 ks46:
 	mov	a,#$00
-	mov.b	!ptc+x,a		; pt  count = 0
+	mov.b	!ptc+x,a		; pt  count = 0	; zero subroutine repeat counter
 ;
 	push	a
 	mov.b	a,!keyd
@@ -762,68 +774,70 @@ ks46:
 	pop	a
 	bne	+
 ;
-	mov.b	!panc+x,a		; pan move count
-	mov.b	!pvoc+x,a		; vol move count
+	mov.b	!panc+x,a		; pan move count ; zero subroutine repeat counter
+	mov.b	!pvoc+x,a		; vol move count ; zero voice vol fade counter
 +
 	inc	a
-	mov.b	!ngc+x,a		; Nagasa count set (ngo)
+	mov.b	!ngc+x,a		; Nagasa count set (ngo) ; set duration counter to 1
 ;
 	inc	x
 	inc	x			; + 2
-	asl.b	!keyd
-	bne	ks44
+	asl.b	!keyd			; next voice
+	bne	ks44				; for each voice
 ;************************************************
 txh:
 	mov	x,#$00			; channel count
 	mov.b	!vols,x			; vols reset
-	mov	!keyd,#$01		; key data set
+	mov	!keyd,#$01		; key data set ; first voice
 ;................................................
 tx00:
 	mov.b	!chn,x
 	mov.b	a,!add+1+x
-	beq	tx60			; kami = 0 (no use channel)
+	beq	tx60			; kami = 0 (no use channel) ; next if vptr hi zero
 ;................................................
-	dec.b	!ngc+x
-	bne	tx22
+	dec.b	!ngc+x		; dec duration counter
+	bne	tx22			; if not zero, skip to voice readahead
 ;......
 tx10:
-	call	data_in			; data in & inc add
+	call	data_in			; data in & inc add ; read vcmd into A and Y
 	bne	tx15			; block end ?
-;
+; vcmd 00 - end repeat/return
 	mov.b	a,!ptc+x		; pattern chu ?
-	beq	ks20			;
+	beq	ks20			; read next block if loop has been done
 ;................................................ 
-	call	addset			; pattern start add set
+; repeat / return from subroutine
+	call	addset			; pattern start add set ; jump to loop start addr
 ;......
-	dec.b	!ptc+x
-	bne	tx10
+	dec.b	!ptc+x			; dec repeat count
+	bne	tx10				;  if the loop has been done
 ;......
 	mov	a,!adt+x		; add restore (pattern end)
 	mov.b	!add+x,a
 	mov	a,!adt+1+x
-	mov.b	!add+1+x,a
-	bra	tx10			;
+	mov.b	!add+1+x,a	; back to return addr instead
+	bra	tx10			; then continue
 ;................................................
+; vcmd branches
 tx15:
-	bmi	tx16			; d7 = 1 ?
+	bmi	tx16			; d7 = 1 ? 		; vcmds 01-7f - note info:
 ;
-	mov	!ngs+x,a		; Nagasa Store
+	mov	!ngs+x,a		; Nagasa Store	; set cmd as duration
 ;......
-	call	data_in			; data in & inc add
-	bmi	tx16			; d7 = 1 ?
+	call	data_in			; data in & inc add	;read next byte
+	bmi	tx16			; d7 = 1 ? ; if note note then
 ;......
 	push	a			; % & vol
 	xcn	a			; kami
 	and	a,#$07
 	mov	y,a
 	mov	a,gate+y		; Gate off (%) set
-	mov	!ngg+x,a
+	mov	!ngg+x,a		; set dur% from high nybble
 ;
 	pop	a			; shimo
 	and	a,#$0f
 	mov	y,a
 	mov	a,volt+y
-	mov	!vol+x,a		; vol set
+	mov	!vol+x,a		; vol set ; set per-note vol from low nybble
 ;...................
 ;	mov	kkk,a			; X 2.5
 ;	lsr	kkk
@@ -837,39 +851,39 @@ tx15:
 ;	asl	a			; X 2
 ;	mov	!vol+x,a		; Gain set
 ;...................
-	call	data_in			; data in & inc add
-;
+	call	data_in			; data in & inc add ; read vcmd into A and Y
+; vcmd branches 80-ff
 tx16:
 	cmp	a,#!sno			; special flag ?
 	bcc	tx17
 ;
-	call	spfx			; special flag
+	call	spfx			; special flag ; vcmds e0-ff
 	bra	tx10
-;
+; vcmds 80-df - note
 tx17:
 	push	a
 	mov.b	a,!keyd
 	and.b	a,!fkin
 	pop	a
 	bne	tx18
-	call	dss			; freq. data set
+	call	dss			; freq. data set ; handle note cmd if vbit $1a clear
 ;...................
 tx18:
 	mov	a,!ngs+x
 	mov.b	!ngc+x,a
 	mov	y,a
 ;
-	mov	a,!ngg+x		; gate off (step) set
+	mov	a,!ngg+x		; gate off (step) set ; set duration counter from duration
 	mul	ya
 	mov	a,y
 	bne	tx19
 	inc	a			; a = 1
 tx19:
-	mov.b	!ngo+x,a
+	mov.b	!ngo+x,a	; set actual key-off dur counter
 	bra	tx40
 ;................................................
 tx22:
-	call	keych			; keyoff & sweep & vib check
+	call	keych			; keyoff & sweep & vib check ; do readahead
 ;................................................
 tx40:
 	call	swpch			; sweep check (next data)
@@ -884,29 +898,29 @@ tx60:
 ;************************************************
 	jmp	tx00
 tmpy:
-	mov.b	a,!tmpc			; tmp move chu ?
+	mov.b	a,!tmpc			; tmp move chu ? ; tempo fade counter
 	beq	evoy
 ;
 	movw	ya,!tmpadw		; move keisan
-	addw	ya,!tmpw
+	addw	ya,!tmpw		; add tempo fade to tempo
 	dbnz	!tmpc,tmp20		; dec & bne
 ;					; tmpc = 0 (move end)
-	movw	ya,!tmpc		; y <- tmpm , a <- 00
+	movw	ya,!tmpc		; y <- tmpm , a <- 00	; last time: move tempo target to tempo
 tmp20:
 	movw	!tmpw,ya
 ;************************************************
 ;		evol move
 ;************************************************
 evoy:
-	mov.b	a,!evoc			; evo move chu ?
+	mov.b	a,!evoc			; evo move chu ? ; echo vol fade counter
 	beq	_8f1
 ;
 	movw	ya,!evoladw		; move keisan
 	addw	ya,!evolw
-	movw	!evolw,ya
+	movw	!evolw,ya		; add echo L delta to echo L vol
 ;
 	movw	ya,!evoradw		; move keisan
-	addw	ya,!evorw
+	addw	ya,!evorw		; add echo R delta to echo R vol
 	dbnz	!evoc,evo12		; dec & bne
 ;
 	movw	ya,!evoc		; y <- evolm , a <- 00
@@ -918,27 +932,27 @@ evo12:
 ;		mvol move
 ;************************************************
 _8f1:
-	mov.b	a,!mvoc			; mvol move chu ?
+	mov.b	a,!mvoc			; mvol move chu ? ; master vol fade counter
 	beq	mvo40
 ;
 	movw	ya,!mvoadw		; move keisan
-	addw	ya,!mvow
+	addw	ya,!mvow		; add master vol delta to value
 	dbnz	!mvoc,+			; dec & bne
 ;					; mvoc = 0 (move end)
 	movw	ya,!mvoc		; y <- mvom , a <- 00
 +
 	movw	!mvow,ya
-	mov	!vols,#$ff		; mvo set
+	mov	!vols,#$ff		; mvo set ; set all vol chg flags
 ;................................................
 mvo40:
 	mov	x,#$00			; vol set keyon & end
-	mov	!keyd,#$01		; key data set (8ch)
+	mov	!keyd,#$01		; key data set (8ch) ; first voice
 ;
 mvo42:
 	mov.b	a,!add+1+x
 	beq	mvo46			; kami = 0
 ;
-	call	voly			; tre pan move & vol set
+	call	voly			; tre pan move & vol set ; do per-voice fades
 ;
 mvo46:
 	inc	x
@@ -954,33 +968,35 @@ mvo48:
 ;************************************************
 ;		special flag check
 ;************************************************
+; dispatch vcmd in A (e0-ff)
 spfx:
-	asl	a
+	asl	a					; e0-ff => c0-fe (8 bit)
 	mov	y,a
 !_spft = !sno*2-256			; = $C0
 	mov	a,spft+1-(!_spft)+y	; high
 	push	a
 	mov	a,spft-(!_spft)+y	; low
-	push	a
+	push	a				; push jump address from table
 ;
 	mov	a,y
 	lsr	a
 	mov	y,a
-	mov	a,spfp-!sno+128+y	;mov	a,$0bb0+y
-	beq	data_inr
+	mov	a,spfp-!sno+128+y	;mov	a,$0bb0+y ; vcmd length
+	beq	data_inr			; if non zero
 ;************************************************
 ;		data in  &  inc address
 ;************************************************
+; read new argument to A and Y
 data_in:
 	mov	a,(!add+x)		; data in
-;
+; advance reading ptr
 add_inc:
 	inc.b	!add+x
 	bne	data_inr
-	inc.b	!add+1+x
+	inc.b	!add+1+x		; inc reading ptr
 data_inr:
 	mov	y,a			; flag set
-	ret
+	ret				; jump to vcmd
 ;................................................
 ;
 ;
@@ -992,25 +1008,26 @@ snox:
 ;************************************************
 ;		Sound No. data set
 ;************************************************
+; vcmd e0 - set instrument
 snoset:
 	mov	!snos+x,a		; sno store
 snoset0:
 	mov	y,a			; d7 check
-	bpl	snoset1
+	bpl	snoset1			; if percussion note:
 ;......
 	setc
-	sbc	a,#$ca
+	sbc	a,#$ca			; ca-dd => 00-15
 ;
 	clrc
-	adc.b	a,!wavs			; bias add.
+	adc.b	a,!wavs			; bias add. ; add perc patch base
 ;......
 snoset1:
 	mov	y,#$06			; x=channel a=sno
 	mul	ya
 	movw	!adx,ya
 	clrc
-	adc	!adx,#!inst_tab		; #low sod
-	adc	!adx+1,#!inst_tab>>8		; #high sod
+	adc	!adx,#!patch_tab		; #low sod
+	adc	!adx+1,#!patch_tab>>8		; #high sod
 ;...
 	mov.b	a,!fkin			; kinshi flag check
 	and.b	a,!keyd
@@ -1020,7 +1037,7 @@ snoset1:
 	mov	a,x			; apuch
 	xcn	a
 	lsr	a
-	or	a,#$04			; write address
+	or	a,#$04			; write address ; voice X SRCN
 	mov	x,a
 ;
 	mov	y,#$00			; 1st data in
@@ -1028,21 +1045,21 @@ snoset1:
 	bpl	snoset4			; noise ?
 ;......
 snoset2:
-	and	a,#$1f			; noise clock store
-	and	!flgs,#$20
-	tset	!flgs,a			; noise clock store
+	and	a,#$1f			; noise clock store ; sample > 80: noise, freq in low bits
+	and	!flgs,#$20		; keep echo bit from FLG
+	tset	!flgs,a			; noise clock store ;  ; OR in noise freq
 ;
-	or	(!nons),(!keyd)		; noise channel store
+	or	(!nons),(!keyd)		; noise channel store ; set vbit in noise enable
 ;
-	mov	a,y			; y = 0 (=dd0)
+	mov	a,y			; y = 0 (=dd0) ; set SRCN to 0
 	bra	snoset8
 ;......
 snoset4:
 	mov.b	a,!keyd			; normal sno
-	tclr	!nons,a			; noise channel clear
+	tclr	!nons,a			; noise channel clear ; clear noise vbit
 ;...................
 snoset6:
-	mov	a,(!adx)+y		; sound data set
+	mov	a,(!adx)+y		; sound data set ; set SRCN from table
 snoset8:
 	mov	!apuadd,x		; write address
 	mov	!apudt,a		; data write
@@ -1050,11 +1067,11 @@ snoset8:
 	inc	x
 	inc	y
 	cmp	y,#$04
-	bne	snoset6			; tensou data 4 
+	bne	snoset6			; tensou data 4 ; set SRCN, ADSR1/2, GAIN from table
 ;
 	pop	x
 	mov	a,(!adx)+y		; 5 ban me (block su)
-	mov	!bls+1+x,a		; block su store
+	mov	!bls+1+x,a		; block su store ; set pitch multiplier
 	inc	y
 	mov	a,(!adx)+y		; 6 ban me (block su)
 	mov	!bls+x,a		; block su store
@@ -1069,7 +1086,7 @@ panx:
 	mov	!panf+x,a		; pan flag store
 ;
 	and	a,#$1f
-	mov	!pand+x,a		; pan data
+	mov	!pand+x,a		; pan data ; voice pan value
 	mov	a,#$00
 	mov	!pandw+x,a
 ;
@@ -1086,10 +1103,10 @@ pamx:
 	mov	!panm+x,a		; pan (mokuteki)
 ;......
 	setc
-	sbc	a,!pand+x		; pan (now data)
+	sbc	a,!pand+x		; pan (now data) ; current pan value
 	pop	x			; count --> x
 ;
-	call	divx			; x=count a=sa c=+,-
+	call	divx			; x=count a=sa c=+,- ; delta = pan value / steps
 ;......
 	mov	!panadw+x,a		; + shimo
 	mov	a,y			; kami
@@ -1098,6 +1115,7 @@ pamx:
 ;************************************************
 ;		vibrate
 ;************************************************
+; vcmd e3 - vibrato on
 vibx:
 	;call	data_in			; data in & inc add
 	mov	!vibhs+x,a		; vib hold
@@ -1109,6 +1127,7 @@ vibx:
 ;************************************************
 ;		vibrate off
 ;************************************************
+; vcmd e4 - vibrato off
 vofx:
 	mov.b	!vibd+x,a		; vib depth
 	mov	!vibdm+x,a		; vib depth mokuteki
@@ -1119,6 +1138,7 @@ vofx:
 ;************************************************
 ;		vibrate change
 ;************************************************
+; vcmd f0 - vibrato fade
 vchx:
 	;call	data_in			; data in & inc add
 	mov	!vibcs+x,a		; vib change count
@@ -1136,6 +1156,7 @@ vchx:
 ;************************************************
 ;		main volume change
 ;************************************************
+; vcmd e5 - master volume
 mv1x:
 	;call	data_in			;;00
 	mov	a,!_03ca
@@ -1149,6 +1170,7 @@ mv1x:
 ;************************************************
 ;		main volume move
 ;************************************************
+; vcmd e6 - master volume fade
 mv2x:
 	;call	data_in			; data in & inc add
 	mov.b	!mvoc,a			; mvol (count)
@@ -1167,6 +1189,7 @@ mv2x:
 ;************************************************ 
 ;               tempo change   
 ;************************************************ 
+; vcmd e7 - tempo
 tp1x:
 	;call	data_in			;;00   
 	mov	a,#$00
@@ -1175,6 +1198,7 @@ tp1x:
 ;************************************************ 
 ;               tempo move     
 ;************************************************ 
+; vcmd e8 - tempo fade
 tp2x:
 	;call	data_in			; data in & inc add
 	mov.b	!tmpc,a			; tmp (count)
@@ -1193,6 +1217,7 @@ tp2x:
 ;************************************************
 ;		key tras.
 ;************************************************
+; vcmd e9 - global transpose
 ktpx:
 	;call	data_in			;; 0  
 	mov.b	!ktps,a
@@ -1200,6 +1225,7 @@ ktpx:
 ;************************************************
 ;		part key tras.
 ;************************************************
+; vcmd ea - per-voice transpose
 ptpx:
 	;call	data_in			;; x
 	mov	!_03d0+x,a
@@ -1212,6 +1238,7 @@ ptpx:
 ;************************************************
 ;		tremolo
 ;************************************************
+; vcmd eb - tremolo on
 trex:
 	;call	data_in			; data in & inc add
 	mov	!trehs+x,a		; tre hold
@@ -1224,15 +1251,18 @@ trex:
 ;		tremolo off		; a = 0
 ;************************************************
 tofx:
+; vcmd ec -ff
 	mov.b	!tred+x,a		; tre depth
 	ret
 ;************************************************
 ;		sweep kurikaeshi
 ;************************************************
+; vcmd f1 - pitch envelope (release)
 swkx:
 	mov	a,#$01			;
 	bra	swsx0
 ;................................................
+; vcmd f2 - pitch envelope (attack)
 swsx:
 	mov	a,#$00
 swsx0:
@@ -1260,6 +1290,7 @@ swsx0:
 ;................................................
 ;		sweep off		; a = 0
 ;................................................
+; vcmd f3 - pitch envelope off
 sofx:
 	mov	!swsc+x,a		;
 	mov	!_03e1+x,a
@@ -1267,6 +1298,7 @@ sofx:
 ;************************************************
 ;		part vol set
 ;************************************************
+; vcmd ed - volume
 pv1x:
 	;call	data_in			;;0x
 	mov	!pvod+x,a		; vol set
@@ -1276,6 +1308,7 @@ pv1x:
 ;************************************************
 ;		part vol move
 ;************************************************
+; vcmd ee - volume fade
 pv2x:
 	;call	data_in			; data in & inc add
 	mov.b	!pvoc+x,a		; vol (count)
@@ -1297,6 +1330,7 @@ pv2x:
 ;************************************************
 ;		part tune
 ;************************************************
+; vcmd f4 - tuning
 tunx:
 	mov	!_03e0+x,a
 	mov	a,!_03a0+x
@@ -1308,6 +1342,7 @@ tunx:
 ;************************************************
 ;		rythm pattern
 ;************************************************
+; vcmd ef - call subroutine
 patx:
 	;call	data_in			; data in & inc add
 	mov	!adp+x,a		; pattern add. (low)
@@ -1321,7 +1356,7 @@ patx:
 	mov	!adt+x,a
 	mov.b	a,!add+1+x
 	mov	!adt+1+x,a
-;
+; jump to $loop destination
 addset:
 	mov	a,!adp+x		; pattern add. (low)
 	mov.b	!add+x,a
@@ -1331,6 +1366,7 @@ addset:
 ;************************************************
 ;		echo on channel & volume
 ;************************************************
+; vcmd f5 - echo vbits/volume
 ecvx:
 	;call	data_in			; data in & inc add
 	mov	!_03c3,a
@@ -1350,6 +1386,7 @@ ecvx:
 ;************************************************
 ;		echo volume move
 ;************************************************
+; vcmd f8 - echo volume fade
 ev2x:
 	;call	!data_in		; data in & inc add
 	mov.b	!evoc,a			; evol (count)
@@ -1377,6 +1414,7 @@ ev2x:
 ;************************************************
 ;		echo off
 ;************************************************
+; vcmd f6 - disable echo
 eofx:
 	movw	!evolw,ya		; ya = 00
 	movw	!evorw,ya		; EVOL "00" set
@@ -1386,6 +1424,7 @@ eofx:
 ;************************************************
 ;		echo delay time & feed back
 ;************************************************
+; vcmd f7 - set echo params
 edlx:
 	;call	data_in			; data in & inc add
 	call	esaset			; EDL & ESA set
@@ -1402,7 +1441,7 @@ filset:
 	mov	y,#$0f			; tenso address set
 ;
 filset2:
-	mov	a,fild+x
+	mov	a,fild+x			; filter table
 	call	apus			; a=data  y= address 
 ;
 	inc	x
@@ -1415,6 +1454,7 @@ filset2:
 	mov.b	x,!chn
 	ret
 ;........................................
+; set echo delay to A
 esaset:
 	mov.b	!eclr,a			; echo delay time
 ;
@@ -1461,6 +1501,7 @@ esaset4:
 ;************************************************
 ;		source count
 ;************************************************
+; vcmd fa - set perc patch base
 wavx:	mov.b	!wavs,a			;
 	ret				;
 ;************************************************
@@ -1483,6 +1524,7 @@ wavx:	mov.b	!wavs,a			;
 ;************************************************
 ;plyx:		mov	!ffk,a		; 	 !! test !!
 ;		jmp	ks04		; keyoff !! test !!
+; vcmd f9 - pitch slide
 _B5D:
 	push	a
 	mov.b	a,!keyd
@@ -1525,6 +1567,7 @@ swpx:
 	adc.b	a,!ktps
 	adc	a,!ptps+x
 ;................................................
+; calculate portamento delta
 swpadset:
 	and	a,#$7f			; $
 	mov	!swpm+x,a		; sweep (mokuteki)
@@ -1552,6 +1595,7 @@ swpdset:
 ;................................................
 ;************** div keisan  from tp2 & mv2 & pam & swp (x=count a=sa)
 ;................................................
+; signed 16 bit division
 divx:
 	notc				; c=1 plus
 	ror.b	!ttt			; data store
@@ -1579,17 +1623,46 @@ minusc:
 divr:
 	ret
 ;................................................
+; vcmd dispatch table ($0a9c)
 spft:
-	dw snox,panx,pamx,vibx,vofx,mv1x,mv2x,tp1x,tp2x
-	dw ktpx,ptpx,trex,tofx,pv1x,pv2x,patx,vchx,swkx,swsx,sofx
+	dw snox				; e0 - set instrument
+	dw panx				; e1 - pan
+	dw pamx				; e2 - pan fade
+	dw vibx				; e3 - vibrato on
+	dw vofx				; e4 - vibrato off
+	dw mv1x				; e5 - master volume
+	dw mv2x				; e6 - master volume fade
+	dw tp1x				; e7 - tempo
+	dw tp2x				; e8 - tempo fade
+	dw ktpx				; e9 - global transpose
+	dw ptpx				; ea - per-voice transpose
+	dw trex				; eb - tremolo on
+	dw tofx				; ec - tremolo off
+	dw pv1x				; ed - volume
+	dw pv2x				; ee - volume fade
+	dw patx				; ef - call subroutine
+	dw vchx				; f0 - vibrato fade
+	dw swkx				; f1 - pitch envelope (release)
+	dw swsx				; f2 - pitch envelope (attack)
+	dw sofx				; f3 - pitch envelope off
+	dw tunx				; f4 - tuning
+	dw ecvx				; f5 - echo vbits/volume
+	dw eofx				; f6 - disable echo
+	dw edlx				; f7 - set echo params
+	dw ev2x				; f8 - echo volume fade
+	dw _B5D				; f9 - pitch slide
+	dw wavx				; fa - set perc patch base
 	;dw tunx,ecvx,eofx,edlx,ev2x,swpx,wavx
-	dw tunx,ecvx,eofx,edlx,ev2x,_B5D,wavx
 	;dw                                    selx,cutx,fftx,plyx	; !! test !!
+; fb-ff undefined
+
+; vcmd lengths ($0b32)
 spfp:
-	db $01, $01, $02, $03, $00, $01, $02, $01, $02
-	db $01, $01, $03, $00, $01, $02, $03, $01, $03, $03, $00
-	db $01, $03, $00, $03, $03, $03, $01
-	;db                                    $02, $00, $00, $00	; !! test !!
+	db $01, $01, $02, $03, $00, $01, $02, $01	; e0-e7
+	db $02, $01, $01, $03, $00, $01, $02, $03	; e8-ef
+	db $01, $03, $03, $00, $01, $03, $00, $03	; f0-f7
+	db $03, $03, $01							; f8-fa
+;	db $02, $00, $00, $00	; !! test !!
 ;................................................
 ;
 ;
@@ -1597,6 +1670,7 @@ spfp:
 ;************************************************
 ;		part vol move
 ;************************************************
+; do voice fades
 voly:
 	mov.b	a,!pvoc+x		; vol move chu ?
 	beq	trey
@@ -1714,31 +1788,31 @@ panr:
 	ret
 ;................................................
 _CC1:
-or	(!vols),(!keyd)			; vol set flag 
+	or	(!vols),(!keyd)			; vol set flag 
 _CC4:
-movw	!adx,ya
-movw	!adx+2,ya
-push	x
-pop	y
-clrc
-bne	_CD7
+	movw	!adx,ya
+	movw	!adx+2,ya
+	push	x
+	pop	y
+	clrc
+	bne	_CD7
 ;...
-adc	!adx+2,#$1f
-mov	a,#$00
-mov	(!adx)+y,a
-inc	y
-bra	+
+	adc	!adx+2,#$1f
+	mov	a,#$00
+	mov	(!adx)+y,a
+	inc	y
+	bra	+
 ;...
 _CD7:
-adc	!adx+2,#$10
-call	_CDE
-inc	y
+	adc	!adx+2,#$10
+	call	_CDE
+	inc	y
 ;
 _CDE:
-mov	a,(!adx)+y
+	mov	a,(!adx)+y
 +
-adc	a,(!adx+2)+y
-mov	(!adx)+y,a
+	adc	a,(!adx+2)+y
+	mov	(!adx)+y,a
 ret
 ;************************************************
 ;		keyoff check
@@ -2080,6 +2154,7 @@ volxset:
 ;
 ;
 ;..............................................
+; pan table
 pant:   ; 0 - 20
 	db 000, 001, 003, 007, 013, 021, 030, 041, 052, 066
 	db 081, 094, 103, 110, 115, 119, 122, 124, 125, 126, 127
@@ -2090,6 +2165,7 @@ pant:   ; 0 - 20
 ;
 ;
 ;................................................
+; echo FIR presets
 fild:  ;                                        ; Filter    (0xfh)
 	db $7f, $00, $00, $00, $00, $00, $00, $00 ; no filter (x1.0)
 	db $58, $bf, $db, $f0, $fe, $07, $0c, $0c ; high pass
@@ -2106,6 +2182,7 @@ dsetd: ;    1      2      3      4      5      6        7     8     9       10
 ;
 ;
 ;************************************************
+; pitch table
 gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ; dw	0066,0070,0075,0079,0084,0089,0094,0100,0106,0112,0119,0126  ; c00
 ; dw	0133,0141,0150,0159,0168,0178,0189,0200,0212,0225,0238,0252  ; c10
@@ -2178,11 +2255,74 @@ ten40:
 	ret
 ;........................................
 
-_0f21:
-incbin	0F21-0FDF.bin
+; 0F21-0FDF.bin
+; Table of SFX IDs to trigger alongside the primary SFX ID that was called.
+; Multiple SFX IDs can be chained together via this list.
+; Zero means don't trigger another one.
+sfx_chain_table:
+	db $BF ; SFX ID 0 is invalid, do not use
+	db      $BF, $BE, $00, $0C, $0C, $00, $00 ; $01 - $07
+	db $00, $00, $00, $00, $00, $AF, $B2, $B0 ; $08 - $0F
+	db $B1, $00, $AE, $00, $10, $10, $10, $10 ; $10 - $17
+	db $00, $AB, $00, $00, $BD, $BC, $B8, $B6 ; $18 - $1F
+	db $BA, $00, $00, $00, $00, $00, $00, $00 ; $20 - $27
+	db $00, $00, $00, $00, $00, $00, $00, $21 ; $28 - $2F
+	db $00, $B9, $00, $00, $00, $00, $00, $00 ; $30 - $37
+	db $00, $00, $B3, $00, $00, $00, $00, $00 ; $38 - $3F
+	db $00, $00, $00, $00, $00, $00, $00, $00 ; $40 - $47
+	db $00, $00, $00, $00, $00, $00, $00, $00 ; $48 - $4F
+	db $00, $00, $00, $00, $00, $00, $00, $00 ; $50 - $57
+	db $00, $00, $B4, $00, $00, $00, $00, $00 ; $58 - $5F
+	db $00, $00, $00, $00, $00, $00, $00, $00 ; $60 - $67
+	db $00, $00, $00, $00, $00, $00, $00, $00 ; $68 - $6F
+	db $00, $00, $00, $00, $00, $00, $00, $00 ; $70 - $77 
+	db $AA, $00, $00, $00, $00, $00, $00, $00 ; $78 - $7F
+	db $AD, $00, $AC, $00, $00, $00, $00, $00 ; $80 - $87
+	db $00, $00, $00, $00, $A9, $A8, $00, $00 ; $88 - $8F
+	db $A7, $00, $00, $00, $00, $00, $00, $00 ; $90 - $97
+	db $00, $00, $00, $00, $A6, $A6, $00, $00 ; $98 - $9F
+	db $A2, $A3, $A4, $88, $00, $00, $00, $00 ; $A0 - $A7
+	db $00, $00, $00, $00, $00, $2A, $00, $00 ; $A8 - $AF
+	db $00, $00, $00, $00, $00, $B5, $00, $B7 ; $B0 - $B7
+	db $00, $00, $79, $BB, $00, $00, $00      ; $B8 - $BF
 
-_0fe0:
-incbin	0FE0-109E.bin
+; 0FE0-109E.bin
+; This table defines the parameters of each SFX ID.
+; Each byte consists of two nibbles ($xy).
+; $x - voice ID to use.
+; $y - SFX priority.
+; Higher values have higher priority, and ties overwrite each other.
+sfx_parameters:
+	db $3F ; SFX ID 0 is invalid, do not use
+	db      $3F, $5D, $5C, $5C, $5C, $5A, $5A ; $01 - $07
+	db $5A, $5A, $2D, $2D, $25, $3E, $3E, $3A ; $08 - $0F
+	db $10, $14, $59, $59, $2D, $2D, $2D, $5C ; $10 - $17
+	db $5B, $59, $3E, $3E, $1F, $46, $46, $46 ; $18 - $1F
+	db $45, $44, $43, $42, $41, $40, $41, $40 ; $20 - $27
+	db $40, $39, $45, $45, $45, $45, $35, $57 ; $28 - $2F
+	db $56, $58, $58, $50, $50, $50, $50, $32 ; $30 - $37
+	db $45, $45, $45, $42, $41, $40, $42, $42 ; $38 - $3F
+	db $42, $41, $40, $42, $42, $42, $41, $40 ; $40 - $47
+	db $42, $41, $40, $45, $45, $45, $40, $45 ; $48 - $4F
+	db $46, $45, $45, $45, $45, $51, $43, $12 ; $50 - $57
+	db $45, $45, $45, $42, $42, $42, $39, $39 ; $58 - $5F
+	db $39, $39, $39, $39, $58, $45, $39, $43 ; $60 - $67
+	db $43, $43, $43, $43, $31, $41, $41, $46 ; $68 - $6F
+	db $46, $46, $46, $43, $43, $43, $43, $43 ; $70 - $77 
+	db $1E, $39, $39, $39, $39, $39, $39, $45 ; $78 - $7F
+	db $46, $45, $45, $46, $35, $45, $46, $45 ; $80 - $87
+	db $54, $30, $45, $39, $45, $46, $32, $45 ; $88 - $8F
+	db $39, $45, $42, $42, $46, $46, $32, $45 ; $90 - $97
+	db $46, $44, $34, $41, $45, $45, $46, $46 ; $98 - $9F
+	db $35, $25, $15, $03, $00, $15, $43, $36 ; $A0 - $A7
+	db $35, $0E, $49, $35, $36, $2D, $4E, $44 ; $A8 - $AF
+	db $40, $5A, $33, $25, $23, $33, $24, $34 ; $B0 - $B7
+	db $36, $34, $25, $35, $0F, $2E, $2F      ; $B8 - $BF
+
+
+; turn them into db statements and put them in rows of 8
+; (excluding the first entry because SFX ID $00 is never valid, meaning the first row 
+; should have a blank spot). 
 
 ; $109F table begins, 2 bytes, 191 pointers
 ; Names taken from SFEX 1.08.2
@@ -3401,228 +3541,228 @@ patches:
 incsrc patches.asm
 
 _24FD:
-mov	a,#$80
-mov	y,#$5c
-call	apus
-mov	a,!_03c3
-and	a,#$80
-beq	_2512
-set7	!eons
-mov	y,#$4d
-call	apus
+	mov	a,#$80
+	mov	y,#$5c
+	call	apus
+	mov	a,!_03c3
+	and	a,#$80
+	beq	_2512
+	set7	!eons
+	mov	y,#$4d
+	call	apus
 
 _2512:
-mov	!sf1,#$00
-clr7	!fkin
-mov	x,#$0e
-mov	a,!_021f
-call	snox
-mov	a,#$00
-mov	!_03c9,a
-mov.b	!_d1,a
-mov.b	!_ae,a
-mov.b	!_9e,a
-mov	a,!_03ee
-mov	!_038f,a
-mov	a,!_03ef
-mov	!_028e,a
-ret
+	mov	!sf1,#$00
+	clr7	!fkin
+	mov	x,#$0e
+	mov	a,!_021f
+	call	snox
+	mov	a,#$00
+	mov	!_03c9,a
+	mov.b	!_d1,a
+	mov.b	!_ae,a
+	mov.b	!_9e,a
+	mov	a,!_03ee
+	mov	!_038f,a
+	mov	a,!_03ef
+	mov	!_028e,a
+	ret
 
 _2537:
-mov	x,#$60
-mov.b	!_9e,x
-mov	!_03c9,x
-mov	a,#$00
-mov	!_032e,a
-mov.b	x,!_9e
-setc
-sbc	a,!_030f
-call	divx
-mov	!_031e,a
-mov	a,y
-mov	!_031f,a
+	mov	x,#$60
+	mov.b	!_9e,x
+	mov	!_03c9,x
+	mov	a,#$00
+	mov	!_032e,a
+	mov.b	x,!_9e
+	setc
+	sbc	a,!_030f
+	call	divx
+	mov	!_031e,a
+	mov	a,y
+	mov	!_031f,a
 _2553:
-mov.b	a,!_9e
-beq	_24FD
-cmp	a,#$01
-beq	_24FD
-mov	a,#$00
-mov	y,#$03
-mov	x,#$0e
-dec	!_9e
-call	_CC4
-mov	a,!_030f
-mov	!_032f,a
-mov	a,#$0a
-mov	!_035f,a
-mov.b	!kkk,a
-mov.b	!sss,#$00
-mov	x,#$0e
-call	pan20
-ret
+	mov.b	a,!_9e
+	beq	_24FD
+	cmp	a,#$01
+	beq	_24FD
+	mov	a,#$00
+	mov	y,#$03
+	mov	x,#$0e
+	dec	!_9e
+	call	_CC4
+	mov	a,!_030f
+	mov	!_032f,a
+	mov	a,#$0a
+	mov	!_035f,a
+	mov.b	!kkk,a
+	mov.b	!sss,#$00
+	mov	x,#$0e
+	call	pan20
+	ret
 
 _257c:
-mov	a,!_03f8
-beq	+
-mov.b	!fl1,#$00
+	mov	a,!_03f8
+	beq	+
+	mov.b	!fl1,#$00
 +
-mov.b	y,!fl1s
-cmp.b	y,!fl1
-beq	_25a1
-mov.b	a,!fl1
-mov.b	!sf1,a
-mov.b	!fl1s,a
-beq	_2537
-mov	a,y
-beq	_25b5
-eor.b	a,!fl1
-and	a,#$c0
-bne	_25b5
-mov.b	a,!_d1
+	mov.b	y,!fl1s
+	cmp.b	y,!fl1
+	beq	_25a1
+	mov.b	a,!fl1
+	mov.b	!sf1,a
+	mov.b	!fl1s,a
+	beq	_2537
+	mov	a,y
+	beq	_25b5
+	eor.b	a,!fl1
+	and	a,#$c0
+	bne	_25b5
+	mov.b	a,!_d1
 
-bne	_25cc
-bra	_2618
+	bne	_25cc
+	bra	_2618
 
 _25a1:
-mov.b	a,!fl1
-bne	_25ac
-mov	x,!_03c9
-beq	+
-bra	_2553
-_25ac:
-mov.b	a,!_d1
-bne	_25cc
-mov.b	a,!sf1
-bne	_262f
+	mov.b	a,!fl1
+	bne	_25ac
+	mov	x,!_03c9
+	beq	+
+	bra	_2553
+	_25ac:
+	mov.b	a,!_d1
+	bne	_25cc
+	mov.b	a,!sf1
+	bne	_262f
 +
-ret
+	ret
 
 _25b5:
-mov	!_d1,#$02
-mov	a,#$80
-mov	y,#$5c
-call	apus
-set7.b	!fkin
-mov	a,#$00
-mov	!_028e,a
-mov.b	!_ae,a
-mov	!_038f,a
+	mov	!_d1,#$02
+	mov	a,#$80
+	mov	y,#$5c
+	call	apus
+	set7.b	!fkin
+	mov	a,#$00
+	mov	!_028e,a
+	mov.b	!_ae,a
+	mov	!_038f,a
 -
-ret
+	ret
 
 _25cc:
-dbnz	!_d1,-
-call	_2671
-mov	a,#$80
-call	_3e79
-mov.b	a,!sf1
-bmi	_25ee
-bbs6	!sf1,_25e6
-mov	y,#$70
-mov	x,#$96
-mov	a,#$a0
-bra	_25ff
+	dbnz	!_d1,-
+	call	_2671
+	mov	a,#$80
+	call	_3e79
+	mov.b	a,!sf1
+	bmi	_25ee
+	bbs6	!sf1,_25e6
+	mov	y,#$70
+	mov	x,#$96
+	mov	a,#$a0
+	bra	_25ff
 
 _25e6:
-mov	y,#$f7
-mov	x,#$b2
-mov	a,#$ff
-bra	_25ff
+	mov	y,#$f7
+	mov	x,#$b2
+	mov	a,#$ff
+	bra	_25ff
 
 _25ee:
-bbs6	!sf1,_25f9
-mov	y,#$ff
-mov	x,#$b2
-mov	a,#$ff
-bra	_25ff
+	bbs6	!sf1,_25f9
+	mov	y,#$ff
+	mov	x,#$b2
+	mov	a,#$ff
+	bra	_25ff
 
 _25f9:
-mov	y,#$bb
-mov	x,#$96
-mov	a,#$e0
+	mov	y,#$bb
+	mov	x,#$96
+	mov	a,#$e0
 
 _25ff:
-mov	!_03cb,y
-mov	!_03c6,x
-mov	!_03fc,a
-call	_648
-clr7	!eons
-mov.b	a,!eons
-mov	y,#$4d
-call	apus
-mov	a,#$01
-bne	+
+	mov	!_03cb,y
+	mov	!_03c6,x
+	mov	!_03fc,a
+	call	_648
+	clr7	!eons
+	mov.b	a,!eons
+	mov	y,#$4d
+	call	apus
+	mov	a,#$01
+	bne	+
 _2618:
-mov	a,#$30
+	mov	a,#$30
 +
-mov.b	!_ae,a
-mov	!_af,#$00
-mov.b	a,!sf1
-and	a,#$3f
-mov	x,a
-mov	a,_26b4+x
-mov	x,#$0e
-mov.b	!chn,x
-call	swpadset
-ret
+	mov.b	!_ae,a
+	mov	!_af,#$00
+	mov.b	a,!sf1
+	and	a,#$3f
+	mov	x,a
+	mov	a,_26b4+x
+	mov	x,#$0e
+	mov.b	!chn,x
+	call	swpadset
+	ret
 
 _262f:
-clr7	!uuu
-mov.b	a,!_ae
-beq	_265c
-mov	x,#$0e
-call	_3e5f
-mov	a,!_03fc
-mov	!_032f,a
-mov	!_030f,a
-mov	a,#$0a
-mov	!_035f,a
-mov	!_033f,a
-mov	x,#$0e
-mov	a,!pand+x
-mov	y,a
-mov	a,!pandw+x
-movw	!sss,ya
-mov	a,#$0e
-call	pan20
-ret
+	clr7	!uuu
+	mov.b	a,!_ae
+	beq	_265c
+	mov	x,#$0e
+	call	_3e5f
+	mov	a,!_03fc
+	mov	!_032f,a
+	mov	!_030f,a
+	mov	a,#$0a
+	mov	!_035f,a
+	mov	!_033f,a
+	mov	x,#$0e
+	mov	a,!pand+x
+	mov	y,a
+	mov	a,!pandw+x
+	movw	!sss,ya
+	mov	a,#$0e
+	call	pan20
+	ret
 
 _265c:
-mov	a,#$70
-mov.b	!_ae,a
-mov	!_af,#$00
-mov.b	a,!rdm
-and	a,#$03
-or	a,#$a4
-mov	x,#$0e
-mov.b	!chn,x
-call	swpadset
-ret
+	mov	a,#$70
+	mov.b	!_ae,a
+	mov	!_af,#$00
+	mov.b	a,!rdm
+	and	a,#$03
+	or	a,#$a4
+	mov	x,#$0e
+	mov.b	!chn,x
+	call	swpadset
+	ret
 
 _2671:
-mov.b	a,!sf1
-and	a,#$c0
-clrc
-rol	a
-rol	a
-rol	a
-mov	x,a
-mov	y,#$06
-mul	ya
-mov	x,a
-mov	y,#$74
-mov	!ttt,#$04
+	mov.b	a,!sf1
+	and	a,#$c0
+	clrc
+	rol	a
+	rol	a
+	rol	a
+	mov	x,a
+	mov	y,#$06
+	mul	ya
+	mov	x,a
+	mov	y,#$74
+	mov	!ttt,#$04
 -
-mov	a,_269C+x
-call	apus
-inc	x
-inc	y
-dbnz	!ttt,-
-mov	a,_269C+x
-mov	!_022f,a
-inc	x
-mov	a,_269C+x
-mov	!_022e,a
+	mov	a,_269C+x
+	call	apus
+	inc	x
+	inc	y
+	dbnz	!ttt,-
+	mov	a,_269C+x
+	mov	!_022f,a
+	inc	x
+	mov	a,_269C+x
+	mov	!_022e,a
 ret
 
 _269C:
@@ -3635,271 +3775,271 @@ _26b4:
 	db $B0, $B0, $B0, $B0, $98, $98, $98, $98
 
 _26c4:
-mov	a,#$00
-mov.b	!sf2,a
-mov.b	!sf3c,a
-mov	!_03f6,a
-mov.b	!_ac,a
-mov.b	!_9c,a
-mov.b	!_9d,a
-mov	!_032d,a
-mov	!_030d,a
-mov	a,!_03ec
-mov	!_038d,a
-mov	a,!_03ed
-mov	!_028c,a
-clr6	!fkin
-mov	x,#$0c
-mov	a,!_021d
-call	snox
-mov	a,!_03c3
-and	a,#$40
-beq	_26fd
-set6	!eons
-mov	y,#$4d
-call	apus
+	mov	a,#$00
+	mov.b	!sf2,a
+	mov.b	!sf3c,a
+	mov	!_03f6,a
+	mov.b	!_ac,a
+	mov.b	!_9c,a
+	mov.b	!_9d,a
+	mov	!_032d,a
+	mov	!_030d,a
+	mov	a,!_03ec
+	mov	!_038d,a
+	mov	a,!_03ed
+	mov	!_028c,a
+	clr6	!fkin
+	mov	x,#$0c
+	mov	a,!_021d
+	call	snox
+	mov	a,!_03c3
+	and	a,#$40
+	beq	_26fd
+	set6	!eons
+	mov	y,#$4d
+	call	apus
 
 _26fd:
-mov	a,#$40
-mov	y,#$5c
-jmp	apus
+	mov	a,#$40
+	mov	y,#$5c
+	jmp	apus
 
 _2704:
-mov	x,!_03f6
-mov.b	!_9c,x
-mov	a,#$00
-mov	!_032c,a
-mov.b	x,!_9c
-setc
-sbc	a,!_030d
-call	divx
-mov	!_031c,a
-mov	a,y
-mov	!_031d,a
+	mov	x,!_03f6
+	mov.b	!_9c,x
+	mov	a,#$00
+	mov	!_032c,a
+	mov.b	x,!_9c
+	setc
+	sbc	a,!_030d
+	call	divx
+	mov	!_031c,a
+	mov	a,y
+	mov	!_031d,a
 
 _271e:
-mov.b	a,!_9c
-bne	+
-ret
+	mov.b	a,!_9c
+	bne	+
+	ret
 
 +
-cmp	a,#$01
-beq	_26c4
-mov	a,#$00
-mov	y,#$03
-mov	x,#$0c
-dec	!_9c
-call	_CC4
-mov	a,!_030d
-mov	!_032d,a
-mov	a,!_03fb
-mov	!_035d,a
-mov.b	!kkk,a
-mov.b	!sss,#$00
-mov	x,#$0c
-call	pan20
+	cmp	a,#$01
+	beq	_26c4
+	mov	a,#$00
+	mov	y,#$03
+	mov	x,#$0c
+	dec	!_9c
+	call	_CC4
+	mov	a,!_030d
+	mov	!_032d,a
+	mov	a,!_03fb
+	mov	!_035d,a
+	mov.b	!kkk,a
+	mov.b	!sss,#$00
+	mov	x,#$0c
+	call	pan20
 ret
 
 _2749:
-mov	a,!_03f8
-beq	+
-mov	!fl2,#$00
+	mov	a,!_03f8
+	beq	+
+	mov	!fl2,#$00
 
 +
-mov.b	y,!fl2s
-cmp.b	y,!fl2
-beq	_277d
-mov.b	a,!fl2
-mov.b	!sf2,a
-mov.b	!fl2s,a
-and	a,#$c0
-beq	_2704
-mov	a,y
-eor.b	a,!fl2
-and	a,#$0f
-bne	_2779
-mov.b	a,!sf3c
-bne	_27a4
-mov	a,y
-eor.b	a,!fl2
-and	a,#$30
-beq	+
-jmp	_27ff
+	mov.b	y,!fl2s
+	cmp.b	y,!fl2
+	beq	_277d
+	mov.b	a,!fl2
+	mov.b	!sf2,a
+	mov.b	!fl2s,a
+	and	a,#$c0
+	beq	_2704
+	mov	a,y
+	eor.b	a,!fl2
+	and	a,#$0f
+	bne	_2779
+	mov.b	a,!sf3c
+	bne	_27a4
+	mov	a,y
+	eor.b	a,!fl2
+	and	a,#$30
+	beq	+
+	jmp	_27ff
 +
-jmp	_2839
+	jmp	_2839
 _2779:
-mov.b	a,!fl2
-bne	_278D
+	mov.b	a,!fl2
+	bne	_278D
 
 _277d:
-mov.b	a,!fl2
-beq	_271e
-mov.b	a,!sf3c
-bne	_27a4
-mov.b	a,!sf2
-beq	_278C
-jmp	_285f
+	mov.b	a,!fl2
+	beq	_271e
+	mov.b	a,!sf3c
+	bne	_27a4
+	mov.b	a,!sf2
+	beq	_278C
+	jmp	_285f
 _278C:
-ret
+	ret
 _278D:
-mov	!sf3c,#$02
-mov	a,#$40
-mov	y,#$5c
-call	apus
-set6	!fkin
-mov	a,#$00
-mov	!_028c,a
-mov.b	!_ac,a
-mov	!_038d,a
-ret
-_27a4:
-dbnz	!sf3c,_278C
-mov.b	a,!sf2
-and	a,#$0f
-setc
-sbc	a,#$01
-mov	x,a
-mov	a,_2921+x
-mov	!_03f6,a
-mov	a,_2930+x
-mov	!_03f9,a
-mov	a,x
-call	_289d
-mov.b	a,!sf2
-and	a,#$30
-bne	_27ca
-mov	y,!_03f9
-bne	_27cc
+	mov	!sf3c,#$02
+	mov	a,#$40
+	mov	y,#$5c
+	call	apus
+	set6	!fkin
+	mov	a,#$00
+	mov	!_028c,a
+	mov.b	!_ac,a
+	mov	!_038d,a
+	ret
+	_27a4:
+	dbnz	!sf3c,_278C
+	mov.b	a,!sf2
+	and	a,#$0f
+	setc
+	sbc	a,#$01
+	mov	x,a
+	mov	a,_2921+x
+	mov	!_03f6,a
+	mov	a,_2930+x
+	mov	!_03f9,a
+	mov	a,x
+	call	_289d
+	mov.b	a,!sf2
+	and	a,#$30
+	bne	_27ca
+	mov	y,!_03f9
+	bne	_27cc
 _27ca:
-mov	y,#$ad
+	mov	y,#$ad
 _27cc:
-mov	!chn,#$0c
-mov	x,#$0c
-call	dss
-mov	a,#$40
-call	_3e79
-clr6	!eons
-mov.b	a,!eons
-mov	y,#$4d
-call	apus
-mov.b	a,!sf2
-and	a,#$30
-xcn	a
-mov	x,a
-mov	a,_291d+x
-mov	!_032d,a
-mov	!_030d,a
-mov.b	a,!sf2
-and	a,#$c0
-xcn	a
-lsr	a
-lsr	a
-mov	x,a
-mov	a,_2919+x
-mov	!_033d,a
+	mov	!chn,#$0c
+	mov	x,#$0c
+	call	dss
+	mov	a,#$40
+	call	_3e79
+	clr6	!eons
+	mov.b	a,!eons
+	mov	y,#$4d
+	call	apus
+	mov.b	a,!sf2
+	and	a,#$30
+	xcn	a
+	mov	x,a
+	mov	a,_291d+x
+	mov	!_032d,a
+	mov	!_030d,a
+	mov.b	a,!sf2
+	and	a,#$c0
+	xcn	a
+	lsr	a
+	lsr	a
+	mov	x,a
+	mov	a,_2919+x
+	mov	!_033d,a
 
 _27ff:
-mov	x,!_03f6
-mov.b	!_9c,x
-mov.b	a,!sf2
-and	a,#$30
-bne	_280f
-mov	a,!_03f9
-bne	_2811
-_280f:
-mov	a,#$ad
+	mov	x,!_03f6
+	mov.b	!_9c,x
+	mov.b	a,!sf2
+	and	a,#$30
+	bne	_280f
+	mov	a,!_03f9
+	bne	_2811
+	_280f:
+	mov	a,#$ad
 _2811:
-mov.b	!_ac,x
-mov	!_ad,#$00
-mov	x,#$0c
-mov.b	!chn,x
-call	swpadset
-mov.b	a,!sf2
-and	a,#$30
-xcn	a
-mov	x,a
-mov	a,_291d+x
-mov	!_032c,a
-mov.b	x,!_9c
-setc
-sbc	a,!_030d
-call	divx
-mov	!_031c,a
-mov	a,y
-mov	!_031d,a
+	mov.b	!_ac,x
+	mov	!_ad,#$00
+	mov	x,#$0c
+	mov.b	!chn,x
+	call	swpadset
+	mov.b	a,!sf2
+	and	a,#$30
+	xcn	a
+	mov	x,a
+	mov	a,_291d+x
+	mov	!_032c,a
+	mov.b	x,!_9c
+	setc
+	sbc	a,!_030d
+	call	divx
+	mov	!_031c,a
+	mov	a,y
+	mov	!_031d,a
 _2839:
-mov.b	a,!sf2
-and	a,#$c0
-xcn	a
-lsr	a
-lsr	a
-mov	x,a
-mov	a,_2919+x
-mov	!_03fb,a
-mov	!_035c,a
-setc
-sbc	a,!_033d
-mov	x,!_03f6
-mov.b	!_9d,x
-call	divx
-movw	!sss,ya
-mov	!_034c,a
-mov	a,y
-mov	!_034d,a
+	mov.b	a,!sf2
+	and	a,#$c0
+	xcn	a
+	lsr	a
+	lsr	a
+	mov	x,a
+	mov	a,_2919+x
+	mov	!_03fb,a
+	mov	!_035c,a
+	setc
+	sbc	a,!_033d
+	mov	x,!_03f6
+	mov.b	!_9d,x
+	call	divx
+	movw	!sss,ya
+	mov	!_034c,a
+	mov	a,y
+	mov	!_034d,a
 _285f:
-mov.b	a,!_9c
-beq	_2874
-mov	a,#$00
-mov	y,#$03
-mov	x,#$0c
-dec	!_9c
-call	_CC4
-mov	a,!_030d
-mov	!_032d,a
+	mov.b	a,!_9c
+	beq	_2874
+	mov	a,#$00
+	mov	y,#$03
+	mov	x,#$0c
+	dec	!_9c
+	call	_CC4
+	mov	a,!_030d
+	mov	!_032d,a
 
 _2874:
-clr7	!uuu
-mov.b	a,!_ac
-beq	+
-mov	x,#$0c
-call	_3e5f
+	clr7	!uuu
+	mov.b	a,!_ac
+	beq	+
+	mov	x,#$0c
+	call	_3e5f
 
 +
-mov.b	a,!_9d
-beq	_289c
-mov	a,#$30
-mov	y,#$03
-mov	x,#$0c
-dec	!_9d
-call	_CC4
-mov	a,!_033d
-mov	y,a
-mov	a,!_033c
-movw	!sss,ya
-mov	x,#$0c
-call	pan20
+	mov.b	a,!_9d
+	beq	_289c
+	mov	a,#$30
+	mov	y,#$03
+	mov	x,#$0c
+	dec	!_9d
+	call	_CC4
+	mov	a,!_033d
+	mov	y,a
+	mov	a,!_033c
+	movw	!sss,ya
+	mov	x,#$0c
+	call	pan20
 
 _289c:
-ret
+	ret
 
 _289d:
-mov	y,#$06
-mul	ya
-mov	x,a
-mov	y,#$64
-mov	!ttt,#$04
+	mov	y,#$06
+	mul	ya
+	mov	x,a
+	mov	y,#$64
+	mov	!ttt,#$04
 _28a6:
-mov	a,_28BF+x
-call	apus
-inc	x
-inc	y
-dbnz	!ttt,_28a6
-mov	a,_28BF+x
-mov	!_022d,a
-inc	x
-mov	a,_28BF+x
-mov	!_022c,a
-ret
+	mov	a,_28BF+x
+	call	apus
+	inc	x
+	inc	y
+	dbnz	!ttt,_28a6
+	mov	a,_28BF+x
+	mov	!_022d,a
+	inc	x
+	mov	a,_28BF+x
+	mov	!_022c,a
+	ret
 
 _28BF:
 	db $20, $0C, $E0, $70, $02, $80, $20, $0C
@@ -3931,379 +4071,379 @@ _2930:
 
 
 _293f:
-mov.b	x,!fl3
-mov.b	!kkk,x
-mov	a,_0fe0-1+x
-mov.b	!sss,a
-xcn	a
-and	a,#$0f
-asl	a
-mov	y,a
-mov	a,!_03a0+y
-beq	_2960
-mov	x,a
-mov	a,_0fe0-1+x
-setc
-cmp.b	a,!sss
-beq	_2960
-bcc	_2960
-jmp	_3eba
+	mov.b	x,!fl3
+	mov.b	!kkk,x
+	mov	a,sfx_parameters-1+x
+	mov.b	!sss,a
+	xcn	a
+	and	a,#$0f
+	asl	a
+	mov	y,a
+	mov	a,!_03a0+y
+	beq	_2960
+	mov	x,a
+	mov	a,sfx_parameters-1+x
+	setc
+	cmp.b	a,!sss
+	beq	_2960
+	bcc	_2960
+	jmp	_3eba
 
 _2960:
-mov.b	a,!kkk
-mov	!_03a0+y,a
-mov.b	!sss,y
-mov	a,#$01
-lsr.b	!sss
-beq	_2971
+	mov.b	a,!kkk
+	mov	!_03a0+y,a
+	mov.b	!sss,y
+	mov	a,#$01
+	lsr.b	!sss
+	beq	_2971
 -
-asl	a
-dbnz	!sss,-
+	asl	a
+	dbnz	!sss,-
 
 _2971:
-mov	!_03c1,a
-mov	!_03c0,y
-mov	a,!_03c1
-or.b	a,!fkin
-mov.b	!fkin,a
-jmp	_29c5
+	mov	!_03c1,a
+	mov	!_03c0,y
+	mov	a,!_03c1
+	or.b	a,!fkin
+	mov.b	!fkin,a
+	jmp	_29c5
 
 _2981:
-mov	a,!port3
-cmp	a,!port3
-bne	_2981
-mov	!port3,a
-mov	y,a
-mov.b	a,!fl3s
-mov.b	!fl3s,y
-cbne	!fl3s,+
-mov	y,#$00
+	mov	a,!port3
+	cmp	a,!port3
+	bne	_2981
+	mov	!port3,a
+	mov	y,a
+	mov.b	a,!fl3s
+	mov.b	!fl3s,y
+	cbne	!fl3s,+
+	mov	y,#$00
 +
-mov.b	!fl3,y
-mov.b	a,!fl3
-beq	+
-cmp	a,#!max_sfx				; Sound FX ID overflow check, thanks KungFuFurby
-bcc	_29c2
+	mov.b	!fl3,y
+	mov.b	a,!fl3
+	beq	+
+	cmp	a,#!max_sfx				; Sound FX ID overflow check, thanks KungFuFurby
+	bcc	_29c2
 +
-ret
+	ret
 
 _29A1:
-mov	a,!_03f8
-beq	_29be
-mov	a,#$00
-mov	!_03f8,a
-call	_3e96
-bra	_29be
+	mov	a,!_03f8
+	beq	_29be
+	mov	a,#$00
+	mov	!_03f8,a
+	call	_3e96
+	bra	_29be
 
 _29b0:
-mov.b	a,!fkin
-and	a,#$c0
-eor	a,#$ff
-mov	!_03f8,a
-mov	y,#$5c
-call	apus
+	mov.b	a,!fkin
+	and	a,#$c0
+	eor	a,#$ff
+	mov	!_03f8,a
+	mov	y,#$5c
+	call	apus
 
 _29be:
-mov.b	a,!fl3
-bra	_29d5
+	mov.b	a,!fl3
+	bra	_29d5
 _29c2:
-jmp	_293f
+	jmp	_293f
 _29c5:
-call	_3ea6
-mov	x,!_03c0
-mov.b	a,!fl3
-cmp	a,#$01
-beq	_29A1
-cmp	a,#$02
-beq	_29b0
+	call	_3ea6
+	mov	x,!_03c0
+	mov.b	a,!fl3
+	cmp	a,#$01
+	beq	_29A1
+	cmp	a,#$02
+	beq	_29b0
 _29d5:
-mov	!_03a0+x,a
-cmp	a,#$0b
-bcc	_29eb
-cmp	a,#$0e
-bcc	+
-cmp	a,#$15
-bcc	_29eb
-cmp	a,#$18
-bcs	_29eb
+	mov	!_03a0+x,a
+	cmp	a,#$0b
+	bcc	_29eb
+	cmp	a,#$0e
+	bcc	+
+	cmp	a,#$15
+	bcc	_29eb
+	cmp	a,#$18
+	bcs	_29eb
 +
-call	_3e87
+	call	_3e87
 _29eb:
-mov	a,#$03
-mov	!_03a1+x,a
-mov	a,#$00
-mov	!_0280+x,a
-mov.b	!swpc+x,a
-mov	!tund+x,a
-mov	!ptps+x,a
-mov	a,!_03c1
-or	a,!sf3
-mov	!sf3,a
-mov	a,!_03c1
-mov	y,#$5c
-call	apus
-mov	a,!_03a0+x
-mov	x,a
-mov	a,_0f21-1+x
-mov.b	!fl3,a
-bne	_29c2
-ret
+	mov	a,#$03
+	mov	!_03a1+x,a
+	mov	a,#$00
+	mov	!_0280+x,a
+	mov.b	!swpc+x,a
+	mov	!tund+x,a
+	mov	!ptps+x,a
+	mov	a,!_03c1
+	or	a,!sf3
+	mov	!sf3,a
+	mov	a,!_03c1
+	mov	y,#$5c
+	call	apus
+	mov	a,!_03a0+x
+	mov	x,a
+	mov	a,sfx_chain_table-1+x
+	mov.b	!fl3,a
+	bne	_29c2
+	ret
 
-_2a1a:
-mov	a,!sf3
-mov	!_03ce,a
-beq	_2a51
-mov	x,#$0a
-mov	a,#$20
-mov	!_03c1,a
-asl	!_03ce
-asl	!_03ce
+chd:
+	mov	a,!sf3
+	mov	!_03ce,a
+	beq	_2a51
+	mov	x,#$0a
+	mov	a,#$20
+	mov	!_03c1,a
+	asl	!_03ce
+	asl	!_03ce
 _2a2f:
-asl	!_03ce
-bcc	_2a4a
-mov	!_03c0,x
-mov	a,x
-xcn	a
-lsr	a
-mov	!_03c2,a
-mov	a,!_03a1+x
-bne	_2a52
-mov	a,!_03a0+x
-beq	_2a4a
-jmp	_2b0c
+	asl	!_03ce
+	bcc	_2a4a
+	mov	!_03c0,x
+	mov	a,x
+	xcn	a
+	lsr	a
+	mov	!_03c2,a
+	mov	a,!_03a1+x
+	bne	_2a52
+	mov	a,!_03a0+x
+	beq	_2a4a
+	jmp	_2b0c
 _2a4a:
-lsr	!_03c1
-dec	x
-dec	x
-bpl	_2a2f
+	lsr	!_03c1
+	dec	x
+	dec	x
+	bpl	_2a2f
 _2a51:
-ret
+	ret
 
 _2a52:
-mov	!_03c0,x
-mov	a,!_03a1+x
-dec	a
-mov	!_03a1+x,a
-beq	+
-jmp	_2a4a
+	mov	!_03c0,x
+	mov	a,!_03a1+x
+	dec	a
+	mov	!_03a1+x,a
+	beq	+
+	jmp	_2a4a
 +
-mov	a,!_03a0+x			; get sound effect index number
-asl	a				; double it to get pointer
-mov	y,a				; check if over 255
-bcs	_2a7b
-mov	a,_109f-1+y			; sound effect data pointer high
-mov	!_0391+x,a
-mov.b	!adk+1,a
-mov	a,_109f-2+y			; sound effect data pointer low
-mov	!_0390+x,a
-mov.b	!adk,a
-jmp	_2b29
+	mov	a,!_03a0+x			; get sound effect index number
+	asl	a				; double it to get pointer
+	mov	y,a				; check if over 255
+	bcs	_2a7b
+	mov	a,_109f-1+y			; sound effect data pointer high
+	mov	!_0391+x,a
+	mov.b	!adk+1,a
+	mov	a,_109f-2+y			; sound effect data pointer low
+	mov	!_0390+x,a
+	mov.b	!adk,a
+	jmp	_2b29
 _2a7b:
-mov	a,_109f-1+256+y			; sound effect data pointer high
-mov	!_0391+x,a
-mov.b	!adk+1,a
-mov	a,_109f-2+256+y			; sound effect data pointer low
-mov	!_0390+x,a
-mov.b	!adk,a
-jmp	_2b29
+	mov	a,_109f-1+256+y			; sound effect data pointer high
+	mov	!_0391+x,a
+	mov.b	!adk+1,a
+	mov	a,_109f-2+256+y			; sound effect data pointer low
+	mov	!_0390+x,a
+	mov.b	!adk,a
+	jmp	_2b29
 
 _2a8e:
-mov	x,!_03c0
-mov	a,!_03a0+x
-cmp	a,#$0b
-bcc	_2aac
-cmp	a,#$0e
-bcc	+
-cmp	a,#$15
-bcc	_2aac
-cmp	a,#$18
-bcs	_2aac
+	mov	x,!_03c0
+	mov	a,!_03a0+x
+	cmp	a,#$0b
+	bcc	_2aac
+	cmp	a,#$0e
+	bcc	+
+	cmp	a,#$15
+	bcc	_2aac
+	cmp	a,#$18
+	bcs	_2aac
 +
-mov	a,!_03ca
-bne	_2aac
-call	_3e96
+	mov	a,!_03ca
+	bne	_2aac
+	call	_3e96
 
 _2aac:
-mov	a,#$00
-mov	!_03a0+x,a
-mov.b	!swpc+x,a
-mov	a,!_03d0+x
-mov	!ptps+x,a
-mov	a,!_03e0+x
-mov	!tund+x,a
-mov	a,!_03e1+x
-mov	!_0280+x,a
-mov.b	a,!fkin
-setc
-sbc	a,!_03c1
-mov.b	!fkin,a
-mov	a,!sf3
-setc
-sbc	a,!_03c1
-mov	!sf3,a
-mov.b	!chn,x
-mov	a,!snos+x
-call	snox
-mov	a,!_03c1
-and	a,!_03c3
-beq	_2b02
-and.b	a,!eons
-bne	_2b02
-mov.b	a,!eons
-clrc
-adc	a,!_03c1
-mov.b	!eons,a
-mov	y,#$4d
-call	apus
-mov	a,!_03f3
-setc
-sbc	a,!_03c1
-mov	!_03f3,a
+	mov	a,#$00
+	mov	!_03a0+x,a
+	mov.b	!swpc+x,a
+	mov	a,!_03d0+x
+	mov	!ptps+x,a
+	mov	a,!_03e0+x
+	mov	!tund+x,a
+	mov	a,!_03e1+x
+	mov	!_0280+x,a
+	mov.b	a,!fkin
+	setc
+	sbc	a,!_03c1
+	mov.b	!fkin,a
+	mov	a,!sf3
+	setc
+	sbc	a,!_03c1
+	mov	!sf3,a
+	mov.b	!chn,x
+	mov	a,!snos+x
+	call	snox
+	mov	a,!_03c1
+	and	a,!_03c3
+	beq	_2b02
+	and.b	a,!eons
+	bne	_2b02
+	mov.b	a,!eons
+	clrc
+	adc	a,!_03c1
+	mov.b	!eons,a
+	mov	y,#$4d
+	call	apus
+	mov	a,!_03f3
+	setc
+	sbc	a,!_03c1
+	mov	!_03f3,a
 _2b02:
-mov	x,!_03c0
-ret
+	mov	x,!_03c0
+	ret
 
 _2B06:
 ; End of sound effect data
-call	_2a8e
-jmp	_2a4a
+	call	_2a8e
+	jmp	_2a4a
 _2b0c:
-call	_3ea6
-mov	!_03c0,x
-mov	a,!_0391+x
-mov	y,a
-mov	a,!_0390+x
-movw	!adk,ya
-mov	a,!_03b0+x
-dec	a
-mov	!_03b0+x,a
-beq	_2B27
-jmp	_2b94
+	call	_3ea6
+	mov	!_03c0,x
+	mov	a,!_0391+x
+	mov	y,a
+	mov	a,!_0390+x
+	movw	!adk,ya
+	mov	a,!_03b0+x
+	dec	a
+	mov	!_03b0+x,a
+	beq	_2B27
+	jmp	_2b94
 
 _2B27:					; Jumped to from PROG_CODE_02.asm
-incw	!adk				; sound effect data pointer
+	incw	!adk				; sound effect data pointer
 _2b29:
-mov	a,!_03c0			; Get audio channel
-xcn	a
-lsr	a
-mov	!_03c2,a
-mov	x,#$00				; reset X
-mov	a,(!adk+x)			; Get next byte of sound effect data
-beq	_2B06				; 00 is end of sound effect data
-bmi	_2B6F				; Pitch and commands are 80 and over
+	mov	a,!_03c0			; Get audio channel
+	xcn	a
+	lsr	a
+	mov	!_03c2,a
+	mov	x,#$00				; reset X
+	mov	a,(!adk+x)			; Get next byte of sound effect data
+	beq	_2B06				; 00 is end of sound effect data
+	bmi	_2B6F				; Pitch and commands are 80 and over
 
 _2B39:
-; Sample duration
-mov	y,!_03c0			; Get audio channel
-mov	!_03b1+y,a			; store duration
-incw	!adk				; sound effect data pointer
-mov	a,(!adk+x)			; Get next byte of sound effect data
-mov.b	!sss,a				; Store it as volume
-bmi	_2B6F
+	; Sample duration
+	mov	y,!_03c0			; Get audio channel
+	mov	!_03b1+y,a			; store duration
+	incw	!adk				; sound effect data pointer
+	mov	a,(!adk+x)			; Get next byte of sound effect data
+	mov.b	!sss,a				; Store it as volume
+	bmi	_2B6F
 
 ; Value is under 80
-mov	y,!_03c2			; Get DSP register address
-call	apus				; Set DSP register (which?)
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)			; Get next byte of sound effect data
-bpl	_2B62				; Branch if byte is a volume setting (under $80)
+	mov	y,!_03c2			; Get DSP register address
+	call	apus				; Set DSP register (which?)
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)			; Get next byte of sound effect data
+	bpl	_2B62				; Branch if byte is a volume setting (under $80)
 
 ; Set default volume
-mov	x,a				; store data byte
-mov.b	a,!sss				; Get last volume used
-mov	y,!_03c2			; Get DSP register address
-inc	y
-call	apus				; Set DSP register (volume)
-mov	a,x				; restore data byte
-bra	_2B6F
+	mov	x,a				; store data byte
+	mov.b	a,!sss				; Get last volume used
+	mov	y,!_03c2			; Get DSP register address
+	inc	y
+	call	apus				; Set DSP register (volume)
+	mov	a,x				; restore data byte
+	bra	_2B6F
 
 _2B62:
 ; Set new volume level
-mov	y,!_03c2			; Get DSP register address
-inc	y
-call	apus				; Set DSP register (volume)
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)
+	mov	y,!_03c2			; Get DSP register address
+	inc	y
+	call	apus				; Set DSP register (volume)
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)
 
 _2B6F:
 ; Pitch and commands
-cmp	a,#$e0				; Command: sample change
-bne	+
-jmp	_3e20				; PROG_CODE_02.asm, returns to _2B27
+	cmp	a,#$e0				; Command: sample change
+	bne	+
+	jmp	_3e20				; PROG_CODE_02.asm, returns to _2B27
 
 +
-cmp	a,#$f9				; Command Note + Pitch Slide To Note
-beq	_2BC1
+	cmp	a,#$f9				; Command Note + Pitch Slide To Note
+	beq	_2BC1
 
-cmp	a,#$f1				; Command Note Pitch Envelope
-beq	_2BD6
+	cmp	a,#$f1				; Command Note Pitch Envelope
+	beq	_2BD6
 
 ; Pitch
-mov	x,!_03c0			; Get audio channel
-mov	y,a
-call	dss
-mov	a,!_03c1
-call	_3e79
+	mov	x,!_03c0			; Get audio channel
+	mov	y,a
+	call	dss
+	mov	a,!_03c1
+	call	_3e79
 
 _2B8B:
-mov	x,!_03c0
-mov	a,!_03b1+x
-mov	!_03b0+x,a
+	mov	x,!_03c0
+	mov	a,!_03b1+x
+	mov	!_03b0+x,a
 _2b94:
-clr7	!uuu
-mov	x,!_03c0
-mov.b	a,!swpc+x
-beq	+
-call	_3e5f
-bra	_2bb1
+	clr7	!uuu
+	mov	x,!_03c0
+	mov.b	a,!swpc+x
+	beq	+
+	call	_3e5f
+	bra	_2bb1
 +
-mov	a,#$02
-cmp	a,!_03b0+x
-bne	_2bb1
-mov	a,!_03c1
-mov	y,#$5c
-call	apus
+	mov	a,#$02
+	cmp	a,!_03b0+x
+	bne	_2bb1
+	mov	a,!_03c1
+	mov	y,#$5c
+	call	apus
 _2bb1:
-mov	x,!_03c0
-mov.b	a,!adk+1
-mov	!_0391+x,a
-mov.b	a,!adk
-mov	!_0390+x,a
-jmp	_2a4a
+	mov	x,!_03c0
+	mov.b	a,!adk+1
+	mov	!_0391+x,a
+	mov.b	a,!adk
+	mov	!_0390+x,a
+	jmp	_2a4a
 
 _2BC1:
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)
-mov	x,!_03c0
-mov.b	!chn,x
-mov	y,a
-call	dss
-mov	a,!_03c1
-call	_3e79
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)
+	mov	x,!_03c0
+	mov.b	!chn,x
+	mov	y,a
+	call	dss
+	mov	a,!_03c1
+	call	_3e79
 
 _2BD6:
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)
-mov	x,!_03c0
-mov.b	!swphc+x,a
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)
-mov	x,!_03c0
-mov.b	!swpc+x,a
-push	a
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)
-pop	y
-mov	x,!_03c0
-mov.b	!chn,x
-call	swpadset
-jmp	_2B8B
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)
+	mov	x,!_03c0
+	mov.b	!swphc+x,a
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)
+	mov	x,!_03c0
+	mov.b	!swpc+x,a
+	push	a
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)
+	pop	y
+	mov	x,!_03c0
+	mov.b	!chn,x
+	call	swpadset
+	jmp	_2B8B
 
 assert pc() <= $2bff, "Used too much space"
 
@@ -4315,95 +4455,95 @@ endspcblock
 spcblock $3e20 nspc
 
 _3e20:
-mov	x,#$00
-incw	!adk
-mov	a,(!adk+x)
-mov	y,#$06
-mul	ya
-mov	!_d2,#patches
-mov	!_d2+1,#patches>>8
-addw	ya,!_d2
-movw	!_d2,ya
-mov	y,#$00
-mov	a,!_03c2
-or	a,#$04
-mov	x,a
-mov	!ttt,#$04
+	mov	x,#$00
+	incw	!adk
+	mov	a,(!adk+x)
+	mov	y,#$06
+	mul	ya
+	mov	!_d2,#patches
+	mov	!_d2+1,#patches>>8
+	addw	ya,!_d2
+	movw	!_d2,ya
+	mov	y,#$00
+	mov	a,!_03c2
+	or	a,#$04
+	mov	x,a
+	mov	!ttt,#$04
 
 _3e3e:
-mov	a,(!_d2)+y
-push	y
-push	x
-pop	y
-call	apus
-push	y
-pop	x
-pop	y
-inc	x
-inc	y
-dbnz	!ttt,_3e3e
-mov	a,(!_d2)+y
-mov	x,!_03c0
-mov	(!bls+1)+x,a
-inc	y
-mov	a,(!_d2)+y
-mov	!bls+x,a
-jmp	_2B27
+	mov	a,(!_d2)+y
+	push	y
+	push	x
+	pop	y
+	call	apus
+	push	y
+	pop	x
+	pop	y
+	inc	x
+	inc	y
+	dbnz	!ttt,_3e3e
+	mov	a,(!_d2)+y
+	mov	x,!_03c0
+	mov	(!bls+1)+x,a
+	inc	y
+	mov	a,(!_d2)+y
+	mov	!bls+x,a
+	jmp	_2B27
 
 _3e5f:
-set7	!uuu
-mov	a,#$60
-mov	y,#$03
-dec.b	!swpc+x
-call	_CC4
-mov	a,!swpd+x
-mov	y,a
-mov	a,!swpdw+x
-movw	!sss,ya
-mov	!keyd,#$00
-jmp	dssx
+	set7	!uuu
+	mov	a,#$60
+	mov	y,#$03
+	dec.b	!swpc+x
+	call	_CC4
+	mov	a,!swpd+x
+	mov	y,a
+	mov	a,!swpdw+x
+	movw	!sss,ya
+	mov	!keyd,#$00
+	jmp	dssx
 
 _3e79:
-push	a
-mov	y,#$5c
-mov	a,#$00
-call	apus
-pop	a
-mov	y,#$4c
-jmp	apus
+	push	a
+	mov	y,#$5c
+	mov	a,#$00
+	call	apus
+	pop	a
+	mov	y,#$4c
+	jmp	apus
 
 _3e87:
-mov	a,!_03f1
-bne	_3ea5
-mov.b	a,!mvo
-mov	!_03f1,a
-mov	a,#$88
-mov.b	!mvo,a
+	mov	a,!_03f1
+	bne	_3ea5
+	mov.b	a,!mvo
+	mov	!_03f1,a
+	mov	a,#$88
+	mov.b	!mvo,a
 ret
 
 _3e96:
-mov	a,!_03f1
-beq	_3ea5
-mov	a,!_03f1
-mov.b	!mvo,a
-mov	a,#$00
-mov	!_03f1,a
+	mov	a,!_03f1
+	beq	_3ea5
+	mov	a,!_03f1
+	mov.b	!mvo,a
+	mov	a,#$00
+	mov	!_03f1,a
 _3ea5:
-ret
+	ret
 
 _3ea6:
-mov	a,!_03c1
-and.b	a,!eons
-beq	_3eba
-mov.b	a,!eons
-setc
-sbc	a,!_03c1
-mov.b	!eons,a
-mov	y,#$4d
-call	apus
+	mov	a,!_03c1
+	and.b	a,!eons
+	beq	_3eba
+	mov.b	a,!eons
+	setc
+	sbc	a,!_03c1
+	mov.b	!eons,a
+	mov	y,#$4d
+	call	apus
 
 _3eba:
-ret
+	ret
 
 assert pc() <= $3ebb, "Used too much space"
 

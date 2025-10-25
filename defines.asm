@@ -285,8 +285,15 @@
 !_3c81 = $3c81
 !_3c82 = $3c82
 !_3c83 = $3c83
-!inst_tab = $3d00
+;........................................
+; Constants
+!src_dir = $3c			; Sample directory base address (src_dir << 8 == address)
+!patch_tab = $3d00			; Patch table base address
 
-!gft = $fdc0
-!_fe00 = $fe00
+!voice_vol = $ff			; Voice volume
+!main_vol = $c0				; Main volume
+!tempo = $20				; Tempo
 !max_sfx = $b0				; Max number of sound effects
+
+!gft = $fdc0				; Song table base address
+!_fe00 = $fe00
