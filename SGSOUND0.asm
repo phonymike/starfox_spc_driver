@@ -491,7 +491,7 @@ _614:
 	bne	+
 	inc.b	!rdm
 +
-ret
+	ret
 ;................................................
 _67B:
 	mov	a,#$00
@@ -1675,10 +1675,10 @@ voly:
 	mov.b	a,!pvoc+x		; vol move chu ?
 	beq	trey
 ;................................................
-mov	a,#$00
-mov	y,#$03
-dec.b	!pvoc+x
-call	_CC1
+	mov	a,#$00
+	mov	y,#$03
+	dec.b	!pvoc+x
+	call	_CC1
 
 ;************************************************
 ;               tremolo check                      
@@ -1813,7 +1813,7 @@ _CDE:
 +
 	adc	a,(!adx+2)+y
 	mov	(!adx)+y,a
-ret
+	ret
 ;************************************************
 ;		keyoff check
 ;************************************************
@@ -3624,7 +3624,7 @@ _25a1:
 	mov	x,!_03c9
 	beq	+
 	bra	_2553
-	_25ac:
+_25ac:
 	mov.b	a,!_d1
 	bne	_25cc
 	mov.b	a,!sf1
@@ -3889,7 +3889,7 @@ _278D:
 	mov.b	!_ac,a
 	mov	!_038d,a
 	ret
-	_27a4:
+_27a4:
 	dbnz	!sf3c,_278C
 	mov.b	a,!sf2
 	and	a,#$0f
