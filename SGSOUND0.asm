@@ -2317,184 +2317,185 @@ sfx_parameters:
 	db $40, $5A, $33, $25, $23, $33, $24, $34 ; $B1 - $B8
 	db $36, $34, $25, $35, $0F, $2E, $2F      ; $B9 - $BF
 
-; $109F table begins, 2 bytes, 191 pointers
-; Names taken from SFEX 1.08.2
-_109f:
-	dw _237A	; $01 UNPAUSE
-	dw _237A	; $02 PAUSE
-	dw _2301	; $03 PLAYER DOWN
-	dw _21F9	; $04 PLAYER DAMAGE
-	dw _21DE	; $05 LEFT WING DAMAGED
-	dw _21D7	; $06 RIGHT WING DAMAGED
-	dw _21F2	; $07 LEFT WING CRASH
-	dw _21EB	; $08 RIGHT WING CRASH
-	dw _236A	; $09 LEFT WING SCRATCH
-	dw _2372	; $0A RIGHT WING SCRATCH
-	dw _2110	; $0B INCOMING ENEMY
-	dw _213C	; $0C WING DAMAGED
-	dw _13F8	; $0D COME IN CORNERIA
-	dw _1B32	; $0E BONUS CREDIT
-	dw _2024	; $0F BIG SUPPORT RING
-	dw _207D	; $10 1UP RING HIT
-	dw _205D	; $11 CONTROLS SELECT
-	dw _2015	; $12 PERCENTAGE RING
-	dw _1B05	; $13 JINGLE + GOOD LUCK
-	dw _1A66	; $14 CONE HIT
-	dw _1A46	; $15 TWIN BLASTER POWERUP
-	dw _1A4F	; $16 SHIELD POWERUP
-	dw _1A58	; $17 WING REPAIRED POWERUP
-	dw _169C	; $18 BOMB POWERUP
-	dw _21E5	; $19 WINGLESS ARWING COLLISION
-	dw _1650	; $1A SLOT MACHINE COIN
-	dw _1633	; $1B SMALL ARWING DAMAGE ALARM
-	dw _15FE	; $1C BIG ARWING DAMAGE ALARM
-	dw _1F73	; $1D SMALL BOSS EXPLOSION
-	dw _223B	; $1E NEAR BIG BOSS EXPLOSION
-	dw _227D	; $1F MID BIG BOSS EXPLOSION
-	dw _22BF	; $20 FAR BIG BOSS EXPLOSION
-	dw _2220	; $21 NEAR ENEMY EXPLOSION
-	dw _222F	; $22 MID ENEMY EXPLOSION
-	dw _2235	; $23 FAR ENEMY EXPLOSION
-	dw _2202	; $24 NEAR ENEMY HIT
-	dw _220C	; $25 MID ENEMY HIT
-	dw _2216	; $26 FAR ENEMY HIT
-	dw _2358	; $27 NEAR LASER DEFLECT
-	dw _235E	; $28 MID LASER DEFLECT
-	dw _2364	; $29 FAR LASER DEFLECT
-	dw _1DBE	; $2A GOOD LUCK -BGM 4-
-	dw _1EF2	; $2B ENEMY WARP-IN
-	dw _1E9B	; $2C CONE TRIANGLE
-	dw _1EC3	; $2D 1-6+2-3 BOSS SHADOWING
-	dw _1F9B	; $2E PLASMA HYDRA ARM HIT
-	dw _1F06	; $2F ROCK CRUSHER ROLL
-	dw _232A	; $30 PLAYER BOMB EXPLOSION
-	dw _2341	; $31 PLAYER BOMB SHOT
-	dw _20F2	; $32 PLAYER BOOST
-	dw _2106	; $33 PLAYER BRAKE
-	dw _15F6	; $34 PLAYER TWIN BLASTER SHOT
-	dw _2324	; $35 PLAYER LASER SHOT
-	dw _234A	; $36 DUAL BEAM SHOT
-	dw _234A	; $37 DUAL BEAM SHOT
-	dw _2001	; $38 BIRD SCREAM
-	dw _1FAF	; $39 ENEMY ROCKET PLAYER HIT
-	dw _1FF9	; $3A DODORA EGG CRACK + BIRD
-	dw _1FC3	; $3B DODORA HIT
-	dw _218D	; $3C NEAR ENEMY ROCKET SHOT
-	dw _2193	; $3D MID ENEMY ROCKET SHOT
-	dw _2199	; $3E FAR ENEMY ROCKET SHOT
-	dw _20A5	; $3F LEFT GATE MOVING
-	dw _20B5	; $40 CENTRE GATE MOVING
-	dw _20C4	; $41 RIGHT GATE MOVING
-	dw _20D4	; $42 MID GATE MOVING
-	dw _20E3	; $43 FAR GATE MOVING
-	dw _21B7	; $44 LEFT ENEMY LASER SHOT
-	dw _21BE	; $45 CENTRE ENEMY LASER SHOT
-	dw _21C4	; $46 RIGHT ENEMY LASER SHOT
-	dw _21CB	; $47 MID ENEMY LASER SHOT
-	dw _21D1	; $48 FAR ENEMY LASER SHOT
-	dw _219F	; $49 NEAR ENEMY BATTERY
-	dw _21A7	; $4A MID ENEMY BATTERY
-	dw _21AF	; $4B FAR ENEMY BATTERY
-	dw _216D	; $4C PHATRON 2 LANDING
-	dw _217D	; $4D PHATRON 2 JUMP
-	dw _1E7A	; $4E -UNUSED-
-	dw _1E21	; $4F DANCING INSECTOR PROPELLING
-	dw _1E82	; $50 BLADE BARRIER POST-DRILL ATK
-	dw _1E66	; $51 BLADE BARRIER PLAYER WEB HIT
-	dw _1B8A	; $52 LAST BASE ENTRY 2.DOOR CLOSE
-	dw _1B9E	; $53 FAR LAST BASE ENTRY 2.DOOR CLOSE
-	dw _1BB2	; $54 LAST BASE ENTRY 2.DOOR OPEN
-	dw _1BC6	; $55 FAR LAST BASE ENTRY 2.DOOR OPEN
-	dw _1B84	; $56 PLAYER AMOEBA HIT
-	dw _168B	; $57 BLOCKADE DIRECTION CHANGE
-	dw _1C4A	; $58 HOVERING -UNUSED-
-	dw _1C96	; $59 DOOR CLOSE
-	dw _1C87	; $5A DOOR OPEN
-	dw _1CA5	; $5B HOVERING -UNUSED-
-	dw _1D49	; $5C NEAR ENEMY RING SHOT
-	dw _1D5D	; $5D MID ENEMY RING SHOT
-	dw _1D71	; $5E FAR ENEMY RING SHOT
-	dw _12A3	; $5F PEPPER RADIO CHAT
-	dw _1D85	; $60 FOX RADIO CHAT
-	dw _1886	; $61 FALCO RADIO CHAT
-	dw _1920	; $62 PEPPY RADIO CHAT
-	dw _19A1	; $63 SLIPPY RADIO CHAT
-	dw _1DA4	; $64 RADIO CHAT QUIT
-	dw _1DB8	; $65 PLAYER CAMERA CHANGE
-	dw _15AE	; $66 DESTRUCTOR WEAPON HEAD ATTACK
-	dw _1DC7	; $67 CONTINUE LET'S GO -BGM 30-
-	dw _1DCD	; $68 LEFT WATER SPLASH OUT
-	dw _1DD8	; $69 CENTRE WATER SPLASH
-	dw _1DE2	; $6A RIGHT WATER SPLASH
-	dw _1DED	; $6B MID WATER SPLASH
-	dw _1DF7	; $6C FAR WATER SPLASH
-	dw _1E56	; $6D LEFT OBJECT FLY-BY
-	dw _1E47	; $6E CENTRE OBJECT FLY-BY
-	dw _1E37	; $6F RIGHT OBJECT FLY-BY
-	dw _1C37	; $70 ATOMIC BASE POWER SUPPLY OFF
-	dw _1C24	; $71 ATOMIC BASE POWER SUPPLY ON
-	dw _1BDA	; $72 ATOMIC BASE CORE CLOSE
-	dw _1BFF	; $73 ATOMIC BASE CORE OPEN
-	dw _1E01	; $74 LEFT WATER SPLASH IN
-	dw _1E08	; $75 CENTRE WATER SPLASH IN
-	dw _1E0E	; $76 RIGHT WATER SPLASH IN
-	dw _1E15	; $77 MID WATER SPLASH IN
-	dw _1E1B	; $78 FAR WATER SPLASH IN
-	dw _1A71	; $79 BACKGROUND THUNDER
-	dw _18AA	; $7A FALCO RADIO CHAT HIT
-	dw _18DD	; $7B FALCO RADIO CHAT DOWN
-	dw _1944	; $7C PEPPY RADIO CHAT HIT
-	dw _196B	; $7D PEPPY RADIO CHAT DOWN
-	dw _19DB	; $7E SLIPPY RADIO CHAT HIT
-	dw _1A06	; $7F SLIPPY RADIO CHAT DOWN
-	dw _1817	; $80 PHANTRON 2 HIT
-	dw _182E	; $81 PHANTRON 2 SCREAM
-	dw _17DF	; $82 ROCK CRUSHER APPEARS
-	dw _1715	; $83 DESTRUCTOR ENGINE
-	dw _16D9	; $84 PHANTRON APPEARS
-	dw _16C3	; $85 ROCK CRUSHER UNCOVER
-	dw _15A2	; $86 PILON TO GROUND
-	dw _1594	; $87 ANDROSS APPEARS
-	dw _157F	; $88 ANDROSS HIT
-	dw _1579	; $89 TEXT TING
-	dw _1578	; $8A SILENCE -BGM 10-
-	dw _14FD	; $8B PRE-WING REPAIRED
-	dw _12C5	; $8C ANDROSS RADIO CHAT
-	dw _14AB	; $8D METAL SMASHER SMASHING
-	dw _1495	; $8E METAL SMASHER CLOSE
-	dw _1481	; $8F BLADE BARRIER WEB ATTACK
-	dw _1391	; $90 BONUS RING BIRD
-	dw _1364	; $91 COMET FLY-BY
-	dw _132E	; $92 WHALE SCREAM
-	dw _1324	; $93 STINGRAY HIT
-	dw _131A	; $94 SQUID HIT
-	dw _1ABF	; $95 SPINNING CORE BG THUNDER
-	dw _182E	; $96 PHANTRON 2 SCREAM
-	dw _130F	; $97 DANCING INSECTOR MOVEMENT
-	dw _12F1	; $98 DANCING INSECTOR FIRE SHOT
-	dw _12E7	; $99 DANCING INSECTOR FIRE FLY-BY
-	dw _1A92	; $9A VOLCANO FIRE
-	dw _1F30	; $9B SLOT MACHINE HANDLE DOWN
-	dw _129D	; $9C SLOT MACHINE SLOT SPINNING
-	dw _126B	; $9D PROFESSOR HANGER APPEARS
-	dw _1287	; $9E PROFESSOR HANGER DISAPPEARS
-	dw _1249	; $9F FINAL SCORE SCREEN FLIGHT
-	dw _122F	; $A0 ANDROSS SHELL EXPLOSION
-	dw _121D	; $A1 ANDROSS SCREAM 4
-	dw _1223	; $A2 ANDROSS SCREAM 3
-	dw _1228	; $A3 ANDROSS SCREAM 2
-	dw _12D2	; $A4 ANDROSS SCREAM 1
-	dw _1578	; $A5 SILENCE -BGM 10-
-	dw _1281	; $A6 ENEMY HOVERING -unused-
-	dw _1379	; $A7 SHOOTING STAR -unused-
-	dw _149E	; $A8 OBJECT IMPACT -unused-
-	dw _14D4	; $A9 ENEMY -unused-
-	dw _1ABC	; $AA BACKGROUND THUNDER -unused-
-	dw _166C	; $AB BONUS -unused-
-	dw _1779	; $AC DESTRUCTOR ENGINE -unused-
-	dw _182B	; $AD PHANTRON SCREAM
-	dw _1B1A	; $AE GOOD LUCK -BGM 4- -unused-
-	dw _1B5B	; $AF BONUS -unused-
+; $109F SFX pointer table begins, 2 bytes, 191 pointers
+; Sound labels taken from SOUNDEQU.INC where available, otherwise based on descriptions
+; Sound descriptions taken from SFEX
+sfx_ptrs:
+	dw se_pause						; $01 UNPAUSE
+	dw se_pause						; $02 PAUSE
+	dw se_playerdown				; $03 PLAYER DOWN
+	dw se_playerdamage				; $04 PLAYER DAMAGE
+	dw se_wingdestructleft			; $05 LEFT WING DAMAGED
+	dw se_wingdestructright			; $06 RIGHT WING DAMAGED
+	dw se_wingdamageleft			; $07 LEFT WING CRASH
+	dw se_wingdamageright			; $08 RIGHT WING CRASH
+	dw se_wingtouchleft				; $09 LEFT WING SCRATCH
+	dw se_wingtouchright			; $0A RIGHT WING SCRATCH
+	dw se_warning1					; $0B INCOMING ENEMY
+	dw se_warning2					; $0C WING DAMAGED
+	dw se_comeincorneria			; $0D COME IN CORNERIA
+	dw se_bonuscredit				; $0E BONUS CREDIT
+	dw se_gateofring				; $0F BIG SUPPORT RING
+	dw se_itemcatch					; $10 1UP RING HIT
+	dw se_cursor					; $11 CONTROLS SELECT
+	dw se_percentagering			; $12 PERCENTAGE RING
+	dw se_jinglegoodluck			; $13 JINGLE + GOOD LUCK
+	dw se_conehit					; $14 CONE HIT
+	dw se_twinblasterpowerup		; $15 TWIN BLASTER POWERUP
+	dw se_shieldpowerup				; $16 SHIELD POWERUP
+	dw se_wingrepairedpowerup		; $17 WING REPAIRED POWERUP
+	dw se_bombpowerup				; $18 BOMB POWERUP
+	dw se_winglessarwingcollision	; $19 WINGLESS ARWING COLLISION
+	dw se_slotmachinecoin			; $1A SLOT MACHINE COIN
+	dw se_smallarwingdamagealarm	; $1B SMALL ARWING DAMAGE ALARM
+	dw se_bigarwingdamagealarm		; $1C BIG ARWING DAMAGE ALARM
+	dw se_destructbosssmall			; $1D SMALL BOSS EXPLOSION
+	dw se_destructbossnear			; $1E NEAR BIG BOSS EXPLOSION
+	dw se_destructbossmid			; $1F MID BIG BOSS EXPLOSION
+	dw se_destructbossfar			; $20 FAR BIG BOSS EXPLOSION
+	dw se_destructenemynear			; $21 NEAR ENEMY EXPLOSION
+	dw se_destructenemymid			; $22 MID ENEMY EXPLOSION
+	dw se_destructenemyfar			; $23 FAR ENEMY EXPLOSION
+	dw se_damageenemynear			; $24 NEAR ENEMY HIT
+	dw se_damageenemymid			; $25 MID ENEMY HIT
+	dw se_damageenemyfar			; $26 FAR ENEMY HIT
+	dw se_hitwallnear				; $27 NEAR LASER DEFLECT
+	dw se_hitwallmid				; $28 MID LASER DEFLECT
+	dw se_hitwallfar				; $29 FAR LASER DEFLECT
+	dw se_goodluck					; $2A GOOD LUCK -BGM 4-
+	dw se_enemywarpin				; $2B ENEMY WARP-IN
+	dw se_conetriangle				; $2C CONE TRIANGLE
+	dw se_bossshadowing				; $2D 1-6+2-3 BOSS SHADOWING
+	dw se_plasmahydraarmhit			; $2E PLASMA HYDRA ARM HIT
+	dw se_rockcrusherroll			; $2F ROCK CRUSHER ROLL
+	dw se_specialweapon				; $30 PLAYER BOMB EXPLOSION
+	dw se_abutton					; $31 PLAYER BOMB SHOT
+	dw se_speedup					; $32 PLAYER BOOST
+	dw se_speeddown					; $33 PLAYER BRAKE
+	dw se_twinlaser					; $34 PLAYER TWIN BLASTER SHOT
+	dw se_laser						; $35 PLAYER LASER SHOT
+	dw se_dualbeam					; $36 DUAL BEAM SHOT
+	dw se_dualbeam					; $37 DUAL BEAM SHOT
+	dw se_birdscream				; $38 BIRD SCREAM
+	dw se_enemyrocketplayerhit		; $39 ENEMY ROCKET PLAYER HIT
+	dw se_dodoraeggcrackbird		; $3A DODORA EGG CRACK + BIRD
+	dw se_dodorahit					; $3B DODORA HIT
+	dw se_missilenear				; $3C NEAR ENEMY ROCKET SHOT
+	dw se_missilemid				; $3D MID ENEMY ROCKET SHOT
+	dw se_missilefar				; $3E FAR ENEMY ROCKET SHOT
+	dw se_movingwallleft			; $3F LEFT GATE MOVING
+	dw se_movingwallcentre			; $40 CENTRE GATE MOVING
+	dw se_movingwallright			; $41 RIGHT GATE MOVING
+	dw se_movingwallmid				; $42 MID GATE MOVING
+	dw se_movingwallfar				; $43 FAR GATE MOVING
+	dw se_laserleft					; $44 LEFT ENEMY LASER SHOT
+	dw se_lasercentre				; $45 CENTRE ENEMY LASER SHOT
+	dw se_laserright				; $46 RIGHT ENEMY LASER SHOT
+	dw se_lasermid					; $47 MID ENEMY LASER SHOT
+	dw se_laserfar					; $48 FAR ENEMY LASER SHOT
+	dw se_enemybattrynear			; $49 NEAR ENEMY BATTERY
+	dw se_enemybattrymid			; $4A MID ENEMY BATTERY
+	dw se_enemybattryfar			; $4B FAR ENEMY BATTERY
+	dw se_phantron2landing			; $4C PHANTRON 2 LANDING
+	dw se_phantron2jump				; $4D PHANTRON 2 JUMP
+	dw se_unused					; $4E -UNUSED-
+	dw se_dancinginsectorpropelling	; $4F DANCING INSECTOR PROPELLING
+	dw se_bladebarrierpostdrillatk	; $50 BLADE BARRIER POST-DRILL ATK
+	dw se_bladebarrierplayerwebhit	; $51 BLADE BARRIER PLAYER WEB HIT
+	dw se_lastbaseentry2doorclose	; $52 LAST BASE ENTRY 2.DOOR CLOSE
+	dw se_farlbentry2doorclose		; $53 FAR LAST BASE ENTRY 2.DOOR CLOSE
+	dw se_lastbaseentry2dooropen	; $54 LAST BASE ENTRY 2.DOOR OPEN
+	dw se_farlbentry2dooropen		; $55 FAR LAST BASE ENTRY 2.DOOR OPEN
+	dw se_playeramoebahit			; $56 PLAYER AMOEBA HIT
+	dw se_blockadedirectionchange	; $57 BLOCKADE DIRECTION CHANGE
+	dw se_hovering					; $58 HOVERING -UNUSED-
+	dw se_doorclose					; $59 DOOR CLOSE
+	dw se_dooropen					; $5A DOOR OPEN
+	dw se_hovering2					; $5B HOVERING -UNUSED-
+	dw se_nearenemyringshot			; $5C NEAR ENEMY RING SHOT
+	dw se_midenemyringshot			; $5D MID ENEMY RING SHOT
+	dw se_farenemyringshot			; $5E FAR ENEMY RING SHOT
+	dw se_pepperradiochat			; $5F PEPPER RADIO CHAT
+	dw se_foxradiochat				; $60 FOX RADIO CHAT
+	dw se_falcoradiochat			; $61 FALCO RADIO CHAT
+	dw se_peppyradiochat			; $62 PEPPY RADIO CHAT
+	dw se_slippyradiochat			; $63 SLIPPY RADIO CHAT
+	dw se_radiochatquit				; $64 RADIO CHAT QUIT
+	dw se_playercamerachange		; $65 PLAYER CAMERA CHANGE
+	dw se_destructorweapnheadattack	; $66 DESTRUCTOR WEAPON HEAD ATTACK
+	dw se_continue					; $67 CONTINUE LET'S GO -BGM 30-
+	dw se_leftwatersplashout		; $68 LEFT WATER SPLASH OUT
+	dw se_centrewatersplash			; $69 CENTRE WATER SPLASH
+	dw se_rightwatersplash			; $6A RIGHT WATER SPLASH
+	dw se_midwatersplash			; $6B MID WATER SPLASH
+	dw se_farwatersplash			; $6C FAR WATER SPLASH
+	dw se_dopright					; $6D LEFT OBJECT FLY-BY
+	dw se_dopcentre					; $6E CENTRE OBJECT FLY-BY
+	dw se_dopleft					; $6F RIGHT OBJECT FLY-BY
+	dw se_atomicbasepowersupplyoff	; $70 ATOMIC BASE POWER SUPPLY OFF
+	dw se_atomicbasepowersupplyon	; $71 ATOMIC BASE POWER SUPPLY ON
+	dw se_atomicbasecoreclose		; $72 ATOMIC BASE CORE CLOSE
+	dw se_atomicbasecoreopen		; $73 ATOMIC BASE CORE OPEN
+	dw se_leftwatersplashin			; $74 LEFT WATER SPLASH IN
+	dw se_centrewatersplashin		; $75 CENTRE WATER SPLASH IN
+	dw se_rightwatersplashin		; $76 RIGHT WATER SPLASH IN
+	dw se_midwatersplashin			; $77 MID WATER SPLASH IN
+	dw se_farwatersplashin			; $78 FAR WATER SPLASH IN
+	dw se_backgroundthunder			; $79 BACKGROUND THUNDER
+	dw se_falcoradiochathit			; $7A FALCO RADIO CHAT HIT
+	dw se_falcoradiochatdown		; $7B FALCO RADIO CHAT DOWN
+	dw se_peppyradiochathit			; $7C PEPPY RADIO CHAT HIT
+	dw se_peppyradiochatdown		; $7D PEPPY RADIO CHAT DOWN
+	dw se_slippyradiochathit		; $7E SLIPPY RADIO CHAT HIT
+	dw se_slippyradiochatdown		; $7F SLIPPY RADIO CHAT DOWN
+	dw se_phantron2hit				; $80 PHANTRON 2 HIT
+	dw se_phantron2scream			; $81 PHANTRON 2 SCREAM
+	dw se_rockcrusherappears		; $82 ROCK CRUSHER APPEARS
+	dw se_destructorengine			; $83 DESTRUCTOR ENGINE
+	dw se_phantronappears			; $84 PHANTRON APPEARS
+	dw se_rockcrusheruncover		; $85 ROCK CRUSHER UNCOVER
+	dw se_pilontoground				; $86 PILON TO GROUND
+	dw se_androssappears			; $87 ANDROSS APPEARS
+	dw se_androsshit				; $88 ANDROSS HIT
+	dw se_textting					; $89 TEXT TING
+	dw se_silence					; $8A SILENCE
+	dw se_prewingrepaired			; $8B PRE-WING REPAIRED
+	dw se_androssradiochat			; $8C ANDROSS RADIO CHAT
+	dw se_metalsmashersmashing		; $8D METAL SMASHER SMASHING
+	dw se_metalsmasherclose			; $8E METAL SMASHER CLOSE
+	dw se_bladebarrierwebattack		; $8F BLADE BARRIER WEB ATTACK
+	dw se_bonusringbird				; $90 BONUS RING BIRD
+	dw se_cometflyby				; $91 COMET FLY-BY
+	dw se_whalescream				; $92 WHALE SCREAM
+	dw se_stingrayhit				; $93 STINGRAY HIT
+	dw se_squidhit					; $94 SQUID HIT
+	dw se_spinningcorebgthunder		; $95 SPINNING CORE BG THUNDER
+	dw se_phantron2scream			; $96 PHANTRON 2 SCREAM
+	dw se_dancinginsectormovement	; $97 DANCING INSECTOR MOVEMENT
+	dw se_dancinginsectorfireshot	; $98 DANCING INSECTOR FIRE SHOT
+	dw se_dancinginsectorfireflyby	; $99 DANCING INSECTOR FIRE FLY-BY
+	dw se_volcanofire				; $9A VOLCANO FIRE
+	dw se_slotmachinehandledown		; $9B SLOT MACHINE HANDLE DOWN
+	dw se_slotmachineslotspinning	; $9C SLOT MACHINE SLOT SPINNING
+	dw se_professorhangerappears	; $9D PROFESSOR HANGER APPEARS
+	dw se_professorhangerdisappears	; $9E PROFESSOR HANGER DISAPPEARS
+	dw se_finalscorescreenflight	; $9F FINAL SCORE SCREEN FLIGHT
+	dw se_androssshellexplosion		; $A0 ANDROSS SHELL EXPLOSION
+	dw se_androssscream4			; $A1 ANDROSS SCREAM 4
+	dw se_androssscream3			; $A2 ANDROSS SCREAM 3
+	dw se_androssscream2			; $A3 ANDROSS SCREAM 2
+	dw se_androssscream1			; $A4 ANDROSS SCREAM 1
+	dw se_silence					; $A5 SILENCE
+	dw se_enemyhovering				; $A6 ENEMY HOVERING -unused-
+	dw se_shootingstar				; $A7 SHOOTING STAR -unused-
+	dw se_objectimpact				; $A8 OBJECT IMPACT -unused-
+	dw se_enemy						; $A9 ENEMY -unused-
+	dw se_backgroundthunder2		; $AA BACKGROUND THUNDER -unused-
+	dw se_bonus						; $AB BONUS -unused-
+	dw se_destructorengine2			; $AC DESTRUCTOR ENGINE -unused-
+	dw se_phantronscream2			; $AD PHANTRON SCREAM
+	dw se_goodluck2					; $AE GOOD LUCK -BGM 4- -unused-
+	dw se_bonus2					; $AF BONUS -unused-
 	dw _208F	; $B0 1UP RING HIT LEFT
 	dw _206B	; $B1 CONTROLS SELECT LEFT
 	dw _203F	; $B2 CHECKPOINT
@@ -2519,83 +2520,83 @@ assert pc() <= $121d, "Used too much space"
 ; begin sound effect patterns
 ; ===========================
 
-_121D: ; Andross scream 4
+se_androssscream4: ; Andross scream 4
 	db $E0, $2D, $7F, $7D, $64, $81
 
-_1223: ; Andross scream 3
+se_androssscream3: ; Andross scream 3
 	db $E0, $2E, $60, $7D, $81
 
-_1228: ; Andross scream 2
+se_androssscream2: ; Andross scream 2
 	db $E0, $2D, $5F, $64, $7D, $82, $00
 
-_122F: ; Andross shell explosion
+se_androssshellexplosion: ; Andross shell explosion
 	db $E0, $06, $0C, $64, $C3, $BB, $0E, $A9
 	db $B2, $0F, $BC, $B3, $10, $AB, $AD, $12
 	db $9D, $A6, $A3, $13, $95, $90, $94, $60
 	db $90, $00
 
-_1249: ; Final score screen flight
+se_finalscorescreenflight: ; Final score screen flight
 	db $E0, $03, $5F, $3C, $F9, $97, $00, $5F
 	db $9A, $7F, $46, $F1, $00, $7F, $9D, $7F
 	db $50, $F1, $00, $7F, $9F, $7F, $50, $F1
 	db $00, $7F, $A0, $7F, $5F, $F1, $00, $7D
 	db $A1, $00
 
-_126B:
+se_professorhangerappears:
 	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
 	db $BB, $2F, $6E, $F1, $00, $2F, $B7, $2F
 	db $7D, $F1, $00, $2D, $B7, $00
 
-_1281: ; Enemy hovering -unused-
+se_enemyhovering: ; Enemy hovering -unused-
 	db $E0, $08, $7F, $64, $A3, $00
 
-_1287:
+se_professorhangerdisappears:
 	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
 	db $BB, $2F, $3C, $F1, $00, $2F, $BE, $2F
 	db $1E, $F1, $00, $2D, $BE, $00
 
-_129D:
+se_slotmachineslotspinning:
 	db $E0, $0D, $06, $14, $A6, $00
 
-_12A3: ; Pepper radio chat
+se_pepperradiochat: ; Pepper radio chat
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $2C, $18
 	db $7D, $85, $24, $87, $E0, $13, $24, $6E
 	db $84, $E0, $16, $26, $F9, $84, $00, $24
 	db $80, $00
 
-_12C5: ; Andross radio chat
+se_androssradiochat: ; Andross radio chat
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98
 
-_12D2: ; Andross scream 1
+se_androssscream1: ; Andross scream 1
 	db $E0, $35, $22, $7D, $91, $16, $64, $91
 	db $14, $50, $91, $12, $3C, $90, $12, $28
 	db $8F, $12, $14, $8E, $00
 
-_12E7:
+se_dancinginsectorfireflyby:
 	db $E0, $05, $7F, $78, $F9, $91, $00, $7C
 	db $98, $00
 
-_12F1:
+se_dancinginsectorfireshot:
 	db $E0, $1C, $7F, $78, $F9, $97, $00, $7F
 	db $8C, $7F, $F1, $00, $7F, $8C, $7F, $F1
 	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
 	db $7F, $F1, $00, $7D, $8C, $00
 
-_130F:
+se_dancinginsectormovement:
 	db $E0, $0A, $06, $28, $A2, $E0, $05, $08
 	db $46, $A9, $00
 
-_131A: ; Squid hit
+se_squidhit: ; Squid hit
 	db $E0, $23, $12, $46, $F9, $A8, $00, $10
 	db $B0, $00
 
-_1324: ; Stingray hit
+se_stingrayhit: ; Stingray hit
 	db $E0, $2D, $18, $5A, $F9, $A8, $00, $16
 	db $BC, $00
 
-_132E: ; Whale scream
+se_whalescream: ; Whale scream
 	db $E0, $24, $0C, $0A, $F9, $BC, $00, $0C
 	db $BE, $06, $F1, $00, $04, $C0, $30, $0A
 	db $F9, $C0, $00, $30, $BE, $60, $F1, $00
@@ -2604,17 +2605,17 @@ _132E: ; Whale scream
 	db $C0, $30, $14, $F9, $C0, $00, $30, $BE
 	db $60, $F1, $00, $5E, $BC, $00
 
-_1364: ; Comet fly-by
+se_cometflyby: ; Comet fly-by
 	db $E0, $10, $1C, $00, $0A, $C7, $C5, $0F
 	db $05, $14, $C2, $C0, $0A, $1E, $C1, $BF
 	db $60, $28, $00, $BD, $00
 
-_1379: ; Shooting star -unused-
+se_shootingstar: ; Shooting star -unused-
 	db $E0, $10, $08, $00, $A4, $1C, $0A, $C6
 	db $C4, $0F, $14, $C1, $BF, $0A, $1E, $C0
 	db $BE, $18, $14, $BC, $30, $0A, $BC, $00
 
-_1391: ; Bonus ring bird
+se_bonusringbird: ; Bonus ring bird
 	db $E0, $01, $0C, $0A, $F9, $BE, $00, $0C
 	db $B4, $06, $F1, $00, $04, $C3, $0C, $14
 	db $F9, $BE, $00, $0C, $B4, $06, $F1, $00
@@ -2629,7 +2630,7 @@ _1391: ; Bonus ring bird
 	db $F1, $00, $04, $C3, $18, $00, $BE, $0C
 	db $3C, $F9, $BE, $00, $0A, $C5, $00
 
-_13F8: ; Come in Corneria -BGM 34-
+se_comeincorneria: ; Come in Corneria -BGM 34-
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $37, $6F
 	db $87, $E0, $15, $48, $7D, $98, $E0, $0F
@@ -2649,20 +2650,20 @@ _13F8: ; Come in Corneria -BGM 34-
 	db $06, $00, $BE, $E0, $15, $48, $7D, $98
 	db $00
 
-_1481: ; Blade barrier web attack
+se_bladebarrierwebattack: ; Blade barrier web attack
 	db $E0, $1A, $0C, $64, $A3, $E0, $23, $60
 	db $32, $F9, $8B, $00, $60, $A3, $60, $F1
 	db $00, $5E, $AF, $00
 
-_1495: ; Metal smasher close
+se_metalsmasherclose: ; Metal smasher close
 	db $E0, $1A, $0C, $7D, $A3, $30, $7D, $A3
 	db $00
 
-_149E: ; Object impact -unused-
+se_objectimpact: ; Object impact -unused-
 	db $E0, $0D, $0C, $78, $89, $24, $78, $F9
 	db $89, $00, $22, $82, $00
 
-_14AB: ; Metal smasher smashing
+se_metalsmashersmashing: ; Metal smasher smashing
 	db $E0, $36, $24, $50, $00, $F9, $A3, $00
 	db $18, $9C, $24, $F9, $A3, $00, $18, $9C
 	db $24, $64, $28, $F9, $A3, $00, $18, $9C
@@ -2670,7 +2671,7 @@ _14AB: ; Metal smasher smashing
 	db $24, $7D, $50, $F9, $A3, $00, $18, $9C
 	db $00
 
-_14D4: ; Enemy -unused-
+se_enemy: ; Enemy -unused-
 	db $E0, $36, $24, $00, $50, $F9, $A2, $00
 	db $18, $9B, $24, $F9, $A2, $00, $18, $99
 	db $24, $28, $64, $F9, $A2, $00, $18, $9B
@@ -2678,7 +2679,7 @@ _14D4: ; Enemy -unused-
 	db $24, $50, $7D, $F9, $A2, $00, $18, $9B
 	db $00
 
-_14FD: ; Pre-wing repaired
+se_prewingrepaired: ; Pre-wing repaired
 	db $E0, $18, $12, $0A, $F9, $AB, $00, $12
 	db $BE, $0C, $F1, $00, $0A, $AD, $12, $14
 	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
@@ -2696,26 +2697,26 @@ _14FD: ; Pre-wing repaired
 	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
 	db $0A, $A9, $00
 
-_1578: ; Silence -BGM 10-
+se_silence: ; Silence -BGM 10-
 	db $00
 
-_1579: ; Text ting
+se_textting: ; Text ting
 	db $E0, $26, $06, $32, $BB, $00
 
-_157F: ; Andross hit
+se_androsshit: ; Andross hit
 	db $E0, $35, $12, $7D, $9A, $12, $64, $9A
 	db $12, $50, $9A, $12, $3C, $9A, $12, $28
 	db $9A, $12, $14, $9A, $00
 
-_1594: ; Andross appears
+se_androssappears: ; Andross appears
 	db $E0, $05, $0C, $00, $A4, $08, $28, $B9
 	db $E0, $10, $48, $46, $C7, $00
 
-_15A2: ; Pilon to ground
+se_pilontoground: ; Pilon to ground
 	db $E0, $0D, $06, $78, $89, $04, $00, $89
 	db $18, $78, $89, $00
 
-_15AE: ; Destructor weapon head attack
+se_destructorweapnheadattack: ; Destructor weapon head attack
 	db $E0, $1C, $20, $3C, $F9, $A4, $00, $14
 	db $AB, $1C, $50, $F9, $A4, $00, $10, $AB
 	db $1A, $64, $F9, $A4, $00, $0E, $AB, $18
@@ -2726,10 +2727,10 @@ _15AE: ; Destructor weapon head attack
 	db $AB, $18, $28, $F9, $A4, $00, $0C, $AB
 	db $18, $14, $F9, $A4, $00, $0C, $AB, $00
 
-_15F6: ; Player twin blaster shot
+se_twinlaser: ; Player twin blaster shot
 	db $E0, $20, $0C, $3C, $94, $48, $94, $00
 
-_15FE: ; Big arwing damage alarm
+se_bigarwingdamagealarm: ; Big arwing damage alarm
 	db $E0, $26, $06, $46, $14, $F9, $B4, $00
 	db $06, $B7, $0C, $F1, $B5, $00, $06, $B7
 	db $06, $F9, $B4, $00, $06, $B7, $0C, $F1
@@ -2738,42 +2739,42 @@ _15FE: ; Big arwing damage alarm
 	db $06, $F9, $B4, $00, $06, $B7, $0C, $F1
 	db $B5, $00, $06, $B7, $00
 
-_1633: ; Small arwing damage alarm
+se_smallarwingdamagealarm: ; Small arwing damage alarm
 	db $E0, $26, $0A, $3C, $14, $F9, $B0, $00
 	db $0A, $B4, $10, $F1, $B2, $00, $0A, $B4
 	db $0A, $F9, $B0, $00, $0A, $B4, $10, $F1
 	db $B2, $00, $0A, $B4, $00
 
-_1650: ; Slot machine coin
+se_slotmachinecoin: ; Slot machine coin
 	db $E0, $01, $08, $32, $B0, $B2, $08, $28
 	db $B5, $0C, $1E, $B7, $08, $32, $BC, $BE
 	db $08, $28, $C1, $18, $14, $08, $C3, $30
 	db $08, $00, $C3, $00
 
-_166C: ; Bonus -unused-
+se_bonus: ; Bonus -unused-
 	db $E0, $01, $0C, $00, $A4, $08, $32, $B0
 	db $B2, $08, $28, $B5, $0C, $1E, $B7, $08
 	db $32, $BC, $BE, $08, $28, $C1, $18, $14
 	db $08, $C3, $30, $08, $00, $C3, $00
 
-_168B: ; Blockade direction change
+se_blockadedirectionchange: ; Blockade direction change
 	db $E0, $05, $06, $78, $9E, $E0, $00, $08
 	db $28, $F9, $A4, $00, $06, $A6, $18, $A6
 	db $00
 
-_169C: ; Bomb powerup
+se_bombpowerup: ; Bomb powerup
 	db $E0, $00, $24, $00, $A4, $08, $0A, $28
 	db $F9, $B7, $00, $06, $B9, $08, $00, $B9
 	db $08, $0A, $28, $F9, $B7, $00, $06, $B9
 	db $08, $00, $B9, $08, $0A, $28, $F9, $B7
 	db $00, $06, $B9, $08, $00, $B9, $00
 
-_16C3: ; Rock crusher uncover
+se_rockcrusheruncover: ; Rock crusher uncover
 	db $E0, $32, $7F, $7D, $F9, $A3, $00, $7F
 	db $A3, $1F, $64, $F1, $00, $1F, $A3, $1F
 	db $50, $F1, $00, $1D, $A3, $00
 
-_16D9: ; Phantron appears
+se_phantronappears: ; Phantron appears
 	db $E0, $31, $5F, $64, $00, $F9, $A3, $00
 	db $5F, $A3, $5F, $64, $1E, $F1, $00, $5F
 	db $A3, $5F, $73, $46, $F1, $00, $5F, $A3
@@ -2783,7 +2784,7 @@ _16D9: ; Phantron appears
 	db $F1, $00, $5F, $A3, $5F, $0A, $1E, $F1
 	db $00, $5D, $A3, $00
 
-_1715: ; Destructor engine
+se_destructorengine: ; Destructor engine
 	db $E0, $30, $7F, $00, $64, $F9, $A3, $00
 	db $7F, $A3, $7F, $F1, $00, $7F, $A3, $7F
 	db $0A, $73, $F1, $00, $7F, $A3, $7F, $1E
@@ -2798,7 +2799,7 @@ _1715: ; Destructor engine
 	db $F1, $00, $7F, $A3, $7F, $14, $1E, $F1
 	db $00, $7D, $A3, $00
 
-_1779: ; Destructor engine -unused-
+se_destructorengine2: ; Destructor engine -unused-
 	db $E0, $30, $7F, $00, $64, $F9, $A1, $00
 	db $7F, $A1, $7F, $0A, $64, $F1, $00, $7F
 	db $A1, $7F, $1E, $73, $F1, $00, $7F, $A1
@@ -2813,7 +2814,7 @@ _1779: ; Destructor engine -unused-
 	db $32, $1E, $F1, $00, $7F, $A1, $7F, $1E
 	db $14, $F1, $00, $7D, $A1, $00
 
-_17DF: ; Rock crusher appears
+se_rockcrusherappears: ; Rock crusher appears
 	db $E0, $2F, $5F, $64, $00, $F9, $A3, $00
 	db $5F, $A3, $5F, $64, $1E, $F1, $00, $5F
 	db $A3, $5F, $73, $46, $F1, $00, $5F, $A3
@@ -2822,15 +2823,15 @@ _17DF: ; Rock crusher appears
 	db $00, $5F, $A3, $5F, $32, $F1, $00, $5F
 	db $A3, $5F, $1E, $F1, $00, $5D, $A3, $00
 
-_1817: ; Phantron 2 hit
+se_phantron2hit: ; Phantron 2 hit
 	db $E0, $12, $0C, $78, $F9, $98, $00, $0C
 	db $97, $0C, $F1, $00, $0C, $A2, $18, $F1
 	db $00, $15, $9F, $00
 
-_182B: ; Phantron scream -unused-
+se_phantronscream2: ; Phantron scream -unused-
 	db $10, $00, $98
 
-_182E: ; Phantron 2 scream
+se_phantron2scream: ; Phantron 2 scream
 	db $E0, $12, $12, $78, $F9, $98, $00, $12
 	db $97, $18, $F1, $00, $18, $A7, $16, $F1
 	db $00, $13, $9F, $0F, $64, $F9, $95, $00
@@ -2843,14 +2844,14 @@ _182E: ; Phantron 2 scream
 	db $F9, $8B, $00, $06, $89, $0C, $F1, $00
 	db $0C, $98, $1E, $F1, $00, $1B, $91, $00
 
-_1886: ; Falco radio chat
+se_falcoradiochat: ; Falco radio chat
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $16, $10
 	db $7D, $80, $82, $E0, $14, $12, $7D, $84
 	db $18, $7D, $85, $E0, $16, $24, $7D, $85
 	db $18, $00, $85, $00
 
-_18AA: ; Falco radio chat hit
+se_falcoradiochathit: ; Falco radio chat hit
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $16, $18
 	db $7D, $85, $0C, $82, $E0, $2E, $0C, $7D
@@ -2859,7 +2860,7 @@ _18AA: ; Falco radio chat hit
 	db $E0, $2C, $18, $7D, $87, $E0, $14, $18
 	db $7D, $85, $00
 
-_18DD: ; Falco radio chat down
+se_falcoradiochatdown: ; Falco radio chat down
 	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
 	db $12, $14, $C0, $06, $00, $C0, $06, $14
 	db $C0, $04, $00, $C0, $12, $14, $C0, $06
@@ -2870,21 +2871,21 @@ _18DD: ; Falco radio chat down
 	db $E0, $14, $18, $7D, $85, $E0, $16, $18
 	db $7D, $84, $00
 
-_1920: ; Peppy radio chat
+se_peppyradiochat: ; Peppy radio chat
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $14, $0C
 	db $7D, $9C, $95, $24, $7D, $9C, $E0, $1F
 	db $0C, $7D, $93, $18, $7D, $91, $E0, $14
 	db $24, $7D, $97, $00
 
-_1944: ; Peppy radio chat hit
+se_peppyradiochathit: ; Peppy radio chat hit
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $2C, $0C
 	db $7D, $9C, $E0, $14, $24, $7D, $9A, $E0
 	db $2E, $08, $7D, $93, $97, $18, $7D, $91
 	db $E0, $16, $0C, $7D, $97, $97, $00
 
-_196B: ; Peppy radio chat down
+se_peppyradiochatdown: ; Peppy radio chat down
 	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
 	db $12, $14, $C0, $06, $00, $C0, $06, $14
 	db $C0, $04, $00, $C0, $12, $14, $C0, $06
@@ -2893,7 +2894,7 @@ _196B: ; Peppy radio chat down
 	db $E0, $2E, $0C, $7D, $98, $0C, $7D, $97
 	db $E0, $1F, $24, $7D, $95, $00
 
-_19A1: ; Slippy radio chat
+se_slippyradiochat: ; Slippy radio chat
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $16, $08
 	db $7D, $89, $E0, $14, $08, $85, $E0, $16
@@ -2903,7 +2904,7 @@ _19A1: ; Slippy radio chat
 	db $E0, $14, $08, $8C, $E0, $16, $18, $00
 	db $87, $00
 
-_19DB: ; Slippy radio chat hit
+se_slippyradiochathit: ; Slippy radio chat hit
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $14, $06
 	db $7D, $8C, $90, $06, $8C, $90, $0C, $00
@@ -2911,7 +2912,7 @@ _19DB: ; Slippy radio chat hit
 	db $8C, $12, $00, $85, $06, $7D, $87, $8B
 	db $87, $8B, $00
 
-_1A06: ; Slippy radio chat down
+se_slippyradiochatdown: ; Slippy radio chat down
 	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
 	db $12, $14, $C0, $06, $00, $C0, $06, $14
 	db $C0, $04, $00, $C0, $12, $14, $C0, $06
@@ -2921,30 +2922,30 @@ _1A06: ; Slippy radio chat down
 	db $87, $12, $00, $85, $E0, $16, $0E, $7D
 	db $82, $85, $E0, $2D, $30, $7D, $89, $00
 
-_1A46: ; Twin blaster powerup
+se_twinblasterpowerup: ; Twin blaster powerup
 	db $E0, $1F, $18, $00, $8C, $7F, $7D, $8C
 	db $00
 
-_1A4F: ; Shield powerup
+se_shieldpowerup: ; Shield powerup
 	db $E0, $2C, $18, $00, $8C, $30, $7D, $8C
 	db $00
 
-_1A58: ; Wing repaired powerup
+se_wingrepairedpowerup: ; Wing repaired powerup
 	db $E0, $14, $18, $00, $8C, $1C, $7D, $8B
 	db $E0, $2E, $60, $7D, $8C, $00
 
-_1A66: ; Cone hit
+se_conehit: ; Cone hit
 	db $E0, $05, $06, $5A, $B0, $E0, $0A, $24
 	db $25, $84, $00
 
-_1A71: ; Background thunder -unused-
+se_backgroundthunder: ; Background thunder -unused-
 	db $7F, $00, $90, $E0, $04, $7F, $7D, $F9
 	db $8C, $00, $7F, $90, $7F, $F1, $00, $7F
 	db $8E, $3F, $F1, $00, $3D, $8E, $7F, $F9
 	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
 	db $8C
 
-_1A92:
+se_volcanofire:
 	db $E0, $04, $3F, $7D, $F9, $8B, $00, $3F
 	db $8D, $7F, $F1, $00, $7D, $8C, $7F, $F9
 	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
@@ -2952,10 +2953,10 @@ _1A92:
 	db $F1, $00, $7F, $89, $7F, $F1, $00, $7D
 	db $89, $00
 
-_1ABC: ; Background thunder -unused-
+se_backgroundthunder2: ; Background thunder -unused-
 	db $7F, $00, $8D
 
-_1ABF: ; Spinning core bg thunder
+se_spinningcorebgthunder: ; Spinning core bg thunder
 	db $E0, $0C, $7F, $78, $F9, $8C, $00, $7F
 	db $8D, $7F, $F1, $00, $7F, $8C, $7F, $F1
 	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
@@ -2966,17 +2967,17 @@ _1ABF: ; Spinning core bg thunder
 	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
 	db $7F, $F1, $00, $7D, $8C, $00
 
-_1B05: ; Jingle + good luck -bgm 4-
+se_jinglegoodluck: ; Jingle + good luck -bgm 4-
 	db $E0, $01, $08, $1E, $B7, $B9, $08, $14
 	db $B9, $0C, $14, $B9, $0C, $0A, $08, $B9
 	db $18, $08, $00, $B9, $00
 
-_1B1A: ; Good luck -bgm 4- -unused-
+se_goodluck2: ; Good luck -bgm 4- -unused-
 	db $E0, $01, $0C, $00, $A4, $08, $1E, $B7
 	db $B9, $08, $14, $B9, $0C, $14, $B9, $0C
 	db $0A, $08, $B9, $18, $08, $00, $B9, $00
 
-_1B32: ; Bonus credit
+se_bonuscredit: ; Bonus credit
 	db $E0, $01, $08, $32, $B2, $B4, $B7, $BC
 	db $08, $2E, $1C, $BE, $18, $C0, $08, $24
 	db $16, $B2, $B4, $B7, $BC, $08, $1E, $12
@@ -2984,7 +2985,7 @@ _1B32: ; Bonus credit
 	db $B7, $BC, $08, $12, $02, $BE, $18, $C0
 	db $00
 
-_1B5B: ; Bonus -unused-
+se_bonus2: ; Bonus -unused-
 	db $E0, $01, $18, $00, $A4, $08, $28, $B2
 	db $B4, $B7, $BC, $08, $0C, $1A, $BE, $0C
 	db $C0, $08, $12, $1E, $B2, $B4, $B7, $BC
@@ -2992,54 +2993,54 @@ _1B5B: ; Bonus -unused-
 	db $12, $B2, $B4, $B7, $BC, $BE, $18, $C0
 	db $00
 
-_1B84: ; Player amoeba hit
+se_playeramoebahit: ; Player amoeba hit
 	db $E0, $2A, $0C, $64, $A1, $00
 
-_1B8A: ; Last base entry 2.door close
+se_lastbaseentry2doorclose: ; Last base entry 2.door close
 	db $E0, $1C, $24, $7D, $F9, $91, $00, $24
 	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
 	db $08, $64, $99, $00
 
-_1B9E: ; Far last base entry 2.door close
+se_farlbentry2doorclose: ; Far last base entry 2.door close
 	db $E0, $1C, $24, $46, $F9, $91, $00, $24
 	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
 	db $08, $3C, $99, $00
 
-_1BB2: ; Last base entry 2.door open
+se_lastbaseentry2dooropen: ; Last base entry 2.door open
 	db $E0, $1C, $24, $7D, $F9, $89, $00, $24
 	db $90, $18, $F1, $00, $16, $93, $E0, $05
 	db $08, $64, $99, $00
 
-_1BC6: ; Far last base entry 2.door open
+se_farlbentry2dooropen: ; Far last base entry 2.door open
 	db $E0, $1C, $24, $46, $F9, $89, $00, $24
 	db $90, $18, $F1, $00, $16, $93, $E0, $05
 	db $08, $3C, $99, $00
 
-_1BDA: ; Atomic base core close
+se_atomicbasecoreclose: ; Atomic base core close
 	db $E0, $1C, $24, $78, $F9, $9F, $00, $18
 	db $98, $24, $F9, $9F, $00, $18, $98, $24
 	db $64, $F9, $9F, $00, $18, $98, $24, $5A
 	db $F9, $9F, $00, $18, $98, $24, $46, $F9
 	db $9F, $00, $18, $98, $00
 
-_1BFF: ; Atomic base core open
+se_atomicbasecoreopen: ; Atomic base core open
 	db $E0, $1C, $24, $78, $F9, $98, $00, $18
 	db $9F, $24, $F9, $98, $00, $18, $9F, $24
 	db $64, $F9, $98, $00, $18, $9F, $24, $5A
 	db $F9, $98, $00, $18, $9F, $24, $46, $F9
 	db $98, $00, $18, $9F, $00
 
-_1C24: ; Atomic base power supply on
+se_atomicbasepowersupplyon: ; Atomic base power supply on
 	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
 	db $F9, $8C, $00, $18, $93, $24, $F1, $00
 	db $22, $98, $00
 
-_1C37: ; Atomic base power supply off
+se_atomicbasepowersupplyoff: ; Atomic base power supply off
 	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
 	db $F9, $98, $00, $18, $91, $24, $F1, $00
 	db $22, $8C, $00
 
-_1C4A: ; Hovering -unused-
+se_hovering: ; Hovering -unused-
 	db $E0, $29, $7F, $64, $F9, $A3, $00, $7F
 	db $A3, $7F, $F1, $00, $7F, $A3, $7F, $73
 	db $F1, $00, $7F, $A3, $7F, $7D, $F1, $00
@@ -3049,15 +3050,15 @@ _1C4A: ; Hovering -unused-
 	db $7F, $32, $F1, $00, $7F, $A3, $7F, $1E
 	db $F1, $00, $7D, $A3, $00
 
-_1C87: ; Door open -unused-
+se_dooropen: ; Door open -unused-
 	db $E0, $1C, $18, $64, $F9, $85, $00, $18
 	db $8C, $18, $F1, $00, $16, $8C, $00
 
-_1C96: ; Door close -unused-
+se_doorclose: ; Door close -unused-
 	db $E0, $1C, $18, $64, $F9, $90, $00, $18
 	db $89, $18, $F1, $00, $16, $89, $00
 
-_1CA5: ; Hovering -unused-
+se_hovering2: ; Hovering -unused-
 	db $E0, $29, $7F, $5A, $F9, $A3, $00, $7F
 	db $A3, $7F, $5F, $F1, $00, $7F, $A3, $7F
 	db $64, $F1, $00, $7F, $A3, $7F, $6E, $F1
@@ -3083,116 +3084,116 @@ _1CF7:
 	db $00, $7F, $99, $7F, $1E, $F1, $00, $7D
 	db $99, $00
 
-_1D49: ; Near enemy ring shot
+se_nearenemyringshot: ; Near enemy ring shot
 	db $E0, $27, $12, $5A, $F9, $AD, $00, $12
 	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
 	db $00, $0A, $B0, $00
 
-_1D5D: ; Mid enemy ring shot
+se_midenemyringshot: ; Mid enemy ring shot
 	db $E0, $27, $12, $3C, $F9, $AD, $00, $12
 	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
 	db $00, $0A, $B0, $00
 
-_1D71: ; Far enemy ring shot
+se_farenemyringshot: ; Far enemy ring shot
 	db $E0, $27, $12, $1E, $F9, $AD, $00, $12
 	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
 	db $00, $0A, $B0, $00
 
-_1D85: ; Fox radio chat
+se_foxradiochat: ; Fox radio chat
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $16, $08
 	db $7D, $8B, $18, $90, $0C, $8E, $18, $8C
 	db $0C, $8E, $8D, $18, $00, $93, $00
 
-_1DA4: ; Radio chat quit
+se_radiochatquit: ; Radio chat quit
 	db $E0, $0F, $06, $14, $BE, $06, $00, $BE
 	db $06, $14, $BE, $06, $00, $BE, $E0, $15
 	db $18, $7D, $98, $00
 
-_1DB8: ; Player camera change
+se_playercamerachange: ; Player camera change
 	db $E0, $25, $48, $3C, $B6, $00
 
-_1DBE: ; Good luck -BGM 4-
+se_goodluck: ; Good luck -BGM 4-
 	db $E0, $22, $18, $00, $A4, $48, $78, $A0
 	db $00
 
-_1DC7: ; Continue let's go -BGM 30-
+se_continue: ; Continue let's go -BGM 30-
 	db $E0, $33, $48, $78, $A2, $00
 
-_1DCD: ; Left water splash out
+se_leftwatersplashout: ; Left water splash out
 	db $E0, $2B, $30, $7D, $0A, $F9, $A6, $00
 	db $28, $9A, $00
 
-_1DD8: ; Centre water splash
+se_centrewatersplash: ; Centre water splash
 	db $E0, $2B, $30, $7D, $F9, $A6, $00, $28
 	db $9A, $00
 
-_1DE2: ; Right water splash
+se_rightwatersplash: ; Right water splash
 	db $E0, $2B, $30, $0A, $7D, $F9, $A6, $00
 	db $28, $9A, $00
 
-_1DED: ; Mid water splash
+se_midwatersplash: ; Mid water splash
 	db $E0, $2B, $30, $6E, $F9, $A6, $00, $28
 	db $9A, $00
 
-_1DF7: ; Far water splash
+se_farwatersplash: ; Far water splash
 	db $E0, $2B, $30, $5A, $F9, $A6, $00, $28
 	db $9A, $00
 
-_1E01: ; Left water splash in
+se_leftwatersplashin: ; Left water splash in
 	db $E0, $21, $30, $7D, $0A, $A1, $00
 
-_1E08: ; Centre water splash in
+se_centrewatersplashin: ; Centre water splash in
 	db $E0, $21, $30, $7D, $A1, $00
 
-_1E0E: ; Right water splash in
+se_rightwatersplashin: ; Right water splash in
 	db $E0, $21, $30, $0A, $7D, $A1, $00
 
-_1E15: ; Mid water splash in
+se_midwatersplashin: ; Mid water splash in
 	db $E0, $21, $30, $6E, $A1, $00
 
-_1E1B: ; Far water splash in
+se_farwatersplashin: ; Far water splash in
 	db $E0, $21, $30, $5A, $A1, $00
 
-_1E21: ; Dancing insector propelling
+se_dancinginsectorpropelling: ; Dancing insector propelling
 	db $E0, $1B, $0C, $78, $F9, $A1, $00, $0A
 	db $9D, $18, $64, $F9, $A1, $00, $18, $A4
 	db $24, $F1, $00, $18, $9D, $00
 
-_1E37: ; Right object fly-by
+se_dopleft: ; Right object fly-by
 	db $E0, $1E, $30, $00, $78, $F9, $B9, $00
 	db $30, $B9, $18, $F1, $00, $16, $B0, $00
 
-_1E47: ; Centre object fly-by
+se_dopcentre: ; Centre object fly-by
 	db $E0, $1E, $30, $64, $F9, $B9, $00, $30
 	db $B9, $18, $F1, $00, $16, $B0, $00
 
-_1E56: ; Left object fly-by
+se_dopright: ; Left object fly-by
 	db $E0, $1E, $30, $78, $00, $F9, $B9, $00
 	db $30, $B9, $18, $F1, $00, $16, $B0, $00
 
-_1E66: ; Blade barrier player web hit
+se_bladebarrierplayerwebhit: ; Blade barrier player web hit
 	db $E0, $19, $0C, $78, $F9, $B9, $00, $0C
 	db $A4, $0C, $F1, $00, $0A, $9D, $E0, $05
 	db $06, $78, $9E, $00
 
-_1E7A: ; -unused-
+se_unused: ; -unused-
 	db $E0, $05, $06, $78, $9E, $0C, $A1, $00
 
-_1E82: ; Blade barrier post-drill attack
+se_bladebarrierpostdrillatk: ; Blade barrier post-drill attack
 	db $E0, $1C, $12, $78, $F9, $95, $00, $12
 	db $98, $12, $F1, $00, $12, $96, $12, $F1
 	db $00, $12, $94, $12, $F1, $00, $10, $92
 	db $00
 
-_1E9B: ; Cone triangle
+se_conetriangle: ; Cone triangle
 	db $E0, $07, $12, $78, $F9, $95, $00, $12
 	db $98, $12, $F1, $00, $12, $97, $12, $F1
 	db $00, $12, $96, $12, $F1, $00, $12, $95
 	db $12, $F1, $00, $12, $94, $12, $F1, $00
 	db $12, $93, $12, $F1, $00, $10, $92, $00
 
-_1EC3: ; 1-6+2-3 Boss shadowing
+se_bossshadowing: ; 1-6+2-3 Boss shadowing
 	db $E0, $07, $08, $78, $98, $08, $00, $98
 	db $08, $78, $98, $18, $64, $F9, $98, $00
 	db $16, $95, $18, $50, $F9, $98, $00, $16
@@ -3200,12 +3201,12 @@ _1EC3: ; 1-6+2-3 Boss shadowing
 	db $18, $32, $F9, $98, $00, $16, $95, $18
 	db $28, $F9, $98, $00, $16, $95, $00
 
-_1EF2: ; Enemy warp-in
+se_enemywarpin: ; Enemy warp-in
 	db $E0, $07, $08, $78, $95, $18, $64, $F9
 	db $89, $00, $16, $98, $18, $50, $F9, $8B
 	db $00, $16, $9A, $00
 
-_1F06: ; Rock crusher roll
+se_rockcrusherroll: ; Rock crusher roll
 	db $E0, $05, $05, $78, $8F, $8F, $90, $90
 	db $91, $91, $92, $92, $93, $93, $94, $94
 	db $95, $95, $96, $96, $97, $97, $98, $98
@@ -3213,7 +3214,7 @@ _1F06: ; Rock crusher roll
 	db $9D, $9D, $9E, $9E, $9F, $9F, $A0, $A0
 	db $A1, $A1
 
-_1F30:
+se_slotmachinehandledown:
 	db $E0, $05, $05, $78, $A2, $A2, $A2, $A3
 	db $A3, $A4, $A4, $A5, $A5, $A6, $A6, $A7
 	db $A7, $A8, $A8, $A9, $A9, $06, $78, $92
@@ -3226,24 +3227,24 @@ _1F4B:
 	db $30, $F1, $00, $30, $92, $48, $F1, $00
 	db $48, $91, $48, $F1, $00, $45, $90, $00
 
-_1F73: ; Small boss explosion
+se_destructbosssmall: ; Small boss explosion
 	db $E0, $12, $30, $78, $F9, $8C, $00, $30
 	db $8D, $30, $F1, $00, $30, $8E, $30, $F1
 	db $00, $30, $8F, $30, $F1, $00, $30, $90
 	db $30, $F1, $00, $30, $91, $30, $F1, $00
 	db $30, $92, $30, $F1, $00, $2E, $93, $00
 
-_1F9B: ; Plasma hydra arm hit
+se_plasmahydraarmhit: ; Plasma hydra arm hit
 	db $E0, $02, $0C, $78, $F9, $9C, $00, $0C
 	db $9B, $0C, $F1, $00, $0C, $A5, $18, $F1
 	db $00, $15, $A3, $00
 
-_1FAF: ; Enemy rocket player hit
+se_enemyrocketplayerhit: ; Enemy rocket player hit
 	db $E0, $06, $12, $78, $F9, $93, $00, $12
 	db $8F, $24, $F1, $00, $24, $9B, $24, $F1
 	db $00, $21, $98, $00
 
-_1FC3: ; Dodora hit
+se_dodorahit: ; Dodora hit
 	db $E0, $02, $12, $78, $F9, $91, $00, $12
 	db $96, $0C, $F1, $00, $0C, $A2, $24, $F1
 	db $00, $24, $9F, $24, $F1, $00, $21, $97
@@ -3255,19 +3256,19 @@ _1FDC:
 	db $0C, $A2, $24, $F1, $00, $24, $9F, $24
 	db $F1, $00, $21, $97, $00
 
-_1FF9: ; Dodora egg crack + bird
+se_dodoraeggcrackbird: ; Dodora egg crack + bird
 	db $E0, $15, $08, $78, $B4, $B9, $24, $BE
 
-_2001: ; Bird scream -unused-
+se_birdscream: ; Bird scream -unused-
 	db $E0, $07, $0C, $78, $F9, $A1, $00, $0C
 	db $A5, $0C, $F1, $00, $0C, $B1, $24, $F1
 	db $00, $21, $AF, $00
 
-_2015: ; Percentage ring
+se_percentagering: ; Percentage ring
 	db $E0, $00, $03, $28, $B7, $B9, $B7, $B9
 	db $B7, $B9, $08, $BB, $18, $BE, $00
 
-_2024: ; Big support ring
+se_gateofring: ; Big support ring
 	db $E0, $01, $0C, $1E, $BC, $BE, $BC, $BE
 	db $0C, $1E, $0F, $C1, $24, $C6, $0C, $14
 	db $08, $C1, $24, $C6, $0C, $0A, $00, $C1
@@ -3279,7 +3280,7 @@ _203F:
 	db $C6, $0C, $08, $14, $C1, $24, $C6, $0C
 	db $00, $0A, $C1, $24, $C6, $00
 
-_205D: ; Controls select
+se_cursor: ; Controls select
 	db $E0, $01, $08, $3C, $BE, $18, $C3, $08
 	db $00, $0A, $BE, $18, $C3, $00
 
@@ -3288,7 +3289,7 @@ _206B:
 	db $BE, $18, $C3, $08, $05, $00, $BE, $18
 	db $C3, $00
 
-_207D: ; 1up ring hit
+se_itemcatch: ; 1up ring hit
 	db $E0, $00, $08, $28, $BB, $BE, $C0, $18
 	db $C3, $08, $00, $0A, $BB, $BE, $C0, $0C
 	db $C3, $00
@@ -3298,27 +3299,27 @@ _208F:
 	db $BB, $BE, $C0, $18, $C3, $08, $05, $00
 	db $BB, $BE, $C0, $0C, $C3, $00
 
-_20A5: ; Left gate moving
+se_movingwallleft: ; Left gate moving
 	db $E0, $08, $18, $78, $00, $F9, $98, $00
 	db $18, $9D, $24, $F1, $00, $21, $A1, $00
 
-_20B5: ; Centre gate moving
+se_movingwallcentre: ; Centre gate moving
 	db $E0, $08, $18, $64, $F9, $98, $00, $18
 	db $9D, $24, $F1, $00, $21, $A1, $00
 
-_20C4: ; Right gate moving
+se_movingwallright: ; Right gate moving
 	db $E0, $08, $18, $00, $78, $F9, $98, $00
 	db $18, $9D, $24, $F1, $00, $21, $A1, $00
 
-_20D4: ; Mid gate moving
+se_movingwallmid: ; Mid gate moving
 	db $E0, $08, $18, $3C, $F9, $98, $00, $18
 	db $9D, $24, $F1, $00, $21, $A1, $00
 
-_20E3: ; Far gate moving
+se_movingwallfar: ; Far gate moving
 	db $E0, $08, $18, $1E, $F9, $98, $00, $18
 	db $9D, $24, $F1, $00, $21, $A1, $00
 
-_20F2: ; Player boost
+se_speedup: ; Player boost
 	db $E0, $05, $48, $78, $F9, $95, $00, $45
 	db $A1, $00
 
@@ -3326,11 +3327,11 @@ _20FC:
 	db $E0, $11, $60, $3C, $F9, $91, $00, $5D
 	db $AB, $00
 
-_2106: ; Player brake
+se_speeddown: ; Player brake
 	db $E0, $03, $30, $78, $F9, $A3, $00, $2D
 	db $95, $00
 
-_2110: ; Incoming enemy
+se_warning1: ; Incoming enemy
 	db $E0, $26, $0C, $28, $F9, $B6, $00, $0A
 	db $B9, $24, $F9, $B6, $00, $10, $B9, $0C
 	db $28, $F9, $B6, $00, $0A, $B9, $24, $F9
@@ -3338,7 +3339,7 @@ _2110: ; Incoming enemy
 	db $98, $E0, $13, $70, $7D, $8C, $E0, $15
 	db $0C, $7D, $98, $00
 
-_213C: ; Wing damaged
+se_warning2: ; Wing damaged
 	db $E0, $26, $30, $00, $A4, $0C, $28, $F9
 	db $B6, $00, $0A, $B9, $0C, $28, $F9, $B6
 	db $00, $0A, $B9, $18, $00, $A4, $E0, $15
@@ -3347,92 +3348,92 @@ _213C: ; Wing damaged
 	db $7D, $98, $00, $E0, $0E, $30, $32, $B7
 	db $00
 
-_216D: ; Phantron 2 landing
+se_phantron2landing: ; Phantron 2 landing
 	db $E0, $0D, $06, $78, $89, $04, $00, $89
 	db $24, $78, $F9, $89, $00, $22, $82, $00
 
-_217D: ; Phantron 2 jump
+se_phantron2jump: ; Phantron 2 jump
 	db $E0, $1D, $0C, $78, $F9, $A9, $00, $0A
 	db $9D, $24, $F9, $9D, $00, $21, $AB, $00
 
-_218D: ; Near enemy rocket shot
+se_missilenear: ; Near enemy rocket shot
 	db $E0, $0B, $30, $64, $95, $00
 
-_2193: ; Mid enemy rocket shot
+se_missilemid: ; Mid enemy rocket shot
 	db $E0, $0B, $30, $3C, $95, $00
 
-_2199: ; Far enemy rocket shot
+se_missilefar: ; Far enemy rocket shot
 	db $E0, $0B, $30, $1E, $95, $00
 
-_219F: ; Near enemy battery
+se_enemybattrynear: ; Near enemy battery
 	db $E0, $19, $08, $78, $9A, $48, $98, $00
 
-_21A7: ; Mid enemy battery
+se_enemybattrymid: ; Mid enemy battery
 	db $E0, $19, $08, $46, $9A, $48, $98, $00
 
-_21AF: ; Far enemy battery
+se_enemybattryfar: ; Far enemy battery
 	db $E0, $19, $08, $28, $9A, $48, $98, $00
 
-_21B7: ; Left enemy laser shot
+se_laserleft: ; Left enemy laser shot
 	db $E0, $09, $30, $5A, $0A, $95, $00
 
-_21BE: ; Centre enemy laser shot
+se_lasercentre: ; Centre enemy laser shot
 	db $E0, $09, $30, $50, $95, $00
 
-_21C4: ; Right enemy laser shot
+se_laserright: ; Right enemy laser shot
 	db $E0, $09, $30, $0A, $5A, $95, $00
 
-_21CB: ; Mid enemy laser shot
+se_lasermid: ; Mid enemy laser shot
 	db $E0, $09, $30, $28, $95, $00
 
-_21D1: ; Far enemy laser shot
+se_laserfar: ; Far enemy laser shot
 	db $E0, $09, $30, $1E, $95, $00
 
-_21D7: ; Right wing damaged
+se_wingdestructright: ; Right wing damaged
 	db $E0, $05, $30, $0A, $5A, $A9, $00
 
-_21DE: ; Left wing damaged
+se_wingdestructleft: ; Left wing damaged
 	db $E0, $05, $30, $5A, $0A, $A9, $00
 
-_21E5: ; Wingless arwing collision
+se_winglessarwingcollision: ; Wingless arwing collision
 	db $E0, $05, $18, $5A, $B5, $00
 
-_21EB: ; Right wing crash
+se_wingdamageright: ; Right wing crash
 	db $E0, $05, $18, $0A, $5A, $B5, $00
 
-_21F2: ; Left wing crash
+se_wingdamageleft: ; Left wing crash
 	db $E0, $05, $18, $5A, $0A, $B5, $00
 
-_21F9: ; Player crash
+se_playerdamage: ; Player crash
 	db $E0, $0D, $06, $64, $9D, $60, $78, $9D
 	db $00
 
-_2202: ; Near enemy hit
+se_damageenemynear: ; Near enemy hit
 	db $E0, $0D, $20, $46, $F9, $8E, $00, $1E
 	db $85, $00
 
-_220C: ; Mid enemy hit
+se_damageenemymid: ; Mid enemy hit
 	db $E0, $0D, $20, $28, $F9, $8E, $00, $1E
 	db $85, $00
 
-_2216: ; Far enemy hit
+se_damageenemyfar: ; Far enemy hit
 	db $E0, $0D, $20, $1E, $F9, $8E, $00, $1E
 	db $85, $00
 
-_2220: ; Near enemy explosion
+se_destructenemynear: ; Near enemy explosion
 	db $E0, $06, $60, $78, $98, $00
 
 _2226:
 	db $E0, $06, $18, $00, $98, $60, $50, $95
 	db $00
 
-_222F: ; Mid enemy explosion
+se_destructenemymid: ; Mid enemy explosion
 	db $E0, $06, $70, $5A, $95, $00
 
-_2235: ; Far enemy explosion
+se_destructenemyfar: ; Far enemy explosion
 	db $E0, $06, $70, $46, $95, $00
 
-_223B: ; Near big boss explosion
+se_destructbossnear: ; Near big boss explosion
 	db $E0, $0D, $0C, $78, $97, $12, $97, $0C
 	db $64, $95, $12, $95, $0C, $50, $90, $60
 	db $90, $00
@@ -3447,7 +3448,7 @@ _2265:
 	db $97, $18, $97, $0C, $00, $50, $95, $18
 	db $95, $0C, $00, $3C, $90, $60, $90, $00
 
-_227D: ; Mid big boss explosion
+se_destructbossmid: ; Mid big boss explosion
 	db $E0, $0D, $0C, $64, $97, $12, $97, $0C
 	db $50, $95, $12, $95, $0C, $3C, $90, $60
 	db $90, $00
@@ -3462,7 +3463,7 @@ _22A7:
 	db $97, $18, $97, $0C, $00, $3C, $95, $18
 	db $95, $0C, $00, $28, $90, $60, $90, $00
 
-_22BF: ; Far big boss explosion
+se_destructbossfar: ; Far big boss explosion
 	db $E0, $0D, $0C, $3C, $97, $12, $97, $0C
 	db $32, $95, $12, $95, $0C, $1E, $90, $60
 	db $90, $00
@@ -3477,7 +3478,7 @@ _22E9:
 	db $97, $18, $97, $0C, $00, $1E, $95, $18
 	db $95, $0C, $00, $14, $90, $60, $90, $00
 
-_2301:
+se_playerdown:
 	db $E0, $0D, $0C, $78, $9C, $9C, $60, $9C
 	db $00
 
@@ -3487,38 +3488,38 @@ _230A: ; Player down
 	db $98, $48, $46, $00, $95, $60, $00, $28
 	db $95, $00
 
-_2324: ; Player laser shot
+se_laser: ; Player laser shot
 	db $E0, $20, $48, $32, $92, $00
 
-_232A: ; Player bomb explosion
+se_specialweapon: ; Player bomb explosion
 	db $E0, $05, $0C, $64, $9C, $30, $9C, $E0
 	db $12, $60, $64, $F9, $85, $00, $60, $86
 	db $60, $7D, $F1, $00, $5E, $87, $00
 
-_2341: ; Player bomb shot
+se_abutton: ; Player bomb shot
 	db $E0, $0B, $06, $78, $98, $18, $78, $9D
 	db $00
 
-_234A: ; Dual beam shot
+se_dualbeam: ; Dual beam shot
 	db $E0, $19, $08, $5A, $A1, $E0, $17, $24
 	db $F9, $98, $00, $22, $B0, $00
 
-_2358: ; Near laser deflect
+se_hitwallnear: ; Near laser deflect
 	db $E0, $0A, $24, $21, $B2, $00
 
-_235E: ; Mid laser deflect
+se_hitwallmid: ; Mid laser deflect
 	db $E0, $0A, $24, $11, $B2, $00
 
-_2364: ; Far laser deflect
+se_hitwallfar: ; Far laser deflect
 	db $E0, $0A, $24, $0D, $B2, $00
 
-_236A: ; Left wing scratch
+se_wingtouchleft: ; Left wing scratch
 	db $E0, $05, $06, $5A, $00, $BC, $BC, $00
 
-_2372: ; Right wing scratch
+se_wingtouchright: ; Right wing scratch
 	db $E0, $05, $06, $00, $5A, $BC, $BC, $00
 
-_237A:
+se_pause:
 	db $E0, $00, $10, $1E, $B4, $30, $1E, $B7
 	db $00
 
@@ -4227,18 +4228,18 @@ _2a52:
 	asl	a				; double it to get pointer
 	mov	y,a				; check if over 255
 	bcs	_2a7b
-	mov	a,_109f-1+y			; sound effect data pointer high
+	mov	a,sfx_ptrs-1+y			; sound effect data pointer high
 	mov	!_0391+x,a
 	mov.b	!adk+1,a
-	mov	a,_109f-2+y			; sound effect data pointer low
+	mov	a,sfx_ptrs-2+y			; sound effect data pointer low
 	mov	!_0390+x,a
 	mov.b	!adk,a
 	jmp	_2b29
 _2a7b:
-	mov	a,_109f-1+256+y			; sound effect data pointer high
+	mov	a,sfx_ptrs-1+256+y			; sound effect data pointer high
 	mov	!_0391+x,a
 	mov.b	!adk+1,a
-	mov	a,_109f-2+256+y			; sound effect data pointer low
+	mov	a,sfx_ptrs-2+256+y			; sound effect data pointer low
 	mov	!_0390+x,a
 	mov.b	!adk,a
 	jmp	_2b29
