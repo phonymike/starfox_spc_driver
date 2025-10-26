@@ -1,5 +1,5 @@
 # Star Fox Sound Driver Disassembly
-This repository contains a disassembly of the N-SPC/Kankichi-Kun sound driver variant used in Star Fox/Starwing (SNES).  
+This repository contains a disassembly of the [N-SPC/Kankichi-kun](https://sneslab.net/wiki/N-SPC_Engine) sound driver variant used in Star Fox/Starwing (SNES).  
 It builds the following SBN:  
 - SGSOUND0.BIN ``sha1: 84a3411c5c6406b53716d40d64b59f1e55f0f27f``
 
