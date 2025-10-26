@@ -3833,7 +3833,7 @@ _271e:
 	mov.b	!sss,#$00
 	mov	x,#$0c
 	call	pan20
-ret
+	ret
 
 _2749:
 	mov	a,!_03f8
@@ -3941,7 +3941,7 @@ _27ff:
 	bne	_280f
 	mov	a,!_03f9
 	bne	_2811
-	_280f:
+_280f:
 	mov	a,#$ad
 _2811:
 	mov.b	!_ac,x
@@ -4103,6 +4103,7 @@ _2971:
 	mov.b	!fkin,a
 	jmp	_29c5
 
+; function obtaining info from SPC<->5A22 register 3
 _2981:
 	mov	a,!port3
 	cmp	a,!port3
@@ -4328,7 +4329,7 @@ _2b29:
 	bmi	_2B6F				; Pitch and commands are 80 and over
 
 _2B39:
-	; Sample duration
+; Sample duration
 	mov	y,!_03c0			; Get audio channel
 	mov	!_03b1+y,a			; store duration
 	incw	!adk				; sound effect data pointer
@@ -4514,7 +4515,7 @@ _3e87:
 	mov	!_03f1,a
 	mov	a,#$88
 	mov.b	!mvo,a
-ret
+	ret
 
 _3e96:
 	mov	a,!_03f1

@@ -41,25 +41,25 @@
 !keyon = $004c					;
 !keyoff = $005c					;
 ;************************************************
-!fl0 = $0000					;
+!fl0 = $0000					; CPUIO register inputs
 !fl1 = $0001					;
 !fl2 = $0002					;
 !fl3 = $0003					;
 ; 
-!sf0 = $0004					;
+!sf0 = $0004					; CPUIO register outputs
 !sf1 = $0005					;
 !sf2 = $0006					;
 !sf3 = $0007					;
 ;
-!fl0s = $0008					;
+!fl0s = $0008					; Last values read by the CPUIO register
 !fl1s = $0009					;
 !fl2s = $000a					;
 !fl3s = $000b					;
 ;
-!sf0c = $000c					;
-!sf3c = $000d					;
+!sf0c = $000c					; Tick counter for the song to initialize itself.
+!sf3c = $000d					; CPUIO3 number of ticks to wait before playing next SFX.
 ;
-!t00 = $000e					; 
+!t00 = $000e					; (2 bytes) Always zero.
 ;************************************************ 
 !sss = $0010				; sss & kkk pair
 !kkk = $0011
