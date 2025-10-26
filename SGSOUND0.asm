@@ -2317,11 +2317,6 @@ sfx_parameters:
 	db $40, $5A, $33, $25, $23, $33, $24, $34 ; $B1 - $B8
 	db $36, $34, $25, $35, $0F, $2E, $2F      ; $B9 - $BF
 
-
-; turn them into db statements and put them in rows of 8
-; (excluding the first entry because SFX ID $00 is never valid, meaning the first row 
-; should have a blank spot). 
-
 ; $109F table begins, 2 bytes, 191 pointers
 ; Names taken from SFEX 1.08.2
 _109f:
