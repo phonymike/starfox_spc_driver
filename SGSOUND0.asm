@@ -2320,7 +2320,7 @@ sfx_parameters:
 ; $109F SFX pointer table begins, 2 bytes, 191 pointers
 ; Sound labels taken from SOUNDEQU.INC where available, otherwise based on descriptions.
 ; Sound descriptions taken from SFEX.
-; SFX IDs past $AF aren't normally accessible, and are used in a chain with other sounds.
+; SFX IDs past $AF aren't normally accessible, and are chained with other SFX IDs.
 sfx_ptrs:
 	dw se_pause						; $01 UNPAUSE
 	dw se_pause						; $02 PAUSE
