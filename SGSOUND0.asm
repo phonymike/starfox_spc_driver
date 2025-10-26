@@ -2318,8 +2318,9 @@ sfx_parameters:
 	db $36, $34, $25, $35, $0F, $2E, $2F      ; $B9 - $BF
 
 ; $109F SFX pointer table begins, 2 bytes, 191 pointers
-; Sound labels taken from SOUNDEQU.INC where available, otherwise based on descriptions
-; Sound descriptions taken from SFEX
+; Sound labels taken from SOUNDEQU.INC where available, otherwise based on descriptions.
+; Sound descriptions taken from SFEX.
+; SFX IDs past $AF aren't normally accessible, and are used in a chain with other sounds.
 sfx_ptrs:
 	dw se_pause						; $01 UNPAUSE
 	dw se_pause						; $02 PAUSE
@@ -2339,7 +2340,7 @@ sfx_ptrs:
 	dw se_itemcatch					; $10 1UP RING HIT
 	dw se_cursor					; $11 CONTROLS SELECT
 	dw se_percentagering			; $12 PERCENTAGE RING
-	dw se_jinglegoodluck			; $13 JINGLE + GOOD LUCK
+	dw se_goodluck					; $13 GOOD LUCK
 	dw se_conehit					; $14 CONE HIT
 	dw se_twinblasterpowerup		; $15 TWIN BLASTER POWERUP
 	dw se_shieldpowerup				; $16 SHIELD POWERUP
@@ -2362,7 +2363,7 @@ sfx_ptrs:
 	dw se_hitwallnear				; $27 NEAR LASER DEFLECT
 	dw se_hitwallmid				; $28 MID LASER DEFLECT
 	dw se_hitwallfar				; $29 FAR LASER DEFLECT
-	dw se_goodluck					; $2A GOOD LUCK -BGM 4-
+	dw se_goodlucksubsubsfx			; $2A GOOD LUCK SUB-SUB-SFX
 	dw se_enemywarpin				; $2B ENEMY WARP-IN
 	dw se_conetriangle				; $2C CONE TRIANGLE
 	dw se_bossshadowing				; $2D 1-6+2-3 BOSS SHADOWING
@@ -2408,10 +2409,10 @@ sfx_ptrs:
 	dw se_farlbentry2dooropen		; $55 FAR LAST BASE ENTRY 2.DOOR OPEN
 	dw se_playeramoebahit			; $56 PLAYER AMOEBA HIT
 	dw se_blockadedirectionchange	; $57 BLOCKADE DIRECTION CHANGE
-	dw se_hovering					; $58 HOVERING -UNUSED-
+	dw se_hovering					; $58 HOVERING
 	dw se_doorclose					; $59 DOOR CLOSE
 	dw se_dooropen					; $5A DOOR OPEN
-	dw se_hovering2					; $5B HOVERING -UNUSED-
+	dw se_hovering2					; $5B HOVERING
 	dw se_nearenemyringshot			; $5C NEAR ENEMY RING SHOT
 	dw se_midenemyringshot			; $5D MID ENEMY RING SHOT
 	dw se_farenemyringshot			; $5E FAR ENEMY RING SHOT
@@ -2423,7 +2424,7 @@ sfx_ptrs:
 	dw se_radiochatquit				; $64 RADIO CHAT QUIT
 	dw se_playercamerachange		; $65 PLAYER CAMERA CHANGE
 	dw se_destructorweapnheadattack	; $66 DESTRUCTOR WEAPON HEAD ATTACK
-	dw se_continue					; $67 CONTINUE LET'S GO -BGM 30-
+	dw se_continue					; $67 CONTINUE LET'S GO
 	dw se_leftwatersplashout		; $68 LEFT WATER SPLASH OUT
 	dw se_centrewatersplash			; $69 CENTRE WATER SPLASH
 	dw se_rightwatersplash			; $6A RIGHT WATER SPLASH
@@ -2486,32 +2487,32 @@ sfx_ptrs:
 	dw se_androssscream2			; $A3 ANDROSS SCREAM 2
 	dw se_androssscream1			; $A4 ANDROSS SCREAM 1
 	dw se_silence					; $A5 SILENCE
-	dw se_enemyhovering				; $A6 ENEMY HOVERING -unused-
-	dw se_shootingstar				; $A7 SHOOTING STAR -unused-
-	dw se_objectimpact				; $A8 OBJECT IMPACT -unused-
-	dw se_enemy						; $A9 ENEMY -unused-
-	dw se_backgroundthunder2		; $AA BACKGROUND THUNDER -unused-
-	dw se_bonus						; $AB BONUS -unused-
-	dw se_destructorengine2			; $AC DESTRUCTOR ENGINE -unused-
-	dw se_phantronscream2			; $AD PHANTRON SCREAM
-	dw se_goodluck2					; $AE GOOD LUCK -BGM 4- -unused-
-	dw se_bonus2					; $AF BONUS -unused-
-	dw _208F	; $B0 1UP RING HIT LEFT
-	dw _206B	; $B1 CONTROLS SELECT LEFT
-	dw _203F	; $B2 CHECKPOINT
-	dw _1FDC	; $B3 DODORA HIT
-	dw _1CF7	; $B4 BACKGROUND HUM
-	dw _22D1	; $B5 BIG EXPLOSION LEFT
-	dw _22E9	; $B6 BIG EXPLOSION CENTRE
-	dw _228F	; $B7 BIG EXPLOSION LEFT
-	dw _22A7	; $B8 BIG EXPLOSION CENTRE
-	dw _20FC	; $B9 LAST BASE EXIT BOOST
-	dw _2226	; $BA SMALL EXPLOSION CENTRE
-	dw _2265	; $BB BIG EXPLOSION RIGHT + THUNDER
-	dw _224D	; $BC BIG EXPLOSION CENTRE + THUNDER
-	dw _1F4B	; $BD EXPLOSION CIRCLE
-	dw _230A	; $BE PLAYER DOWN
-	dw _2383	; $BF PAUSE
+	dw se_enemyhovering				; $A6 ENEMY HOVERING
+	dw se_shootingstar				; $A7 SHOOTING STAR
+	dw se_objectimpact				; $A8 OBJECT IMPACT
+	dw se_enemy						; $A9 ENEMY
+	dw se_backgroundthunder2		; $AA BACKGROUND THUNDER
+	dw se_slotmachinecoinsubsfx		; $AB SLOT MACHINE COIN SUB-SFX
+	dw se_destructorengine2			; $AC DESTRUCTOR ENGINE
+	dw se_phantron2screamsubsfx		; $AD PHANTRON 2 SCREAM SUB-SFX
+	dw se_goodlucksubsfx			; $AE GOOD LUCK SUB-SFX
+	dw se_bonuscreditsubsfx			; $AF BONUS CREDIT SUB-SFX
+	dw se_itemcatchsubsfx			; $B0 1UP RING HIT SUB-SFX
+	dw se_controlsselectsubsfx		; $B1 CONTROLS SELECT SUB-SFX
+	dw se_gateofringsubsfx			; $B2 BIG SUPPORT RING SUB-SFX
+	dw se_dodorahitsubsfx			; $B3 DODORA HIT SUB-SFX
+	dw se_hovering2subsfx			; $B4 HOVERING SUB-SFX
+	dw se_bigexplosionleft			; $B5 BIG EXPLOSION LEFT
+	dw se_destructbossfarsubsfx		; $B6 FAR BIG BOSS EXPLOSION SUB-SFX
+	dw se_destructbossmidsubsubsfx	; $B7 MID BIG BOSS EXPLOSION SUB-SUB-SFX
+	dw se_destructbossmidsubsfx		; $B8 MID BIG BOSS EXPLOSION SUB-SFX
+	dw se_speedupsubsfx				; $B9 BOOST SUB-SFX
+	dw se_destructenemynearsubsfx	; $BA NEAR ENEMY EXPLOSION SUB-SFX
+	dw se_destructbossnearsubsubsfx	; $BB NEAR BIG BOSS EXPLOSION SUB-SUB-SFX
+	dw se_destructbossnearsubsfx	; $BC NEAR BIG BOSS EXPLOSION SUB-SFX
+	dw se_destructbosssmallsubsfx	; $BD SMALL BOSS EXPLOSION SUB-SFX
+	dw se_playerdownsubsfx			; $BE PLAYER DOWN SUB-SFX
+	dw se_pausesubsfx				; $BF PAUSE SUB-SFX
 
 ; make sure pointer table isn't too big
 assert pc() <= $121d, "Used too much space"
@@ -2542,20 +2543,20 @@ se_finalscorescreenflight: ; Final score screen flight
 	db $00, $7F, $A0, $7F, $5F, $F1, $00, $7D
 	db $A1, $00
 
-se_professorhangerappears:
+se_professorhangerappears: ; Professor Hanger appears
 	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
 	db $BB, $2F, $6E, $F1, $00, $2F, $B7, $2F
 	db $7D, $F1, $00, $2D, $B7, $00
 
-se_enemyhovering: ; Enemy hovering -unused-
+se_enemyhovering: ; Enemy hovering
 	db $E0, $08, $7F, $64, $A3, $00
 
-se_professorhangerdisappears:
+se_professorhangerdisappears: ; Professor Hanger disappears
 	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
 	db $BB, $2F, $3C, $F1, $00, $2F, $BE, $2F
 	db $1E, $F1, $00, $2D, $BE, $00
 
-se_slotmachineslotspinning:
+se_slotmachineslotspinning: ; Slot machine spinning
 	db $E0, $0D, $06, $14, $A6, $00
 
 se_pepperradiochat: ; Pepper radio chat
@@ -2574,17 +2575,17 @@ se_androssscream1: ; Andross scream 1
 	db $14, $50, $91, $12, $3C, $90, $12, $28
 	db $8F, $12, $14, $8E, $00
 
-se_dancinginsectorfireflyby:
+se_dancinginsectorfireflyby: ; Dancing Insector fly-by
 	db $E0, $05, $7F, $78, $F9, $91, $00, $7C
 	db $98, $00
 
-se_dancinginsectorfireshot:
+se_dancinginsectorfireshot: ; Dancing Insector fire shot
 	db $E0, $1C, $7F, $78, $F9, $97, $00, $7F
 	db $8C, $7F, $F1, $00, $7F, $8C, $7F, $F1
 	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
 	db $7F, $F1, $00, $7D, $8C, $00
 
-se_dancinginsectormovement:
+se_dancinginsectormovement: ; Dancing Insector movement
 	db $E0, $0A, $06, $28, $A2, $E0, $05, $08
 	db $46, $A9, $00
 
@@ -2610,7 +2611,7 @@ se_cometflyby: ; Comet fly-by
 	db $05, $14, $C2, $C0, $0A, $1E, $C1, $BF
 	db $60, $28, $00, $BD, $00
 
-se_shootingstar: ; Shooting star -unused-
+se_shootingstar: ; Shooting star
 	db $E0, $10, $08, $00, $A4, $1C, $0A, $C6
 	db $C4, $0F, $14, $C1, $BF, $0A, $1E, $C0
 	db $BE, $18, $14, $BC, $30, $0A, $BC, $00
@@ -2630,7 +2631,7 @@ se_bonusringbird: ; Bonus ring bird
 	db $F1, $00, $04, $C3, $18, $00, $BE, $0C
 	db $3C, $F9, $BE, $00, $0A, $C5, $00
 
-se_comeincorneria: ; Come in Corneria -BGM 34-
+se_comeincorneria: ; Come in Corneria
 	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
 	db $E0, $15, $18, $7D, $98, $E0, $37, $6F
 	db $87, $E0, $15, $48, $7D, $98, $E0, $0F
@@ -2659,7 +2660,7 @@ se_metalsmasherclose: ; Metal smasher close
 	db $E0, $1A, $0C, $7D, $A3, $30, $7D, $A3
 	db $00
 
-se_objectimpact: ; Object impact -unused-
+se_objectimpact: ; Object impact
 	db $E0, $0D, $0C, $78, $89, $24, $78, $F9
 	db $89, $00, $22, $82, $00
 
@@ -2671,7 +2672,7 @@ se_metalsmashersmashing: ; Metal smasher smashing
 	db $24, $7D, $50, $F9, $A3, $00, $18, $9C
 	db $00
 
-se_enemy: ; Enemy -unused-
+se_enemy: ; Enemy
 	db $E0, $36, $24, $00, $50, $F9, $A2, $00
 	db $18, $9B, $24, $F9, $A2, $00, $18, $99
 	db $24, $28, $64, $F9, $A2, $00, $18, $9B
@@ -2697,7 +2698,7 @@ se_prewingrepaired: ; Pre-wing repaired
 	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
 	db $0A, $A9, $00
 
-se_silence: ; Silence -BGM 10-
+se_silence: ; Silence
 	db $00
 
 se_textting: ; Text ting
@@ -2751,7 +2752,7 @@ se_slotmachinecoin: ; Slot machine coin
 	db $08, $28, $C1, $18, $14, $08, $C3, $30
 	db $08, $00, $C3, $00
 
-se_bonus: ; Bonus -unused-
+se_slotmachinecoinsubsfx: ; Slot machine coin sub-sfx
 	db $E0, $01, $0C, $00, $A4, $08, $32, $B0
 	db $B2, $08, $28, $B5, $0C, $1E, $B7, $08
 	db $32, $BC, $BE, $08, $28, $C1, $18, $14
@@ -2799,7 +2800,7 @@ se_destructorengine: ; Destructor engine
 	db $F1, $00, $7F, $A3, $7F, $14, $1E, $F1
 	db $00, $7D, $A3, $00
 
-se_destructorengine2: ; Destructor engine -unused-
+se_destructorengine2: ; Destructor engine
 	db $E0, $30, $7F, $00, $64, $F9, $A1, $00
 	db $7F, $A1, $7F, $0A, $64, $F1, $00, $7F
 	db $A1, $7F, $1E, $73, $F1, $00, $7F, $A1
@@ -2828,7 +2829,7 @@ se_phantron2hit: ; Phantron 2 hit
 	db $97, $0C, $F1, $00, $0C, $A2, $18, $F1
 	db $00, $15, $9F, $00
 
-se_phantronscream2: ; Phantron scream -unused-
+se_phantron2screamsubsfx: ; Phantron scream
 	db $10, $00, $98
 
 se_phantron2scream: ; Phantron 2 scream
@@ -2938,14 +2939,14 @@ se_conehit: ; Cone hit
 	db $E0, $05, $06, $5A, $B0, $E0, $0A, $24
 	db $25, $84, $00
 
-se_backgroundthunder: ; Background thunder -unused-
+se_backgroundthunder: ; Background thunder
 	db $7F, $00, $90, $E0, $04, $7F, $7D, $F9
 	db $8C, $00, $7F, $90, $7F, $F1, $00, $7F
 	db $8E, $3F, $F1, $00, $3D, $8E, $7F, $F9
 	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
 	db $8C
 
-se_volcanofire:
+se_volcanofire: ; Volcano fire
 	db $E0, $04, $3F, $7D, $F9, $8B, $00, $3F
 	db $8D, $7F, $F1, $00, $7D, $8C, $7F, $F9
 	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
@@ -2953,7 +2954,7 @@ se_volcanofire:
 	db $F1, $00, $7F, $89, $7F, $F1, $00, $7D
 	db $89, $00
 
-se_backgroundthunder2: ; Background thunder -unused-
+se_backgroundthunder2: ; Background thunder
 	db $7F, $00, $8D
 
 se_spinningcorebgthunder: ; Spinning core bg thunder
@@ -2967,12 +2968,12 @@ se_spinningcorebgthunder: ; Spinning core bg thunder
 	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
 	db $7F, $F1, $00, $7D, $8C, $00
 
-se_jinglegoodluck: ; Jingle + good luck -bgm 4-
+se_goodluck: ; Jingle + good luck
 	db $E0, $01, $08, $1E, $B7, $B9, $08, $14
 	db $B9, $0C, $14, $B9, $0C, $0A, $08, $B9
 	db $18, $08, $00, $B9, $00
 
-se_goodluck2: ; Good luck -bgm 4- -unused-
+se_goodlucksubsfx: ; Good luck
 	db $E0, $01, $0C, $00, $A4, $08, $1E, $B7
 	db $B9, $08, $14, $B9, $0C, $14, $B9, $0C
 	db $0A, $08, $B9, $18, $08, $00, $B9, $00
@@ -2985,7 +2986,7 @@ se_bonuscredit: ; Bonus credit
 	db $B7, $BC, $08, $12, $02, $BE, $18, $C0
 	db $00
 
-se_bonus2: ; Bonus -unused-
+se_bonuscreditsubsfx: ; Bonus
 	db $E0, $01, $18, $00, $A4, $08, $28, $B2
 	db $B4, $B7, $BC, $08, $0C, $1A, $BE, $0C
 	db $C0, $08, $12, $1E, $B2, $B4, $B7, $BC
@@ -3040,7 +3041,7 @@ se_atomicbasepowersupplyoff: ; Atomic base power supply off
 	db $F9, $98, $00, $18, $91, $24, $F1, $00
 	db $22, $8C, $00
 
-se_hovering: ; Hovering -unused-
+se_hovering: ; Hovering
 	db $E0, $29, $7F, $64, $F9, $A3, $00, $7F
 	db $A3, $7F, $F1, $00, $7F, $A3, $7F, $73
 	db $F1, $00, $7F, $A3, $7F, $7D, $F1, $00
@@ -3050,15 +3051,15 @@ se_hovering: ; Hovering -unused-
 	db $7F, $32, $F1, $00, $7F, $A3, $7F, $1E
 	db $F1, $00, $7D, $A3, $00
 
-se_dooropen: ; Door open -unused-
+se_dooropen: ; Door open
 	db $E0, $1C, $18, $64, $F9, $85, $00, $18
 	db $8C, $18, $F1, $00, $16, $8C, $00
 
-se_doorclose: ; Door close -unused-
+se_doorclose: ; Door close
 	db $E0, $1C, $18, $64, $F9, $90, $00, $18
 	db $89, $18, $F1, $00, $16, $89, $00
 
-se_hovering2: ; Hovering -unused-
+se_hovering2: ; Hovering
 	db $E0, $29, $7F, $5A, $F9, $A3, $00, $7F
 	db $A3, $7F, $5F, $F1, $00, $7F, $A3, $7F
 	db $64, $F1, $00, $7F, $A3, $7F, $6E, $F1
@@ -3071,7 +3072,7 @@ se_hovering2: ; Hovering -unused-
 	db $00, $7F, $A3, $7F, $1E, $F1, $00, $7D
 	db $A3, $00
 
-_1CF7:
+se_hovering2subsfx: ; Background hum
 	db $E0, $29, $70, $5A, $F9, $99, $00, $70
 	db $99, $7F, $5F, $F1, $00, $7F, $99, $7F
 	db $64, $F1, $00, $7F, $99, $7F, $6E, $F1
@@ -3113,11 +3114,11 @@ se_radiochatquit: ; Radio chat quit
 se_playercamerachange: ; Player camera change
 	db $E0, $25, $48, $3C, $B6, $00
 
-se_goodluck: ; Good luck -BGM 4-
+se_goodlucksubsubsfx: ; Good luck sub-sub-sfx
 	db $E0, $22, $18, $00, $A4, $48, $78, $A0
 	db $00
 
-se_continue: ; Continue let's go -BGM 30-
+se_continue: ; Continue let's go
 	db $E0, $33, $48, $78, $A2, $00
 
 se_leftwatersplashout: ; Left water splash out
@@ -3214,13 +3215,13 @@ se_rockcrusherroll: ; Rock crusher roll
 	db $9D, $9D, $9E, $9E, $9F, $9F, $A0, $A0
 	db $A1, $A1
 
-se_slotmachinehandledown:
+se_slotmachinehandledown: ; Slot machine handle down
 	db $E0, $05, $05, $78, $A2, $A2, $A2, $A3
 	db $A3, $A4, $A4, $A5, $A5, $A6, $A6, $A7
 	db $A7, $A8, $A8, $A9, $A9, $06, $78, $92
 	db $30, $95, $00
 
-_1F4B:
+se_destructbosssmallsubsfx: ; Explosion circle
 	db $E0, $05, $0C, $78, $9C, $18, $9C, $30
 	db $78, $F9, $8E, $00, $30, $8F, $30, $F1
 	db $00, $30, $90, $30, $F1, $00, $30, $91
@@ -3250,7 +3251,7 @@ se_dodorahit: ; Dodora hit
 	db $00, $24, $9F, $24, $F1, $00, $21, $97
 	db $00
 
-_1FDC:
+se_dodorahitsubsfx: ; Dodora hit sub-sfx
 	db $E0, $02, $10, $00, $8C, $12, $3C, $50
 	db $F9, $91, $00, $12, $96, $0C, $F1, $00
 	db $0C, $A2, $24, $F1, $00, $24, $9F, $24
@@ -3259,7 +3260,7 @@ _1FDC:
 se_dodoraeggcrackbird: ; Dodora egg crack + bird
 	db $E0, $15, $08, $78, $B4, $B9, $24, $BE
 
-se_birdscream: ; Bird scream -unused-
+se_birdscream: ; Bird scream
 	db $E0, $07, $0C, $78, $F9, $A1, $00, $0C
 	db $A5, $0C, $F1, $00, $0C, $B1, $24, $F1
 	db $00, $21, $AF, $00
@@ -3274,7 +3275,7 @@ se_gateofring: ; Big support ring
 	db $08, $C1, $24, $C6, $0C, $0A, $00, $C1
 	db $24, $C6, $00
 
-_203F:
+se_gateofringsubsfx: ; Big support ring sub-sfx
 	db $E0, $01, $15, $00, $A4, $0C, $1E, $BC
 	db $BE, $BC, $BE, $0C, $0F, $1E, $C1, $24
 	db $C6, $0C, $08, $14, $C1, $24, $C6, $0C
@@ -3284,7 +3285,7 @@ se_cursor: ; Controls select
 	db $E0, $01, $08, $3C, $BE, $18, $C3, $08
 	db $00, $0A, $BE, $18, $C3, $00
 
-_206B:
+se_controlsselectsubsfx: ; Controls select sub-sfx
 	db $E0, $01, $18, $00, $A4, $08, $14, $00
 	db $BE, $18, $C3, $08, $05, $00, $BE, $18
 	db $C3, $00
@@ -3294,7 +3295,7 @@ se_itemcatch: ; 1up ring hit
 	db $C3, $08, $00, $0A, $BB, $BE, $C0, $0C
 	db $C3, $00
 
-_208F:
+se_itemcatchsubsfx: ; 1up ring hit sub-sfx
 	db $E0, $00, $18, $00, $A4, $08, $14, $00
 	db $BB, $BE, $C0, $18, $C3, $08, $05, $00
 	db $BB, $BE, $C0, $0C, $C3, $00
@@ -3323,7 +3324,7 @@ se_speedup: ; Player boost
 	db $E0, $05, $48, $78, $F9, $95, $00, $45
 	db $A1, $00
 
-_20FC:
+se_speedupsubsfx: ; Player boost sub-sfx
 	db $E0, $11, $60, $3C, $F9, $91, $00, $5D
 	db $AB, $00
 
@@ -3423,7 +3424,7 @@ se_damageenemyfar: ; Far enemy hit
 se_destructenemynear: ; Near enemy explosion
 	db $E0, $06, $60, $78, $98, $00
 
-_2226:
+se_destructenemynearsubsfx: ; Near enemy explosion sub-sfx
 	db $E0, $06, $18, $00, $98, $60, $50, $95
 	db $00
 
@@ -3438,12 +3439,12 @@ se_destructbossnear: ; Near big boss explosion
 	db $64, $95, $12, $95, $0C, $50, $90, $60
 	db $90, $00
 
-_224D:
+se_destructbossnearsubsfx: ; Near big boss explosion sub-sfx
 	db $E0, $0D, $24, $00, $98, $0C, $64, $00
 	db $97, $12, $97, $0C, $50, $00, $95, $18
 	db $95, $0C, $3C, $00, $90, $60, $90, $00
 
-_2265:
+se_destructbossnearsubsubsfx: ; Near big boss explosion sub-sub-sfx
 	db $E0, $0D, $24, $00, $98, $0C, $00, $64
 	db $97, $18, $97, $0C, $00, $50, $95, $18
 	db $95, $0C, $00, $3C, $90, $60, $90, $00
@@ -3453,12 +3454,12 @@ se_destructbossmid: ; Mid big boss explosion
 	db $50, $95, $12, $95, $0C, $3C, $90, $60
 	db $90, $00
 
-_228F:
+se_destructbossmidsubsubsfx: ; Mid big boss explosion sub-sub-sfx
 	db $E0, $0D, $24, $00, $98, $0C, $50, $00
 	db $97, $12, $97, $0C, $3C, $00, $95, $18
 	db $95, $0C, $28, $00, $90, $60, $90, $00
 
-_22A7:
+se_destructbossmidsubsfx: ; Mid big boss explosion sub-sfx
 	db $E0, $0D, $24, $00, $98, $0C, $00, $50
 	db $97, $18, $97, $0C, $00, $3C, $95, $18
 	db $95, $0C, $00, $28, $90, $60, $90, $00
@@ -3468,21 +3469,21 @@ se_destructbossfar: ; Far big boss explosion
 	db $32, $95, $12, $95, $0C, $1E, $90, $60
 	db $90, $00
 
-_22D1:
+se_bigexplosionleft: ; Big explosion left
 	db $E0, $0D, $24, $00, $98, $0C, $32, $00
 	db $97, $12, $97, $0C, $1E, $00, $95, $18
 	db $95, $0C, $14, $00, $90, $60, $90, $00
 
-_22E9:
+se_destructbossfarsubsfx: ; Far big boss explosion sub-sfx
 	db $E0, $0D, $24, $00, $98, $0C, $00, $32
 	db $97, $18, $97, $0C, $00, $1E, $95, $18
 	db $95, $0C, $00, $14, $90, $60, $90, $00
 
-se_playerdown:
+se_playerdown: ; Player down
 	db $E0, $0D, $0C, $78, $9C, $9C, $60, $9C
 	db $00
 
-_230A: ; Player down
+se_playerdownsubsfx: ; Player down sub-sfx
 	db $E0, $0D, $06, $00, $98, $0C, $00, $64
 	db $98, $0C, $5A, $00, $98, $0C, $00, $50
 	db $98, $48, $46, $00, $95, $60, $00, $28
@@ -3519,11 +3520,11 @@ se_wingtouchleft: ; Left wing scratch
 se_wingtouchright: ; Right wing scratch
 	db $E0, $05, $06, $00, $5A, $BC, $BC, $00
 
-se_pause:
+se_pause: ; Pause
 	db $E0, $00, $10, $1E, $B4, $30, $1E, $B7
 	db $00
 
-_2383: ; Pause
+se_pausesubsfx: ; Pause sub-sfx
 	db $E0, $00, $08, $00, $B0, $10, $1E, $B0
 	db $30, $1E, $BC, $00
 
