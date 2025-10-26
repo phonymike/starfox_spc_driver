@@ -14,4 +14,4 @@ If you wish to modify the sound driver, remove the last line of ``make.bat`` to 
 - `SGSOUND0.asm` — Main driver code, SFX pointer table, SFX chain table, SFX patterns.
 - `defines.asm` — Register/variable definitions and constants used by the driver.
 - `KAN.asm` — Music constants used by the driver.
-- `patches.asm` — Sound patch table
+- `patches.asm` — Instrument patch table.
