@@ -1,4 +1,5 @@
 ; 238F-24FC.bin
+;	VxSRCN, VxADSR1, VxADSR2, VxGAIN, pitch mult base, pitch mult fractional (256ths)
 	db $18, $FE, $F5, $B8, $03, $02
 	db $19, $FE, $F5, $B8, $04, $03
 	db $06, $8E, $E0, $B8, $01, $00

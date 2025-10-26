@@ -288,7 +288,7 @@
 ;........................................
 ; Constants
 !src_dir = $3c				; Sample directory base address (src_dir << 8 == address)
-!patch_tab = $3d00			; Patch table base address
+!patch_tab = $3d00			; Music patch table base address
 
 !voice_vol = $ff			; Voice volume
 !main_vol = $c0				; Main volume
