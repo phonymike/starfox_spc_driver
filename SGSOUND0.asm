@@ -3539,9 +3539,9 @@ se_pausesubsfx: ; Pause sub-sfx
 ; make sure patterns aren't too big
 %warnpc($238f)
 
-;incbin	238F-24FC.bin			; 61 instrument params?
+;238F-24FC.bin
 patches:
-incsrc patches.asm
+incsrc patches.asm			; 61 sound effect patches
 
 _24FD:
 	mov	a,#$80
