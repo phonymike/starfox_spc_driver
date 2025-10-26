@@ -2,6 +2,14 @@
 org $008000
 arch spc700
 
+macro warnpc(address)
+	if !check_space == 1
+		assert pc() <= <address>, "Used too much space"
+	endif
+endmacro
+
+!check_space = 1			; 1 will warn if data chunks are too large
+
 
 ; ===============================================
 ; PROG_CODE_00
@@ -14,7 +22,7 @@ volt:
 	db $19, $32, $4C, $65, $72, $7F, $8C, $98
 	db $A5, $B2, $BF, $CB, $D8, $E5, $F2, $FC
 
-assert pc() <= $3f00, "Used too much space"
+%warnpc($3f00)
 
 endspcblock
 
@@ -2515,7 +2523,7 @@ sfx_ptrs:
 	dw se_pausesubsfx				; $BF PAUSE SUB-SFX
 
 ; make sure pointer table isn't too big
-assert pc() <= $121d, "Used too much space"
+%warnpc($121d)
 
 ; ===========================
 ; begin sound effect patterns
@@ -3529,7 +3537,7 @@ se_pausesubsfx: ; Pause sub-sfx
 	db $30, $1E, $BC, $00
 
 ; make sure patterns aren't too big
-assert pc() <= $238f, "Used too much space"
+%warnpc($238f)
 
 ;incbin	238F-24FC.bin			; 61 instrument params?
 patches:
@@ -4443,7 +4451,7 @@ _2BD6:
 	call	swpadset
 	jmp	_2B8B
 
-assert pc() <= $2bff, "Used too much space"
+%warnpc($2bff)
 
 endspcblock
 
@@ -4543,6 +4551,6 @@ _3ea6:
 _3eba:
 	ret
 
-assert pc() <= $3ebb, "Used too much space"
+%warnpc($3ebb)
 
 endspcblock execute $400
