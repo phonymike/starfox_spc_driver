@@ -572,9 +572,9 @@ decode_commands:
 	beq	_6D2
 	cmp	a,#$f3
 	beq	_6E3
-	cmp	a,#$f4
+	cmp	a,#$f4				; transpose voices 0-2 to -2 semitones and fade tempo
 	beq	_71D
-	cmp	a,#$f5
+	cmp	a,#$f5				; transpose voices 0-2 to 3 semitones and fade tempo
 	beq	_717
 	cmp	a,#$f0				; stop music
 	beq	_744
@@ -583,14 +583,14 @@ decode_commands:
 	ret
 
 _717:
-	mov	x,#$03
-	mov	a,#$30
+	mov	x,#$03				; transpose voices 0-2 to 3 semitones
+	mov	a,#$30				; fade tempo to $30
 	bne	+
 _71D:
-	mov	x,#$fe
-	mov	a,#$09
+	mov	x,#$fe				; transpose voices 0-2 to -2 semitones
+	mov	a,#$09				; fade tempo to $09
 +
-	mov	!tmpc,#$8f
+	mov	!tmpc,#$8f			; fade tempo over 143 tempo ticks
 	mov	!ptps,x
 	mov	!ptps+2,x
 	mov	!ptps+4,x
@@ -3539,7 +3539,7 @@ se_pausesubsfx: ; Pause sub-sfx
 ; make sure patterns aren't too big
 %warnpc($238f)
 
-;238F-24FC.bin
+; 238F-24FC.bin
 patches:
 incsrc patches.asm			; 61 sound effect patches
 
@@ -3768,13 +3768,13 @@ _2671:
 	mov	!_022e,a
 	ret
 
-  ;related to determining wavering in pitch?
+; related to determining wavering in pitch?
 _269C:
 	db $20, $00, $00, $E8, $04, $00, $20, $00
 	db $00, $EF, $00, $60, $20, $00, $00, $E5
 	db $00, $80, $20, $00, $00, $E8, $01, $C0
 
-  ;note pitch table for motor
+; note pitch table for motor
 _26b4:
 	db $A4, $A6, $A7, $A8, $A6, $A7, $A8, $A9
 	db $B0, $B0, $B0, $B0, $98, $98, $98, $98
