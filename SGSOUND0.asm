@@ -583,11 +583,11 @@ decode_commands:
 	ret
 
 _717:
-	mov	x,#$03				; transpose voices 0-2 to 3 semitones
+	mov	x,#3				; transpose voices 0-2 to 3 semitones
 	mov	a,#$30				; fade tempo to $30
 	bne	+
 _71D:
-	mov	x,#$fe				; transpose voices 0-2 to -2 semitones
+	mov	x,#-2				; transpose voices 0-2 to -2 semitones
 	mov	a,#$09				; fade tempo to $09
 +
 	mov	!tmpc,#$8f			; fade tempo over 143 tempo ticks
