@@ -442,6 +442,7 @@ apusr:
 ;
 ;
 ;................................................
+; This routine has something to do with setting up the arwing's engine sound
 _614:
 	dec	!_d0
 	mov.b	a,!_d0
@@ -490,7 +491,7 @@ _648:
 	bne	-
 	inc	a
 	mov	!_fe00+y,a
-	mov	y,#$fe
+	mov	y,#$fe				; Overwrite sample directory index $20 with location of arwing's engine sound
 	mov	a,#$00
 	mov	!_3c80,a
 	mov	!_3c81,y
