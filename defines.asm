@@ -283,7 +283,7 @@
 
 ;........................................
 ; Constants
-!sampl_dir = $3c00			; Sample directory base address (see above)
+!sampl_dir = $3c00			; Sample directory base address
 
 !patch_tab = $3d00			; Music patch table base address
 
