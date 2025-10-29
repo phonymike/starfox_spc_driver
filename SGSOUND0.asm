@@ -450,7 +450,7 @@ _614:
 	mul	ya
 	mov	y,a
 	mov	!ttt,#$07
-	_621:
+_621:
 	inc	y
 	mov	x,#$04
 -
@@ -471,7 +471,7 @@ _614:
 	bne	-
 	dbnz	!ttt,_621
 	ret
-	_648:
+_648:
 	mov	y,#$00
 	mov	x,#$1b
 	mov	a,!_03c6
@@ -542,7 +542,7 @@ _6B7:
 	sbc.b	a,!mvo
 	call	divx
 	movw	!mvoadw,ya
-	_6CF:
+_6CF:
 	jmp	cha02				; finished with command
 ;................................................
 _6D2:
