@@ -293,4 +293,4 @@
 !max_sfx = $b0				; Max number of sound effects
 
 !gft = $fdc0				; Song table base address
-!_fe00 = $fe00
+!engine_snd = $fe00			; Location of noise BRR generated for Arwing's engine sound in ARAM

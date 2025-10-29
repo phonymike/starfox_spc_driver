@@ -462,11 +462,11 @@ _621:
 	mov.b	a,!rdm+1
 	and	a,!_03cb
 	or	a,#$11
-	mov	!_fe00+y,a
+	mov	!engine_snd+y,a
 	inc	y
 	mov.b	a,!rdm
 	or	a,#$11
-	mov	!_fe00+y,a
+	mov	!engine_snd+y,a
 	inc	y
 	dec	x
 	bne	-
@@ -477,7 +477,7 @@ _648:
 	mov	x,#$1b
 	mov	a,!_03c6
 -
-	mov	!_fe00+y,a
+	mov	!engine_snd+y,a
 	inc	y
 	inc	y
 	inc	y
@@ -490,9 +490,9 @@ _648:
 	dec	x
 	bne	-
 	inc	a
-	mov	!_fe00+y,a
-	mov.b	y,#!_fe00>>8	; Overwrite sample directory index $20 with location of Arwing's engine sound in ARAM
-	mov.b	a,#!_fe00
+	mov	!engine_snd+y,a
+	mov.b	y,#!engine_snd>>8	; Overwrite sample directory index $20 with location of Arwing's engine sound in ARAM
+	mov.b	a,#!engine_snd
 	mov	!sampl_dir+($20*4),a
 	mov	!sampl_dir+($20*4)+1,y
 	mov	!sampl_dir+($20*4)+2,a
