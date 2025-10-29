@@ -78,7 +78,7 @@ start10:
 	mov	y,#$1c				; MVOR
 	call	apus			; master vol R = $60
 ;
-	mov	a,#!src_dir			; source dir = !src_dir<<8
+	mov	a,#!sampl_dir>>8	; source dir = !sampl_dir<<8
 	mov	y,#$5d				; DIR
 	call	apus			; 19 byte
 ;........................................
@@ -442,7 +442,7 @@ apusr:
 ;
 ;
 ;................................................
-; This routine has something to do with setting up the arwing's engine sound
+; This routine has something to do with setting up the Arwing's engine sound
 _614:
 	dec	!_d0
 	mov.b	a,!_d0
@@ -491,12 +491,12 @@ _648:
 	bne	-
 	inc	a
 	mov	!_fe00+y,a
-	mov	y,#$fe				; Overwrite sample directory index $20 with location of arwing's engine sound
-	mov	a,#$00
-	mov	!_3c80,a
-	mov	!_3c81,y
-	mov	!_3c82,a
-	mov	!_3c83,y
+	mov.b	y,#!_fe00>>8	; Overwrite sample directory index $20 with location of Arwing's engine sound in ARAM
+	mov.b	a,#!_fe00
+	mov	!sampl_dir+($20*4),a
+	mov	!sampl_dir+($20*4)+1,y
+	mov	!sampl_dir+($20*4)+2,a
+	mov	!sampl_dir+($20*4)+3,y
 	mov.b	a,!rdm
 	or.b	a,!rdm+1
 	bne	+

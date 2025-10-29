@@ -281,13 +281,10 @@
 ;
 !ptps = $02f0				; key transpose
 
-!_3c80 = $3c80
-!_3c81 = $3c81
-!_3c82 = $3c82
-!_3c83 = $3c83
 ;........................................
 ; Constants
-!src_dir = $3c				; Sample directory base address (src_dir << 8 == address)
+!sampl_dir = $3c00			; Sample directory base address (see above)
+
 !patch_tab = $3d00			; Music patch table base address
 
 !voice_vol = $ff			; Voice volume
