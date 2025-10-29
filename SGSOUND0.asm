@@ -3548,7 +3548,7 @@ se_pausesubsfx: ; Pause sub-sfx
 %warnpc($238f)
 
 ; 238F-24FC.bin
-patches:
+sfx_patches:
 incsrc patches.asm			; 61 sound effect patches
 
 _24FD:
@@ -4474,8 +4474,8 @@ _3e20:
 	mov	a,(!adk+x)
 	mov	y,#$06
 	mul	ya
-	mov	!_d2,#patches
-	mov	!_d2+1,#patches>>8
+	mov	!_d2,#sfx_patches
+	mov	!_d2+1,#sfx_patches>>8
 	addw	ya,!_d2
 	movw	!_d2,ya
 	mov	y,#$00
