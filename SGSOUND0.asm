@@ -687,7 +687,7 @@ ks12:
 ;
 _7BC:
 	dec	x
-	dec	x			; - 2
+	dec	x					; - 2
 	lsr.b	!keyd
 	bne	ks12				;loop for each voice
 ;......
@@ -711,7 +711,7 @@ cha:
 	jmp	decode_commands
 cha02:
 	mov.b	a,!sf0			; play chu ?
-	beq	char			;
+	beq	char				;
 	mov	a,!_03ca
 	beq	_7E8
 	jmp	_73C
@@ -1515,28 +1515,28 @@ esaset4:
 ;		source count
 ;************************************************
 ; vcmd fa - set perc patch base
-wavx:	mov.b	!wavs,a			;
-	ret				;
+wavx:	mov.b	!wavs,a		;
+	ret						;
 ;************************************************
 ;		sel dammy
 ;************************************************
-;selx:	call	add_inc			;	!! test !!
-;	ret				;	!! test !!
+;selx:	call	add_inc		;	!! test !!
+;	ret						;	!! test !!
 ;************************************************
 ;		sound cut
 ;************************************************
-;cutx:	inc	a			;	!! test !!
-;	mov	!cutk+x,a		;	!! test !!
-;	ret				;	!! test !!
+;cutx:	inc	a				;	!! test !!
+;	mov	!cutk+x,a			;	!! test !!
+;	ret						;	!! test !!
 ;************************************************
 ;		F.F. set
 ;************************************************
-;fftx:		inc	a		;	!! test !!
+;fftx:		inc	a			;	!! test !!
 ;************************************************
 ;               F.F. clear
 ;************************************************
 ;plyx:		mov	!ffk,a		; 	 !! test !!
-;		jmp	ks04		; keyoff !! test !!
+;		jmp	ks04			; keyoff !! test !!
 ; vcmd f9 - pitch slide
 _B5D:
 	push	a
@@ -1553,9 +1553,9 @@ swpch:
 	mov.b	a,!swpc+x		;
 	bne	swpadsetr
 ;
-	mov	a,(!add+x)		; next data check
+	mov	a,(!add+x)			; next data check
 	cmp	a,#!swp
-	bne	swpadsetr		; not [swp] ?
+	bne	swpadsetr			; not [swp] ?
 ;......
 	mov.b	a,!keyd
 	and.b	a,!fkin
