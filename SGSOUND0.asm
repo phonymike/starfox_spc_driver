@@ -2337,7 +2337,7 @@ sfx_parameters:
 	db $36, $34, $25, $35, $0F, $2E, $2F      ; $B9 - $BF
 
 ; $109F SFX pointer table begins, 2 bytes, 191 pointers
-; Sound labels taken from SOUNDEQU.INC where available, otherwise based on descriptions.
+; Sound labels taken from SOUNDEQU.INC and SOUND.ASM where available, otherwise based on descriptions.
 ; Sound descriptions taken from SFEX.
 ; SFX IDs past $AF aren't normally accessible, and are chained with other SFX IDs.
 sfx_ptrs:
@@ -2422,19 +2422,19 @@ sfx_ptrs:
 	dw se_dancinginsectorpropelling	; $4F DANCING INSECTOR PROPELLING
 	dw se_bladebarrierpostdrillatk	; $50 BLADE BARRIER POST-DRILL ATK
 	dw se_bladebarrierplayerwebhit	; $51 BLADE BARRIER PLAYER WEB HIT
-	dw se_lastbaseentry2doorclose	; $52 LAST BASE ENTRY 2.DOOR CLOSE
-	dw se_farlbentry2doorclose		; $53 FAR LAST BASE ENTRY 2.DOOR CLOSE
-	dw se_lastbaseentry2dooropen	; $54 LAST BASE ENTRY 2.DOOR OPEN
-	dw se_farlbentry2dooropen		; $55 FAR LAST BASE ENTRY 2.DOOR OPEN
+	dw se_doorclosenear				; $52 LAST BASE ENTRY 2.DOOR CLOSE
+	dw se_doorclosemidfar			; $53 FAR LAST BASE ENTRY 2.DOOR CLOSE
+	dw se_dooropennear				; $54 LAST BASE ENTRY 2.DOOR OPEN
+	dw se_dooropenmidfar			; $55 FAR LAST BASE ENTRY 2.DOOR OPEN
 	dw se_playeramoebahit			; $56 PLAYER AMOEBA HIT
 	dw se_blockadedirectionchange	; $57 BLOCKADE DIRECTION CHANGE
 	dw se_hovering					; $58 HOVERING
 	dw se_doorclose					; $59 DOOR CLOSE
 	dw se_dooropen					; $5A DOOR OPEN
 	dw se_hovering2					; $5B HOVERING
-	dw se_nearenemyringshot			; $5C NEAR ENEMY RING SHOT
-	dw se_midenemyringshot			; $5D MID ENEMY RING SHOT
-	dw se_farenemyringshot			; $5E FAR ENEMY RING SHOT
+	dw se_ringlasernear				; $5C NEAR ENEMY RING SHOT
+	dw se_ringlasermid				; $5D MID ENEMY RING SHOT
+	dw se_ringlaserfar				; $5E FAR ENEMY RING SHOT
 	dw se_pepperradiochat			; $5F PEPPER RADIO CHAT
 	dw se_foxradiochat				; $60 FOX RADIO CHAT
 	dw se_falcoradiochat			; $61 FALCO RADIO CHAT
@@ -2444,9 +2444,9 @@ sfx_ptrs:
 	dw se_playercamerachange		; $65 PLAYER CAMERA CHANGE
 	dw se_destructorweapnheadattack	; $66 DESTRUCTOR WEAPON HEAD ATTACK
 	dw se_continue					; $67 CONTINUE LET'S GO
-	dw se_leftwatersplashout		; $68 LEFT WATER SPLASH OUT
-	dw se_centrewatersplash			; $69 CENTRE WATER SPLASH
-	dw se_rightwatersplash			; $6A RIGHT WATER SPLASH
+	dw se_enemyupsealeft			; $68 LEFT WATER SPLASH OUT
+	dw se_enemyupseacentre			; $69 CENTRE WATER SPLASH
+	dw se_enemyupsearight			; $6A RIGHT WATER SPLASH
 	dw se_midwatersplash			; $6B MID WATER SPLASH
 	dw se_farwatersplash			; $6C FAR WATER SPLASH
 	dw se_dopright					; $6D LEFT OBJECT FLY-BY
@@ -2456,9 +2456,9 @@ sfx_ptrs:
 	dw se_atomicbasepowersupplyon	; $71 ATOMIC BASE POWER SUPPLY ON
 	dw se_atomicbasecoreclose		; $72 ATOMIC BASE CORE CLOSE
 	dw se_atomicbasecoreopen		; $73 ATOMIC BASE CORE OPEN
-	dw se_leftwatersplashin			; $74 LEFT WATER SPLASH IN
-	dw se_centrewatersplashin		; $75 CENTRE WATER SPLASH IN
-	dw se_rightwatersplashin		; $76 RIGHT WATER SPLASH IN
+	dw se_enemydownsealeft			; $74 LEFT WATER SPLASH IN
+	dw se_enemydownseacentre		; $75 CENTRE WATER SPLASH IN
+	dw se_enemydownsearight			; $76 RIGHT WATER SPLASH IN
 	dw se_midwatersplashin			; $77 MID WATER SPLASH IN
 	dw se_farwatersplashin			; $78 FAR WATER SPLASH IN
 	dw se_backgroundthunder			; $79 BACKGROUND THUNDER
@@ -3016,22 +3016,22 @@ se_bonuscreditsubsfx: ; Bonus
 se_playeramoebahit: ; Player amoeba hit
 	db $E0, $2A, $0C, $64, $A1, $00
 
-se_lastbaseentry2doorclose: ; Last base entry 2.door close
+se_doorclosenear: ; Last base entry 2.door close
 	db $E0, $1C, $24, $7D, $F9, $91, $00, $24
 	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
 	db $08, $64, $99, $00
 
-se_farlbentry2doorclose: ; Far last base entry 2.door close
+se_doorclosemidfar: ; Far last base entry 2.door close
 	db $E0, $1C, $24, $46, $F9, $91, $00, $24
 	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
 	db $08, $3C, $99, $00
 
-se_lastbaseentry2dooropen: ; Last base entry 2.door open
+se_dooropennear: ; Last base entry 2.door open
 	db $E0, $1C, $24, $7D, $F9, $89, $00, $24
 	db $90, $18, $F1, $00, $16, $93, $E0, $05
 	db $08, $64, $99, $00
 
-se_farlbentry2dooropen: ; Far last base entry 2.door open
+se_dooropenmidfar: ; Far last base entry 2.door open
 	db $E0, $1C, $24, $46, $F9, $89, $00, $24
 	db $90, $18, $F1, $00, $16, $93, $E0, $05
 	db $08, $3C, $99, $00
@@ -3104,17 +3104,17 @@ se_hovering2subsfx: ; Background hum
 	db $00, $7F, $99, $7F, $1E, $F1, $00, $7D
 	db $99, $00
 
-se_nearenemyringshot: ; Near enemy ring shot
+se_ringlasernear: ; Near enemy ring shot
 	db $E0, $27, $12, $5A, $F9, $AD, $00, $12
 	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
 	db $00, $0A, $B0, $00
 
-se_midenemyringshot: ; Mid enemy ring shot
+se_ringlasermid: ; Mid enemy ring shot
 	db $E0, $27, $12, $3C, $F9, $AD, $00, $12
 	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
 	db $00, $0A, $B0, $00
 
-se_farenemyringshot: ; Far enemy ring shot
+se_ringlaserfar: ; Far enemy ring shot
 	db $E0, $27, $12, $1E, $F9, $AD, $00, $12
 	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
 	db $00, $0A, $B0, $00
@@ -3140,15 +3140,15 @@ se_goodlucksubsubsfx: ; Good luck sub-sub-sfx
 se_continue: ; Continue let's go
 	db $E0, $33, $48, $78, $A2, $00
 
-se_leftwatersplashout: ; Left water splash out
+se_enemyupsealeft: ; Left water splash out
 	db $E0, $2B, $30, $7D, $0A, $F9, $A6, $00
 	db $28, $9A, $00
 
-se_centrewatersplash: ; Centre water splash
+se_enemyupseacentre: ; Centre water splash
 	db $E0, $2B, $30, $7D, $F9, $A6, $00, $28
 	db $9A, $00
 
-se_rightwatersplash: ; Right water splash
+se_enemyupsearight: ; Right water splash
 	db $E0, $2B, $30, $0A, $7D, $F9, $A6, $00
 	db $28, $9A, $00
 
@@ -3160,13 +3160,13 @@ se_farwatersplash: ; Far water splash
 	db $E0, $2B, $30, $5A, $F9, $A6, $00, $28
 	db $9A, $00
 
-se_leftwatersplashin: ; Left water splash in
+se_enemydownsealeft: ; Left water splash in
 	db $E0, $21, $30, $7D, $0A, $A1, $00
 
-se_centrewatersplashin: ; Centre water splash in
+se_enemydownseacentre: ; Centre water splash in
 	db $E0, $21, $30, $7D, $A1, $00
 
-se_rightwatersplashin: ; Right water splash in
+se_enemydownsearight: ; Right water splash in
 	db $E0, $21, $30, $0A, $7D, $A1, $00
 
 se_midwatersplashin: ; Mid water splash in
