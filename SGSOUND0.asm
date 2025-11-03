@@ -69,7 +69,7 @@ start10:
 	mov	!_03c6,a
 	mov	a,#$bb
 	mov	!_03cb,a
-	call	_648
+	call	create_engine_sound_brr
 ;................................................
 	mov	a,#$60
 	mov	y,#$0c				; MVOL
@@ -203,7 +203,7 @@ start64:
 	bne	start62				; channel end ? (8ch)
 ;
 start20x:
-	call	_614
+	call	generate_engine_sound_noise
 	jmp	start20				; channel end
 ;************************************************
 flset:
@@ -442,8 +442,8 @@ apusr:
 ;
 ;
 ;................................................
-; This routine has something to do with setting up the Arwing's engine sound
-_614:
+; Generate random noise used for Arwing's engine sound
+generate_engine_sound_noise:
 	dec	!_d0
 	mov.b	a,!_d0
 	and	a,#$03
@@ -472,7 +472,9 @@ _621:
 	bne	-
 	dbnz	!ttt,_621
 	ret
-_648:
+
+; Create the BRR sample for the Arwing's engine sound and insert its address into the sample directory
+create_engine_sound_brr:
 	mov	y,#$00
 	mov	x,#$1b
 	mov	a,!_03c6
@@ -529,7 +531,7 @@ _67B:
 	mov	!_03c6,a
 	mov	a,#$bb
 	mov	!_03cb,a
-	call	_648
+	call	create_engine_sound_brr
 ;................................................
 _6B7:
 	cmp	!sf0,#$11
@@ -3697,7 +3699,7 @@ _25ff:
 	mov	!_03cb,y
 	mov	!_03c6,x
 	mov	!_03fc,a
-	call	_648
+	call	create_engine_sound_brr
 	clr7	!eons
 	mov.b	a,!eons
 	mov	y,#$4d
@@ -3707,12 +3709,17 @@ _25ff:
 _2618:
 	mov	a,#$30
 +
+; (CPUIO1 ($2141/$F5) Protocol)
+; %xxyyyyyy - Voice 7 SFX Instance Control
+; - %yyyyyy is an array ID to an engine frequency note to jump to briefly via a 48 SFX tempo tick pitch bend
+; (it otherwise maintains a roughly consistent note, with some random variance for every 112 SFX tempo tick pitch bend).
+; The highest two bits need to be cleared because of the internal array size: it is otherwise effectively valid.
 	mov.b	!_ae,a
 	mov	!_af,#$00
 	mov.b	a,!sf1
-	and	a,#$3f
+	and	a,#%00111111
 	mov	x,a
-	mov	a,_26b4+x
+	mov	a,engine_freq_table+x
 	mov	x,#$0e
 	mov.b	!chn,x
 	call	swpadset
@@ -3751,40 +3758,43 @@ _265c:
 	call	swpadset
 	ret
 
+; (CPUIO1 ($2141/$F5) Protocol)
+; %xxyyyyyy - Voice 7 SFX Instance Control
+; - %xx is effectively an engine sound ID, utilizing the noise BRR generator and modifying how it is output, in addition to also acting as a standard SFX instrument ID.
 _2671:
 	mov.b	a,!sf1
-	and	a,#$c0
+	and	a,#%11000000
 	clrc
 	rol	a
 	rol	a
 	rol	a
-	mov	x,a
+	mov	x,a 				; X gets overwritten 2 instructions later, why?
 	mov	y,#$06
 	mul	ya
 	mov	x,a
 	mov	y,#$74
 	mov	!ttt,#$04
 -
-	mov	a,_269C+x
+	mov	a,engine_sound_id_table+x
 	call	apus
 	inc	x
 	inc	y
 	dbnz	!ttt,-
-	mov	a,_269C+x
+	mov	a,engine_sound_id_table+x
 	mov	!_022f,a
 	inc	x
-	mov	a,_269C+x
+	mov	a,engine_sound_id_table+x
 	mov	!_022e,a
 	ret
 
 ; related to determining wavering in pitch?
-_269C:
+engine_sound_id_table:
 	db $20, $00, $00, $E8, $04, $00, $20, $00
 	db $00, $EF, $00, $60, $20, $00, $00, $E5
 	db $00, $80, $20, $00, $00, $E8, $01, $C0
 
-; note pitch table for motor
-_26b4:
+; table of engine frequency notes
+engine_freq_table:
 	db $A4, $A6, $A7, $A8, $A6, $A7, $A8, $A9
 	db $B0, $B0, $B0, $B0, $98, $98, $98, $98
 
