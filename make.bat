@@ -1,7 +1,7 @@
 @echo off
 
-if exist SGSOUND0.bin del SGSOUND0.bin
+if exist SGSOUND0.BIN del SGSOUND0.BIN
 
-asar SGSOUND0.asm SGSOUND0.bin
+asar --symbols=nocash SGSOUND0.asm SGSOUND0.BIN
 
-@fc /B SGSOUND0.bak SGSOUND0.bin | head -n5
+@fc /B SGSOUND0.BAK SGSOUND0.BIN | head -n5
