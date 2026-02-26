@@ -474,6 +474,7 @@ _621:
 	ret
 
 ; Create the BRR sample for the Arwing's engine sound and insert its address into the sample directory
+; Also initialize the RNG seed if it is zero
 create_engine_sound_brr:
 	mov	y,#$00
 	mov	x,#$1b
@@ -500,9 +501,9 @@ create_engine_sound_brr:
 	mov	!sampl_dir+($20*4)+2,a
 	mov	!sampl_dir+($20*4)+3,y
 	mov.b	a,!rdm
-	or.b	a,!rdm+1
-	bne	+
-	inc.b	!rdm
+	or.b	a,!rdm+1		; Check if RNG seed is zero by ORing each byte against each other
+	bne	+					; If OR result is nonzero, RNG is already initialized, skip the next line
+	inc.b	!rdm			; If OR result is zero, Increment random seed by 1 to initialize RNG
 +
 	ret
 ;................................................
