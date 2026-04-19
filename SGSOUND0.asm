@@ -6,7 +6,7 @@ arch spc700
 ; 0 = off, 1 = on
 !opt_enginesnd = 0	; optimize engine sound generation code (requires patches to PSGSND2, SGSOUND2, and SGSOUND3)
 					; saves 19 bytes
-!opt_f1_f9 = 0		; remove unnecessary delay operand from $F1/$F9 VCMDs
+!opt_f1_f9 = 0		; remove unnecessary broken delay operand from $F1/$F9 VCMDs
 					; saves 361 bytes
 !opt_misc = 0		; various small optimizations
 
