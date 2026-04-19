@@ -5116,7 +5116,9 @@ _2671:
 	rol	a
 	rol	a
 	rol	a
+	if !opt_misc == 0
 	mov	x,a 				; X gets overwritten 2 instructions later, why?
+	endif
 	mov	y,#$06
 	mul	ya
 	mov	x,a
