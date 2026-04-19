@@ -2,6 +2,14 @@
 org $008000
 arch spc700
 
+; Optimizations/fixes
+; 0 = off, 1 = on
+!opt_enginesnd = 0	; optimize engine sound generation code (requires patches to PSGSND2, SGSOUND2, and SGSOUND3)
+					; saves 19 bytes
+!opt_f1_f9 = 0		; remove unnecessary delay operand from $F1/$F9 VCMDs
+					; saves 361 bytes
+!opt_misc = 0		; various small optimizations
+
 incsrc macros.inc
 !check_space = 1			; 1 will warn if data chunks are too large
 
@@ -470,10 +478,16 @@ _621:
 ; Create the BRR sample for the Arwing's engine sound and insert its address into the sample directory
 ; Also initialize the RNG seed if it is zero
 create_engine_sound_brr:
+	if !opt_enginesnd == 0
 	mov	y,#$00
 	mov	x,#$1b
+	else
+	mov	x,#$00				; Swapped X and Y so a dbnz could be used instead of a dex+bne below
+	mov	y,#$1b
+	endif
 	mov	a,!_03c6
 -
+	if !opt_enginesnd == 0
 	mov	!engine_snd+y,a
 	inc	y
 	inc	y
@@ -486,7 +500,20 @@ create_engine_sound_brr:
 	inc	y
 	dec	x
 	bne	-
+	else
+	mov	!engine_snd+x,a
+	push	a		; 4 cycles ; Increase X by 9
+	mov	a,x			; 2 cycles
+	clrc			; 2 cycles
+	adc	a,#9		; 2 cycles
+	mov	x,a			; 2 cycles
+	pop	a			; 4 cycles
+; new code to increase X by 9 takes 7 bytes, 16 cycles
+; old code (iny 9x) took 9 bytes, 18 cycles
+	dbnz	y,-		; saves 1 byte, combines dey+bne into 1 instruction
+	endif
 	inc	a
+	if !opt_enginesnd == 0
 	mov	!engine_snd+y,a
 	mov.b	y,#!engine_snd>>8	; Overwrite sample directory index $20 with location of Arwing's engine sound in ARAM
 	mov.b	a,#!engine_snd
@@ -494,6 +521,11 @@ create_engine_sound_brr:
 	mov	!sampl_dir+($20*4)+1,y
 	mov	!sampl_dir+($20*4)+2,a
 	mov	!sampl_dir+($20*4)+3,y
+	else
+	mov	!engine_snd+x,a
+	; 16 bytes saved by removing code to insert the address of engine sound into the sample directory
+	; this requires PSGSND2, SGSOUND2, SGSOUND3 to be patched to hardcode the engine sound address
+	endif
 	mov.b	a,!rdm
 	or.b	a,!rdm+1		; Check if RNG seed is zero by ORing each byte against each other
 	bne	+					; If OR result is nonzero, RNG is already initialized, skip the next line
@@ -2999,22 +3031,38 @@ se_bigarwingdamagealarm: ; Big arwing damage alarm
 	%dur($14)
 	%pitchslide($B4,$06,$B7)
 	%dur($0C)
+	if !opt_f1_f9 == 0
 	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	else
+	db $F1, $00, $06 ; invalid pitch envelope command
+	endif
 	%pitch($B7)
 	%dur($06)
 	%pitchslide($B4,$06,$B7)
 	%dur($0C)
+	if !opt_f1_f9 == 0
 	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	else
+	db $F1, $00, $06 ; invalid pitch envelope command
+	endif
 	%pitch($B7)
 	%dur($06)
 	%pitchslide($B4,$06,$B7)
 	%dur($0C)
+	if !opt_f1_f9 == 0
 	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	else
+	db $F1, $00, $06 ; invalid pitch envelope command
+	endif
 	%pitch($B7)
 	%dur($06)
 	%pitchslide($B4,$06,$B7)
 	%dur($0C)
+	if !opt_f1_f9 == 0
 	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	else
+	db $F1, $00, $06 ; invalid pitch envelope command
+	endif
 	%pitch($B7)
 	db $00
 
@@ -3024,12 +3072,20 @@ se_smallarwingdamagealarm: ; Small arwing damage alarm
 	%dur($14)
 	%pitchslide($B0,$0A,$B4)
 	%dur($10)
+	if !opt_f1_f9 == 0
 	db $F1, $B2, $00, $0A ; invalid pitch envelope command
+	else
+	db $F1, $00, $0A ; invalid pitch envelope command
+	endif
 	%pitch($B4)
 	%dur($0A)
 	%pitchslide($B0,$0A,$B4)
 	%dur($10)
+	if !opt_f1_f9 == 0
 	db $F1, $B2, $00, $0A ; invalid pitch envelope command
+	else
+	db $F1, $00, $0A ; invalid pitch envelope command
+	endif
 	%pitch($B4)
 	db $00
 
@@ -5542,7 +5598,11 @@ _2a52:
 	dec	a
 	mov	!_03a1+x,a
 	beq	+
+	if !opt_misc == 0
 	jmp	_2a4a				; Why a jump instead of a branch?
+	else
+	bra	_2a4a				; saves 1 byte, but costs 1 more cycle
+	endif
 +
 	mov	a,!_03a0+x			; get sound effect index number
 	asl	a					; double it to get pointer
@@ -5742,9 +5802,13 @@ _2BC1:
 	call	_3e79
 
 _2BD6:
+	if !opt_f1_f9 == 0
 	mov	x,#$00
 	incw	!adk
 	mov	a,(!adk+x)			; Get next byte of sound effect data
+	else
+	mov	a,#$00
+	endif
 	mov	x,!_03c0
 	mov.b	!swphc+x,a		; Delay in ticks
 	mov	x,#$00

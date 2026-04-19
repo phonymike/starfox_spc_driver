@@ -63,7 +63,11 @@ macro pitchenv(len,target)
 	if <target> > $C7
 		error "Invalid target pitch, must be between $80-$C7"
 	endif
+	if !opt_f1_f9 == 0
 	db	$F1,$00,<len>,<target>
+	else
+	db	$F1,<len>,<target>
+	endif
 endmacro
 
 ; VCMD $F9: Pitch slide to note
@@ -90,5 +94,9 @@ macro pitchslide(start,len,target)
 	if <target> > $C7
 		error "Invalid target pitch, must be between $80-$C7"
 	endif
+	if !opt_f1_f9 == 0
 	db	$F9,<start>,$00,<len>,<target>
+	else
+	db	$F9,<start>,<len>,<target>
+	endif
 endmacro
