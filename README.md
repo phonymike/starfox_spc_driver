@@ -15,6 +15,7 @@ If you wish to modify the sound driver, remove the last line of ``make.bat`` to 
 ## Project Structure
 
 - `SGSOUND0.asm` — Main driver code, SFX pointer table, SFX chain table, SFX patterns.
+- `macros.inc` — Sound effect VCMD macros, space check macro.
 - `defines.asm` — Register/variable definitions and constants used by the driver.
 - `KAN.asm` — Music constants used by the driver.
 - `patches.asm` — Instrument patch table.
