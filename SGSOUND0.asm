@@ -2,14 +2,8 @@
 org $008000
 arch spc700
 
-macro warnpc(address)
-	if !check_space == 1
-		assert pc() <= <address>, "Used too much space"
-	endif
-endmacro
-
+incsrc macros.inc
 !check_space = 1			; 1 will warn if data chunks are too large
-
 
 ; ===============================================
 ; PROG_CODE_00
@@ -2542,1011 +2536,2308 @@ sfx_ptrs:
 ; ===========================
 
 se_androssscream4: ; Andross scream 4
-	db $E0, $2D, $7F, $7D, $64, $81
+	%inst(2D)
+	%dur($7F) : %vol($7D)
+	%dur($64) : %pitch($81)
 
 se_androssscream3: ; Andross scream 3
-	db $E0, $2E, $60, $7D, $81
+	%inst(2E)
+	%dur($60) : %vol($7D) : %pitch($81)
 
 se_androssscream2: ; Andross scream 2
-	db $E0, $2D, $5F, $64, $7D, $82, $00
+	%inst(2D)
+	%dur($5F) : %vol($64)
+	%dur($7D) : %pitch($82)
+	db $00
 
 se_androssshellexplosion: ; Andross shell explosion
-	db $E0, $06, $0C, $64, $C3, $BB, $0E, $A9
-	db $B2, $0F, $BC, $B3, $10, $AB, $AD, $12
-	db $9D, $A6, $A3, $13, $95, $90, $94, $60
-	db $90, $00
+	%inst(06)
+	%dur($0C) : %vol($64) : %pitch($C3)
+	%pitch($BB)
+	%dur($0E) : %pitch($A9)
+	%pitch($B2)
+	%dur($0F) : %pitch($BC)
+	%pitch($B3)
+	%dur($10) : %pitch($AB)
+	%pitch($AD)
+	%dur($12) : %pitch($9D)
+	%pitch($A6)
+	%pitch($A3)
+	%dur($13) : %pitch($95)
+	%pitch($90)
+	%pitch($94)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_finalscorescreenflight: ; Final score screen flight
-	db $E0, $03, $5F, $3C, $F9, $97, $00, $5F
-	db $9A, $7F, $46, $F1, $00, $7F, $9D, $7F
-	db $50, $F1, $00, $7F, $9F, $7F, $50, $F1
-	db $00, $7F, $A0, $7F, $5F, $F1, $00, $7D
-	db $A1, $00
+	%inst(03)
+	%dur($5F) : %vol($3C)
+	%pitchslide($97,$5F,$9A)
+	%dur($7F) : %vol($46)
+	%pitchenv($7F,$9D)
+	%dur($7F) : %vol($50)
+	%pitchenv($7F,$9F)
+	%dur($7F) : %vol($50)
+	%pitchenv($7F,$A0)
+	%dur($7F) : %vol($5F)
+	%pitchenv($7D,$A1)
+	db $00
 
 se_professorhangerappears: ; Professor Hanger appears
-	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
-	db $BB, $2F, $6E, $F1, $00, $2F, $B7, $2F
-	db $7D, $F1, $00, $2D, $B7, $00
+	%inst(2F)
+	%dur($3F) : %vol($64)
+	%pitchslide($BB,$3F,$BB)
+	%dur($2F) : %vol($6E)
+	%pitchenv($2F,$B7)
+	%dur($2F) : %vol($7D)
+	%pitchenv($2D,$B7)
+	db $00
 
 se_enemyhovering: ; Enemy hovering
-	db $E0, $08, $7F, $64, $A3, $00
+	%inst(08)
+	%dur($7F) : %vol($64) : %pitch($A3)
+	db $00
 
 se_professorhangerdisappears: ; Professor Hanger disappears
-	db $E0, $2F, $3F, $64, $F9, $BB, $00, $3F
-	db $BB, $2F, $3C, $F1, $00, $2F, $BE, $2F
-	db $1E, $F1, $00, $2D, $BE, $00
+	%inst(2F)
+	%dur($3F) : %vol($64)
+	%pitchslide($BB,$3F,$BB)
+	%dur($2F) : %vol($3C)
+	%pitchenv($2F,$BE)
+	%dur($2F) : %vol($1E)
+	%pitchenv($2D,$BE)
+	db $00
 
 se_slotmachineslotspinning: ; Slot machine spinning
-	db $E0, $0D, $06, $14, $A6, $00
+	%inst(0D)
+	%dur($06) : %vol($14) : %pitch($A6)
+	db $00
 
 se_pepperradiochat: ; Pepper radio chat
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $2C, $18
-	db $7D, $85, $24, $87, $E0, $13, $24, $6E
-	db $84, $E0, $16, $26, $F9, $84, $00, $24
-	db $80, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(2C)
+	%dur($18) : %vol($7D) : %pitch($85)
+	%dur($24) : %pitch($87)
+	%inst(13)
+	%dur($24) : %vol($6E) : %pitch($84)
+	%inst(16)
+	%dur($26)
+	%pitchslide($84,$24,$80)
+	db $00
 
 se_androssradiochat: ; Andross radio chat
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
 
 se_androssscream1: ; Andross scream 1
-	db $E0, $35, $22, $7D, $91, $16, $64, $91
-	db $14, $50, $91, $12, $3C, $90, $12, $28
-	db $8F, $12, $14, $8E, $00
+	%inst(35)
+	%dur($22) : %vol($7D) : %pitch($91)
+	%dur($16) : %vol($64) : %pitch($91)
+	%dur($14) : %vol($50) : %pitch($91)
+	%dur($12) : %vol($3C) : %pitch($90)
+	%dur($12) : %vol($28) : %pitch($8F)
+	%dur($12) : %vol($14) : %pitch($8E)
+	db $00
 
 se_dancinginsectorfireflyby: ; Dancing Insector fly-by
-	db $E0, $05, $7F, $78, $F9, $91, $00, $7C
-	db $98, $00
+	%inst(05)
+	%dur($7F) : %vol($78)
+	%pitchslide($91,$7C,$98)
+	db $00
 
 se_dancinginsectorfireshot: ; Dancing Insector fire shot
-	db $E0, $1C, $7F, $78, $F9, $97, $00, $7F
-	db $8C, $7F, $F1, $00, $7F, $8C, $7F, $F1
-	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
-	db $7F, $F1, $00, $7D, $8C, $00
+	%inst(1C)
+	%dur($7F) : %vol($78)
+	%pitchslide($97,$7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7D,$8C)
+	db $00
 
 se_dancinginsectormovement: ; Dancing Insector movement
-	db $E0, $0A, $06, $28, $A2, $E0, $05, $08
-	db $46, $A9, $00
+	%inst(0A)
+	%dur($06) : %vol($28) : %pitch($A2)
+	%inst(05)
+	%dur($08) : %vol($46) : %pitch($A9)
+	db $00
 
 se_squidhit: ; Squid hit
-	db $E0, $23, $12, $46, $F9, $A8, $00, $10
-	db $B0, $00
+	%inst(23)
+	%dur($12) : %vol($46)
+	%pitchslide($A8,$10,$B0)
+	db $00
 
 se_stingrayhit: ; Stingray hit
-	db $E0, $2D, $18, $5A, $F9, $A8, $00, $16
-	db $BC, $00
+	%inst(2D)
+	%dur($18) : %vol($5A)
+	%pitchslide($A8,$16,$BC)
+	db $00
 
 se_whalescream: ; Whale scream
-	db $E0, $24, $0C, $0A, $F9, $BC, $00, $0C
-	db $BE, $06, $F1, $00, $04, $C0, $30, $0A
-	db $F9, $C0, $00, $30, $BE, $60, $F1, $00
-	db $5E, $BC, $24, $00, $A4, $0C, $14, $F9
-	db $BC, $00, $0C, $BE, $06, $F1, $00, $04
-	db $C0, $30, $14, $F9, $C0, $00, $30, $BE
-	db $60, $F1, $00, $5E, $BC, $00
+	%inst(24)
+	%dur($0C) : %vol($0A)
+	%pitchslide($BC,$0C,$BE)
+	%dur($06)
+	%pitchenv($04,$C0)
+	%dur($30) : %vol($0A)
+	%pitchslide($C0,$30,$BE)
+	%dur($60)
+	%pitchenv($5E,$BC)
+	%dur($24) : %vol($00) : %pitch($A4)
+	%dur($0C) : %vol($14)
+	%pitchslide($BC,$0C,$BE)
+	%dur($06)
+	%pitchenv($04,$C0)
+	%dur($30) : %vol($14)
+	%pitchslide($C0,$30,$BE)
+	%dur($60)
+	%pitchenv($5E,$BC)
+	db $00
 
 se_cometflyby: ; Comet fly-by
-	db $E0, $10, $1C, $00, $0A, $C7, $C5, $0F
-	db $05, $14, $C2, $C0, $0A, $1E, $C1, $BF
-	db $60, $28, $00, $BD, $00
+	%inst(10)
+	%dur($1C) : %vol($00)
+	%dur($0A) : %pitch($C7)
+	%pitch($C5)
+	%dur($0F) : %vol($05)
+	%dur($14) : %pitch($C2)
+	%pitch($C0)
+	%dur($0A) : %vol($1E) : %pitch($C1)
+	%pitch($BF)
+	%dur($60) : %vol($28)
+	db $00
+	%pitch($BD)
+	db $00
 
 se_shootingstar: ; Shooting star
-	db $E0, $10, $08, $00, $A4, $1C, $0A, $C6
-	db $C4, $0F, $14, $C1, $BF, $0A, $1E, $C0
-	db $BE, $18, $14, $BC, $30, $0A, $BC, $00
+	%inst(10)
+	%dur($08) : %vol($00) : %pitch($A4)
+	%dur($1C) : %vol($0A) : %pitch($C6)
+	%pitch($C4)
+	%dur($0F) : %vol($14) : %pitch($C1)
+	%pitch($BF)
+	%dur($0A) : %vol($1E) : %pitch($C0)
+	%pitch($BE)
+	%dur($18) : %vol($14) : %pitch($BC)
+	%dur($30) : %vol($0A) : %pitch($BC)
+	db $00
 
 se_bonusringbird: ; Bonus ring bird
-	db $E0, $01, $0C, $0A, $F9, $BE, $00, $0C
-	db $B4, $06, $F1, $00, $04, $C3, $0C, $14
-	db $F9, $BE, $00, $0C, $B4, $06, $F1, $00
-	db $04, $C3, $18, $00, $BE, $0C, $1E, $F9
-	db $BE, $00, $0A, $C5, $18, $00, $BE, $0C
-	db $F9, $BE, $00, $0C, $BB, $06, $F1, $00
-	db $04, $C3, $18, $00, $BE, $0C, $28, $F9
-	db $BE, $00, $0A, $C5, $0C, $F9, $BE, $00
-	db $0C, $BB, $06, $F1, $00, $04, $C3, $18
-	db $00, $BE, $0C, $32, $F9, $BE, $00, $0A
-	db $C5, $0C, $F9, $BE, $00, $0C, $BB, $06
-	db $F1, $00, $04, $C3, $18, $00, $BE, $0C
-	db $3C, $F9, $BE, $00, $0A, $C5, $00
+	%inst(01)
+	%dur($0C) : %vol($0A)
+	%pitchslide($BE,$0C,$B4)
+	%dur($06)
+	%pitchenv($04,$C3)
+	%dur($0C) : %vol($14)
+	%pitchslide($BE,$0C,$B4)
+	%dur($06)
+	%pitchenv($04,$C3)
+	%dur($18) : %vol($00) : %pitch($BE)
+	%dur($0C) : %vol($1E)
+	%pitchslide($BE,$0A,$C5)
+	%dur($18) : %vol($00) : %pitch($BE)
+	%dur($0C)
+	%pitchslide($BE,$0C,$BB)
+	%dur($06)
+	%pitchenv($04,$C3)
+	%dur($18) : %vol($00) : %pitch($BE)
+	%dur($0C) : %vol($28)
+	%pitchslide($BE,$0A,$C5)
+	%dur($0C)
+	%pitchslide($BE,$0C,$BB)
+	%dur($06)
+	%pitchenv($04,$C3)
+	%dur($18) : %vol($00) : %pitch($BE)
+	%dur($0C) : %vol($32)
+	%pitchslide($BE,$0A,$C5)
+	%dur($0C)
+	%pitchslide($BE,$0C,$BB)
+	%dur($06)
+	%pitchenv($04,$C3)
+	%dur($18) : %vol($00) : %pitch($BE)
+	%dur($0C) : %vol($3C)
+	%pitchslide($BE,$0A,$C5)
+	db $00
 
 se_comeincorneria: ; Come in Corneria
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $37, $6F
-	db $87, $E0, $15, $48, $7D, $98, $E0, $0F
-	db $06, $14, $BE, $06, $00, $BE, $06, $14
-	db $BE, $06, $00, $BE, $E0, $15, $18, $7D
-	db $98, $E0, $38, $7F, $F9, $8A, $00, $7F
-	db $8A, $1F, $F1, $00, $1D, $8A, $E0, $39
-	db $7F, $8A, $E0, $3A, $7F, $F9, $8A, $00
-	db $7F, $8A, $7F, $F1, $00, $7F, $8A, $2F
-	db $F1, $00, $2D, $8A, $E0, $15, $18, $7D
-	db $98, $E0, $0F, $06, $14, $BE, $06, $00
-	db $BE, $06, $14, $BE, $06, $00, $BE, $E0
-	db $15, $18, $7D, $98, $E0, $3B, $4F, $87
-	db $E0, $3C, $7F, $F9, $87, $00, $7F, $87
-	db $40, $F1, $00, $3E, $87, $E0, $0F, $06
-	db $14, $BE, $06, $00, $BE, $06, $14, $BE
-	db $06, $00, $BE, $E0, $15, $48, $7D, $98
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(37)
+	%dur($6F) : %pitch($87)
+	%inst(15)
+	%dur($48) : %vol($7D) : %pitch($98)
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(38)
+	%dur($7F)
+	%pitchslide($8A,$7F,$8A)
+	%dur($1F)
+	%pitchenv($1D,$8A)
+	%inst(39)
+	%dur($7F) : %pitch($8A)
+	%inst(3A)
+	%dur($7F)
+	%pitchslide($8A,$7F,$8A)
+	%dur($7F)
+	%pitchenv($7F,$8A)
+	%dur($2F)
+	%pitchenv($2D,$8A)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(3B)
+	%dur($4F) : %pitch($87)
+	%inst(3C)
+	%dur($7F)
+	%pitchslide($87,$7F,$87)
+	%dur($40)
+	%pitchenv($3E,$87)
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($48) : %vol($7D) : %pitch($98)
 	db $00
 
 se_bladebarrierwebattack: ; Blade barrier web attack
-	db $E0, $1A, $0C, $64, $A3, $E0, $23, $60
-	db $32, $F9, $8B, $00, $60, $A3, $60, $F1
-	db $00, $5E, $AF, $00
+	%inst(1A)
+	%dur($0C) : %vol($64) : %pitch($A3)
+	%inst(23)
+	%dur($60) : %vol($32)
+	%pitchslide($8B,$60,$A3)
+	%dur($60)
+	%pitchenv($5E,$AF)
+	db $00
 
 se_metalsmasherclose: ; Metal smasher close
-	db $E0, $1A, $0C, $7D, $A3, $30, $7D, $A3
+	%inst(1A)
+	%dur($0C) : %vol($7D) : %pitch($A3)
+	%dur($30) : %vol($7D) : %pitch($A3)
 	db $00
 
 se_objectimpact: ; Object impact
-	db $E0, $0D, $0C, $78, $89, $24, $78, $F9
-	db $89, $00, $22, $82, $00
+	%inst(0D)
+	%dur($0C) : %vol($78) : %pitch($89)
+	%dur($24) : %vol($78)
+	%pitchslide($89,$22,$82)
+	db $00
 
 se_metalsmashersmashing: ; Metal smasher smashing
-	db $E0, $36, $24, $50, $00, $F9, $A3, $00
-	db $18, $9C, $24, $F9, $A3, $00, $18, $9C
-	db $24, $64, $28, $F9, $A3, $00, $18, $9C
-	db $24, $6E, $3C, $F9, $A3, $00, $18, $9C
-	db $24, $7D, $50, $F9, $A3, $00, $18, $9C
+	%inst(36)
+	%dur($24) : %vol($50)
+	db $00
+	%pitchslide($A3,$18,$9C)
+	%dur($24)
+	%pitchslide($A3,$18,$9C)
+	%dur($24) : %vol($64)
+	%dur($28)
+	%pitchslide($A3,$18,$9C)
+	%dur($24) : %vol($6E)
+	%dur($3C)
+	%pitchslide($A3,$18,$9C)
+	%dur($24) : %vol($7D)
+	%dur($50)
+	%pitchslide($A3,$18,$9C)
 	db $00
 
 se_enemy: ; Enemy
-	db $E0, $36, $24, $00, $50, $F9, $A2, $00
-	db $18, $9B, $24, $F9, $A2, $00, $18, $99
-	db $24, $28, $64, $F9, $A2, $00, $18, $9B
-	db $24, $3C, $6E, $F9, $A2, $00, $18, $9B
-	db $24, $50, $7D, $F9, $A2, $00, $18, $9B
+	%inst(36)
+	%dur($24) : %vol($00)
+	%dur($50)
+	%pitchslide($A2,$18,$9B)
+	%dur($24)
+	%pitchslide($A2,$18,$99)
+	%dur($24) : %vol($28)
+	%dur($64)
+	%pitchslide($A2,$18,$9B)
+	%dur($24) : %vol($3C)
+	%dur($6E)
+	%pitchslide($A2,$18,$9B)
+	%dur($24) : %vol($50)
+	%dur($7D)
+	%pitchslide($A2,$18,$9B)
 	db $00
 
 se_prewingrepaired: ; Pre-wing repaired
-	db $E0, $18, $12, $0A, $F9, $AB, $00, $12
-	db $BE, $0C, $F1, $00, $0A, $AD, $12, $14
-	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
-	db $0A, $AD, $12, $28, $F9, $AB, $00, $12
-	db $BE, $0C, $F1, $00, $0A, $AD, $12, $3C
-	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
-	db $0A, $AD, $12, $50, $F9, $AB, $00, $12
-	db $BE, $0C, $F1, $00, $0A, $A9, $12, $50
-	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
-	db $0A, $A9, $12, $3C, $F9, $AB, $00, $12
-	db $BE, $0C, $F1, $00, $0A, $A9, $12, $28
-	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
-	db $0A, $A9, $12, $14, $F9, $AB, $00, $12
-	db $BE, $0C, $F1, $00, $0A, $A9, $12, $0A
-	db $F9, $AB, $00, $12, $BE, $0C, $F1, $00
-	db $0A, $A9, $00
+	%inst(18)
+	%dur($12) : %vol($0A)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$AD)
+	%dur($12) : %vol($14)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$AD)
+	%dur($12) : %vol($28)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$AD)
+	%dur($12) : %vol($3C)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$AD)
+	%dur($12) : %vol($50)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$A9)
+	%dur($12) : %vol($50)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$A9)
+	%dur($12) : %vol($3C)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$A9)
+	%dur($12) : %vol($28)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$A9)
+	%dur($12) : %vol($14)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$A9)
+	%dur($12) : %vol($0A)
+	%pitchslide($AB,$12,$BE)
+	%dur($0C)
+	%pitchenv($0A,$A9)
+	db $00
 
 se_silence: ; Silence
 	db $00
 
 se_textting: ; Text ting
-	db $E0, $26, $06, $32, $BB, $00
+	%inst(26)
+	%dur($06) : %vol($32) : %pitch($BB)
+	db $00
 
 se_androsshit: ; Andross hit
-	db $E0, $35, $12, $7D, $9A, $12, $64, $9A
-	db $12, $50, $9A, $12, $3C, $9A, $12, $28
-	db $9A, $12, $14, $9A, $00
+	%inst(35)
+	%dur($12) : %vol($7D) : %pitch($9A)
+	%dur($12) : %vol($64) : %pitch($9A)
+	%dur($12) : %vol($50) : %pitch($9A)
+	%dur($12) : %vol($3C) : %pitch($9A)
+	%dur($12) : %vol($28) : %pitch($9A)
+	%dur($12) : %vol($14) : %pitch($9A)
+	db $00
 
 se_androssappears: ; Andross appears
-	db $E0, $05, $0C, $00, $A4, $08, $28, $B9
-	db $E0, $10, $48, $46, $C7, $00
+	%inst(05)
+	%dur($0C) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($28) : %pitch($B9)
+	%inst(10)
+	%dur($48) : %vol($46) : %pitch($C7)
+	db $00
 
 se_pilontoground: ; Pilon to ground
-	db $E0, $0D, $06, $78, $89, $04, $00, $89
-	db $18, $78, $89, $00
+	%inst(0D)
+	%dur($06) : %vol($78) : %pitch($89)
+	%dur($04) : %vol($00) : %pitch($89)
+	%dur($18) : %vol($78) : %pitch($89)
+	db $00
 
 se_destructorweapnheadattack: ; Destructor weapon head attack
-	db $E0, $1C, $20, $3C, $F9, $A4, $00, $14
-	db $AB, $1C, $50, $F9, $A4, $00, $10, $AB
-	db $1A, $64, $F9, $A4, $00, $0E, $AB, $18
-	db $78, $F9, $A4, $00, $0C, $AB, $18, $F9
-	db $A4, $00, $0C, $AB, $18, $64, $F9, $A4
-	db $00, $0C, $AB, $18, $5A, $F9, $A4, $00
-	db $0C, $AB, $18, $46, $F9, $A4, $00, $0C
-	db $AB, $18, $28, $F9, $A4, $00, $0C, $AB
-	db $18, $14, $F9, $A4, $00, $0C, $AB, $00
+	%inst(1C)
+	%dur($20) : %vol($3C)
+	%pitchslide($A4,$14,$AB)
+	%dur($1C) : %vol($50)
+	%pitchslide($A4,$10,$AB)
+	%dur($1A) : %vol($64)
+	%pitchslide($A4,$0E,$AB)
+	%dur($18) : %vol($78)
+	%pitchslide($A4,$0C,$AB)
+	%dur($18)
+	%pitchslide($A4,$0C,$AB)
+	%dur($18) : %vol($64)
+	%pitchslide($A4,$0C,$AB)
+	%dur($18) : %vol($5A)
+	%pitchslide($A4,$0C,$AB)
+	%dur($18) : %vol($46)
+	%pitchslide($A4,$0C,$AB)
+	%dur($18) : %vol($28)
+	%pitchslide($A4,$0C,$AB)
+	%dur($18) : %vol($14)
+	%pitchslide($A4,$0C,$AB)
+	db $00
 
 se_twinlaser: ; Player twin blaster shot
-	db $E0, $20, $0C, $3C, $94, $48, $94, $00
+	%inst(20)
+	%dur($0C) : %vol($3C) : %pitch($94)
+	%dur($48) : %pitch($94)
+	db $00
 
 se_bigarwingdamagealarm: ; Big arwing damage alarm
-	db $E0, $26, $06, $46, $14, $F9, $B4, $00
-	db $06, $B7, $0C, $F1, $B5, $00, $06, $B7
-	db $06, $F9, $B4, $00, $06, $B7, $0C, $F1
-	db $B5, $00, $06, $B7, $06, $F9, $B4, $00
-	db $06, $B7, $0C, $F1, $B5, $00, $06, $B7
-	db $06, $F9, $B4, $00, $06, $B7, $0C, $F1
-	db $B5, $00, $06, $B7, $00
+	%inst(26)
+	%dur($06) : %vol($46)
+	%dur($14)
+	%pitchslide($B4,$06,$B7)
+	%dur($0C)
+	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	%pitch($B7)
+	%dur($06)
+	%pitchslide($B4,$06,$B7)
+	%dur($0C)
+	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	%pitch($B7)
+	%dur($06)
+	%pitchslide($B4,$06,$B7)
+	%dur($0C)
+	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	%pitch($B7)
+	%dur($06)
+	%pitchslide($B4,$06,$B7)
+	%dur($0C)
+	db $F1, $B5, $00, $06 ; invalid pitch envelope command
+	%pitch($B7)
+	db $00
 
 se_smallarwingdamagealarm: ; Small arwing damage alarm
-	db $E0, $26, $0A, $3C, $14, $F9, $B0, $00
-	db $0A, $B4, $10, $F1, $B2, $00, $0A, $B4
-	db $0A, $F9, $B0, $00, $0A, $B4, $10, $F1
-	db $B2, $00, $0A, $B4, $00
+	%inst(26)
+	%dur($0A) : %vol($3C)
+	%dur($14)
+	%pitchslide($B0,$0A,$B4)
+	%dur($10)
+	db $F1, $B2, $00, $0A ; invalid pitch envelope command
+	%pitch($B4)
+	%dur($0A)
+	%pitchslide($B0,$0A,$B4)
+	%dur($10)
+	db $F1, $B2, $00, $0A ; invalid pitch envelope command
+	%pitch($B4)
+	db $00
 
 se_slotmachinecoin: ; Slot machine coin
-	db $E0, $01, $08, $32, $B0, $B2, $08, $28
-	db $B5, $0C, $1E, $B7, $08, $32, $BC, $BE
-	db $08, $28, $C1, $18, $14, $08, $C3, $30
-	db $08, $00, $C3, $00
+	%inst(01)
+	%dur($08) : %vol($32) : %pitch($B0)
+	%pitch($B2)
+	%dur($08) : %vol($28) : %pitch($B5)
+	%dur($0C) : %vol($1E) : %pitch($B7)
+	%dur($08) : %vol($32) : %pitch($BC)
+	%pitch($BE)
+	%dur($08) : %vol($28) : %pitch($C1)
+	%dur($18) : %vol($14)
+	%dur($08) : %pitch($C3)
+	%dur($30) : %vol($08)
+	db $00
+	%pitch($C3)
+	db $00
 
 se_slotmachinecoinsubsfx: ; Slot machine coin sub-sfx
-	db $E0, $01, $0C, $00, $A4, $08, $32, $B0
-	db $B2, $08, $28, $B5, $0C, $1E, $B7, $08
-	db $32, $BC, $BE, $08, $28, $C1, $18, $14
-	db $08, $C3, $30, $08, $00, $C3, $00
+	%inst(01)
+	%dur($0C) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($32) : %pitch($B0)
+	%pitch($B2)
+	%dur($08) : %vol($28) : %pitch($B5)
+	%dur($0C) : %vol($1E) : %pitch($B7)
+	%dur($08) : %vol($32) : %pitch($BC)
+	%pitch($BE)
+	%dur($08) : %vol($28) : %pitch($C1)
+	%dur($18) : %vol($14)
+	%dur($08) : %pitch($C3)
+	%dur($30) : %vol($08)
+	db $00
+	%pitch($C3)
+	db $00
 
 se_blockadedirectionchange: ; Blockade direction change
-	db $E0, $05, $06, $78, $9E, $E0, $00, $08
-	db $28, $F9, $A4, $00, $06, $A6, $18, $A6
+	%inst(05)
+	%dur($06) : %vol($78) : %pitch($9E)
+	%inst(00)
+	%dur($08) : %vol($28)
+	%pitchslide($A4,$06,$A6)
+	%dur($18) : %pitch($A6)
 	db $00
 
 se_bombpowerup: ; Bomb powerup
-	db $E0, $00, $24, $00, $A4, $08, $0A, $28
-	db $F9, $B7, $00, $06, $B9, $08, $00, $B9
-	db $08, $0A, $28, $F9, $B7, $00, $06, $B9
-	db $08, $00, $B9, $08, $0A, $28, $F9, $B7
-	db $00, $06, $B9, $08, $00, $B9, $00
+	%inst(00)
+	%dur($24) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($0A)
+	%dur($28)
+	%pitchslide($B7,$06,$B9)
+	%dur($08) : %vol($00) : %pitch($B9)
+	%dur($08) : %vol($0A)
+	%dur($28)
+	%pitchslide($B7,$06,$B9)
+	%dur($08) : %vol($00) : %pitch($B9)
+	%dur($08) : %vol($0A)
+	%dur($28)
+	%pitchslide($B7,$06,$B9)
+	%dur($08) : %vol($00) : %pitch($B9)
+	db $00
 
 se_rockcrusheruncover: ; Rock crusher uncover
-	db $E0, $32, $7F, $7D, $F9, $A3, $00, $7F
-	db $A3, $1F, $64, $F1, $00, $1F, $A3, $1F
-	db $50, $F1, $00, $1D, $A3, $00
+	%inst(32)
+	%dur($7F) : %vol($7D)
+	%pitchslide($A3,$7F,$A3)
+	%dur($1F) : %vol($64)
+	%pitchenv($1F,$A3)
+	%dur($1F) : %vol($50)
+	%pitchenv($1D,$A3)
+	db $00
 
 se_phantronappears: ; Phantron appears
-	db $E0, $31, $5F, $64, $00, $F9, $A3, $00
-	db $5F, $A3, $5F, $64, $1E, $F1, $00, $5F
-	db $A3, $5F, $73, $46, $F1, $00, $5F, $A3
-	db $5F, $7D, $64, $F1, $00, $5F, $A3, $5F
-	db $50, $69, $F1, $00, $5F, $A3, $5F, $32
-	db $50, $F1, $00, $5F, $A3, $5F, $1E, $32
-	db $F1, $00, $5F, $A3, $5F, $0A, $1E, $F1
-	db $00, $5D, $A3, $00
+	%inst(31)
+	%dur($5F) : %vol($64)
+	db $00
+	%pitchslide($A3,$5F,$A3)
+	%dur($5F) : %vol($64)
+	%dur($1E)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($73)
+	%dur($46)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($7D)
+	%dur($64)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($50)
+	%dur($69)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($32)
+	%dur($50)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($1E)
+	%dur($32)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($0A)
+	%dur($1E)
+	%pitchenv($5D,$A3)
+	db $00
 
 se_destructorengine: ; Destructor engine
-	db $E0, $30, $7F, $00, $64, $F9, $A3, $00
-	db $7F, $A3, $7F, $F1, $00, $7F, $A3, $7F
-	db $0A, $73, $F1, $00, $7F, $A3, $7F, $1E
-	db $7D, $F1, $00, $7F, $A3, $7F, $32, $7D
-	db $F1, $00, $7F, $A3, $7F, $46, $7D, $F1
-	db $00, $7F, $A3, $7F, $5A, $7D, $F1, $00
-	db $7F, $A3, $7F, $5A, $7D, $F1, $00, $7F
-	db $A3, $7F, $50, $69, $F1, $00, $7F, $A3
-	db $7F, $46, $5A, $F1, $00, $7F, $A3, $7F
-	db $3C, $50, $F1, $00, $7F, $A3, $7F, $28
-	db $41, $F1, $00, $7F, $A3, $7F, $1E, $32
-	db $F1, $00, $7F, $A3, $7F, $14, $1E, $F1
-	db $00, $7D, $A3, $00
+	%inst(30)
+	%dur($7F) : %vol($00)
+	%dur($64)
+	%pitchslide($A3,$7F,$A3)
+	%dur($7F)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($0A)
+	%dur($73)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($1E)
+	%dur($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($32)
+	%dur($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($46)
+	%dur($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($5A)
+	%dur($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($5A)
+	%dur($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($50)
+	%dur($69)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($46)
+	%dur($5A)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($3C)
+	%dur($50)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($28)
+	%dur($41)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($1E)
+	%dur($32)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($14)
+	%dur($1E)
+	%pitchenv($7D,$A3)
+	db $00
 
 se_destructorengine2: ; Destructor engine
-	db $E0, $30, $7F, $00, $64, $F9, $A1, $00
-	db $7F, $A1, $7F, $0A, $64, $F1, $00, $7F
-	db $A1, $7F, $1E, $73, $F1, $00, $7F, $A1
-	db $7F, $32, $7D, $F1, $00, $7F, $A1, $7F
-	db $46, $7D, $F1, $00, $7F, $A1, $7F, $5A
-	db $7D, $F1, $00, $7F, $A1, $7F, $5A, $7D
-	db $F1, $00, $7F, $A1, $7F, $7D, $5A, $F1
-	db $00, $7F, $A1, $7F, $69, $50, $F1, $00
-	db $7F, $A1, $7F, $5A, $46, $F1, $00, $7F
-	db $A1, $7F, $50, $3C, $F1, $00, $7F, $A1
-	db $7F, $41, $28, $F1, $00, $7F, $A1, $7F
-	db $32, $1E, $F1, $00, $7F, $A1, $7F, $1E
-	db $14, $F1, $00, $7D, $A1, $00
+	%inst(30)
+	%dur($7F) : %vol($00)
+	%dur($64)
+	%pitchslide($A1,$7F,$A1)
+	%dur($7F) : %vol($0A)
+	%dur($64)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($1E)
+	%dur($73)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($32)
+	%dur($7D)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($46)
+	%dur($7D)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($5A)
+	%dur($7D)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($5A)
+	%dur($7D)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($7D)
+	%dur($5A)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($69)
+	%dur($50)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($5A)
+	%dur($46)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($50)
+	%dur($3C)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($41)
+	%dur($28)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($32)
+	%dur($1E)
+	%pitchenv($7F,$A1)
+	%dur($7F) : %vol($1E)
+	%dur($14)
+	%pitchenv($7D,$A1)
+	db $00
 
 se_rockcrusherappears: ; Rock crusher appears
-	db $E0, $2F, $5F, $64, $00, $F9, $A3, $00
-	db $5F, $A3, $5F, $64, $1E, $F1, $00, $5F
-	db $A3, $5F, $73, $46, $F1, $00, $5F, $A3
-	db $5F, $7D, $64, $F1, $00, $5F, $A3, $5F
-	db $69, $F1, $00, $5F, $A3, $5F, $50, $F1
-	db $00, $5F, $A3, $5F, $32, $F1, $00, $5F
-	db $A3, $5F, $1E, $F1, $00, $5D, $A3, $00
+	%inst(2F)
+	%dur($5F) : %vol($64)
+	db $00
+	%pitchslide($A3,$5F,$A3)
+	%dur($5F) : %vol($64)
+	%dur($1E)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($73)
+	%dur($46)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($7D)
+	%dur($64)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($69)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($50)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($32)
+	%pitchenv($5F,$A3)
+	%dur($5F) : %vol($1E)
+	%pitchenv($5D,$A3)
+	db $00
 
 se_phantron2hit: ; Phantron 2 hit
-	db $E0, $12, $0C, $78, $F9, $98, $00, $0C
-	db $97, $0C, $F1, $00, $0C, $A2, $18, $F1
-	db $00, $15, $9F, $00
+	%inst(12)
+	%dur($0C) : %vol($78)
+	%pitchslide($98,$0C,$97)
+	%dur($0C)
+	%pitchenv($0C,$A2)
+	%dur($18)
+	%pitchenv($15,$9F)
+	db $00
 
 se_phantron2screamsubsfx: ; Phantron scream
-	db $10, $00, $98
+	%dur($10) : %vol($00) : %pitch($98)
 
 se_phantron2scream: ; Phantron 2 scream
-	db $E0, $12, $12, $78, $F9, $98, $00, $12
-	db $97, $18, $F1, $00, $18, $A7, $16, $F1
-	db $00, $13, $9F, $0F, $64, $F9, $95, $00
-	db $0F, $93, $15, $F1, $00, $15, $A3, $14
-	db $F1, $00, $11, $9C, $0C, $50, $F9, $91
-	db $00, $0C, $90, $12, $F1, $00, $12, $A0
-	db $12, $F1, $00, $0F, $98, $09, $3C, $F9
-	db $8E, $00, $09, $8C, $0F, $F1, $00, $0F
-	db $9C, $0F, $F1, $00, $0C, $95, $06, $28
-	db $F9, $8B, $00, $06, $89, $0C, $F1, $00
-	db $0C, $98, $1E, $F1, $00, $1B, $91, $00
+	%inst(12)
+	%dur($12) : %vol($78)
+	%pitchslide($98,$12,$97)
+	%dur($18)
+	%pitchenv($18,$A7)
+	%dur($16)
+	%pitchenv($13,$9F)
+	%dur($0F) : %vol($64)
+	%pitchslide($95,$0F,$93)
+	%dur($15)
+	%pitchenv($15,$A3)
+	%dur($14)
+	%pitchenv($11,$9C)
+	%dur($0C) : %vol($50)
+	%pitchslide($91,$0C,$90)
+	%dur($12)
+	%pitchenv($12,$A0)
+	%dur($12)
+	%pitchenv($0F,$98)
+	%dur($09) : %vol($3C)
+	%pitchslide($8E,$09,$8C)
+	%dur($0F)
+	%pitchenv($0F,$9C)
+	%dur($0F)
+	%pitchenv($0C,$95)
+	%dur($06) : %vol($28)
+	%pitchslide($8B,$06,$89)
+	%dur($0C)
+	%pitchenv($0C,$98)
+	%dur($1E)
+	%pitchenv($1B,$91)
+	db $00
 
 se_falcoradiochat: ; Falco radio chat
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $16, $10
-	db $7D, $80, $82, $E0, $14, $12, $7D, $84
-	db $18, $7D, $85, $E0, $16, $24, $7D, $85
-	db $18, $00, $85, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(16)
+	%dur($10) : %vol($7D) : %pitch($80)
+	%pitch($82)
+	%inst(14)
+	%dur($12) : %vol($7D) : %pitch($84)
+	%dur($18) : %vol($7D) : %pitch($85)
+	%inst(16)
+	%dur($24) : %vol($7D) : %pitch($85)
+	%dur($18) : %vol($00) : %pitch($85)
+	db $00
 
 se_falcoradiochathit: ; Falco radio chat hit
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $16, $18
-	db $7D, $85, $0C, $82, $E0, $2E, $0C, $7D
-	db $84, $82, $82, $E0, $16, $08, $7D, $82
-	db $0C, $00, $89, $E0, $16, $08, $7D, $82
-	db $E0, $2C, $18, $7D, $87, $E0, $14, $18
-	db $7D, $85, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(16)
+	%dur($18) : %vol($7D) : %pitch($85)
+	%dur($0C) : %pitch($82)
+	%inst(2E)
+	%dur($0C) : %vol($7D) : %pitch($84)
+	%pitch($82)
+	%pitch($82)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($82)
+	%dur($0C) : %vol($00) : %pitch($89)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($82)
+	%inst(2C)
+	%dur($18) : %vol($7D) : %pitch($87)
+	%inst(14)
+	%dur($18) : %vol($7D) : %pitch($85)
+	db $00
 
 se_falcoradiochatdown: ; Falco radio chat down
-	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
-	db $12, $14, $C0, $06, $00, $C0, $06, $14
-	db $C0, $04, $00, $C0, $12, $14, $C0, $06
-	db $00, $C0, $E0, $15, $18, $7D, $98, $E0
-	db $2D, $24, $7D, $85, $0C, $84, $0C, $00
-	db $85, $E0, $16, $0C, $7D, $89, $87, $85
-	db $0C, $00, $89, $E0, $16, $08, $7D, $85
-	db $E0, $14, $18, $7D, $85, $E0, $16, $18
-	db $7D, $84, $00
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($C0)
+	%dur($04) : %vol($00) : %pitch($C0)
+	%dur($12) : %vol($14) : %pitch($C0)
+	%dur($06) : %vol($00) : %pitch($C0)
+	%dur($06) : %vol($14) : %pitch($C0)
+	%dur($04) : %vol($00) : %pitch($C0)
+	%dur($12) : %vol($14) : %pitch($C0)
+	%dur($06) : %vol($00) : %pitch($C0)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(2D)
+	%dur($24) : %vol($7D) : %pitch($85)
+	%dur($0C) : %pitch($84)
+	%dur($0C) : %vol($00) : %pitch($85)
+	%inst(16)
+	%dur($0C) : %vol($7D) : %pitch($89)
+	%pitch($87)
+	%pitch($85)
+	%dur($0C) : %vol($00) : %pitch($89)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($85)
+	%inst(14)
+	%dur($18) : %vol($7D) : %pitch($85)
+	%inst(16)
+	%dur($18) : %vol($7D) : %pitch($84)
+	db $00
 
 se_peppyradiochat: ; Peppy radio chat
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $14, $0C
-	db $7D, $9C, $95, $24, $7D, $9C, $E0, $1F
-	db $0C, $7D, $93, $18, $7D, $91, $E0, $14
-	db $24, $7D, $97, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(14)
+	%dur($0C) : %vol($7D) : %pitch($9C)
+	%pitch($95)
+	%dur($24) : %vol($7D) : %pitch($9C)
+	%inst(1F)
+	%dur($0C) : %vol($7D) : %pitch($93)
+	%dur($18) : %vol($7D) : %pitch($91)
+	%inst(14)
+	%dur($24) : %vol($7D) : %pitch($97)
+	db $00
 
 se_peppyradiochathit: ; Peppy radio chat hit
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $2C, $0C
-	db $7D, $9C, $E0, $14, $24, $7D, $9A, $E0
-	db $2E, $08, $7D, $93, $97, $18, $7D, $91
-	db $E0, $16, $0C, $7D, $97, $97, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(2C)
+	%dur($0C) : %vol($7D) : %pitch($9C)
+	%inst(14)
+	%dur($24) : %vol($7D) : %pitch($9A)
+	%inst(2E)
+	%dur($08) : %vol($7D) : %pitch($93)
+	%pitch($97)
+	%dur($18) : %vol($7D) : %pitch($91)
+	%inst(16)
+	%dur($0C) : %vol($7D) : %pitch($97)
+	%pitch($97)
+	db $00
 
 se_peppyradiochatdown: ; Peppy radio chat down
-	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
-	db $12, $14, $C0, $06, $00, $C0, $06, $14
-	db $C0, $04, $00, $C0, $12, $14, $C0, $06
-	db $00, $C0, $E0, $15, $18, $7D, $98, $E0
-	db $2D, $18, $7D, $A1, $9A, $10, $00, $A1
-	db $E0, $2E, $0C, $7D, $98, $0C, $7D, $97
-	db $E0, $1F, $24, $7D, $95, $00
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($C0)
+	%dur($04) : %vol($00) : %pitch($C0)
+	%dur($12) : %vol($14) : %pitch($C0)
+	%dur($06) : %vol($00) : %pitch($C0)
+	%dur($06) : %vol($14) : %pitch($C0)
+	%dur($04) : %vol($00) : %pitch($C0)
+	%dur($12) : %vol($14) : %pitch($C0)
+	%dur($06) : %vol($00) : %pitch($C0)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(2D)
+	%dur($18) : %vol($7D) : %pitch($A1)
+	%pitch($9A)
+	%dur($10) : %vol($00) : %pitch($A1)
+	%inst(2E)
+	%dur($0C) : %vol($7D) : %pitch($98)
+	%dur($0C) : %vol($7D) : %pitch($97)
+	%inst(1F)
+	%dur($24) : %vol($7D) : %pitch($95)
+	db $00
 
 se_slippyradiochat: ; Slippy radio chat
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $16, $08
-	db $7D, $89, $E0, $14, $08, $85, $E0, $16
-	db $08, $89, $E0, $14, $08, $8C, $E0, $16
-	db $12, $00, $87, $E0, $16, $08, $7D, $89
-	db $E0, $14, $08, $85, $E0, $16, $08, $89
-	db $E0, $14, $08, $8C, $E0, $16, $18, $00
-	db $87, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($89)
+	%inst(14)
+	%dur($08) : %pitch($85)
+	%inst(16)
+	%dur($08) : %pitch($89)
+	%inst(14)
+	%dur($08) : %pitch($8C)
+	%inst(16)
+	%dur($12) : %vol($00) : %pitch($87)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($89)
+	%inst(14)
+	%dur($08) : %pitch($85)
+	%inst(16)
+	%dur($08) : %pitch($89)
+	%inst(14)
+	%dur($08) : %pitch($8C)
+	%inst(16)
+	%dur($18) : %vol($00) : %pitch($87)
+	db $00
 
 se_slippyradiochathit: ; Slippy radio chat hit
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $14, $06
-	db $7D, $8C, $90, $06, $8C, $90, $0C, $00
-	db $85, $E0, $16, $06, $7D, $89, $8C, $89
-	db $8C, $12, $00, $85, $06, $7D, $87, $8B
-	db $87, $8B, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(14)
+	%dur($06) : %vol($7D) : %pitch($8C)
+	%pitch($90)
+	%dur($06) : %pitch($8C)
+	%pitch($90)
+	%dur($0C) : %vol($00) : %pitch($85)
+	%inst(16)
+	%dur($06) : %vol($7D) : %pitch($89)
+	%pitch($8C)
+	%pitch($89)
+	%pitch($8C)
+	%dur($12) : %vol($00) : %pitch($85)
+	%dur($06) : %vol($7D) : %pitch($87)
+	%pitch($8B)
+	%pitch($87)
+	%pitch($8B)
+	db $00
 
 se_slippyradiochatdown: ; Slippy radio chat down
-	db $E0, $0F, $06, $14, $C0, $04, $00, $C0
-	db $12, $14, $C0, $06, $00, $C0, $06, $14
-	db $C0, $04, $00, $C0, $12, $14, $C0, $06
-	db $00, $C0, $E0, $15, $18, $7D, $98, $E0
-	db $16, $08, $7D, $85, $89, $85, $89, $12
-	db $00, $85, $0A, $7D, $84, $87, $0B, $84
-	db $87, $12, $00, $85, $E0, $16, $0E, $7D
-	db $82, $85, $E0, $2D, $30, $7D, $89, $00
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($C0)
+	%dur($04) : %vol($00) : %pitch($C0)
+	%dur($12) : %vol($14) : %pitch($C0)
+	%dur($06) : %vol($00) : %pitch($C0)
+	%dur($06) : %vol($14) : %pitch($C0)
+	%dur($04) : %vol($00) : %pitch($C0)
+	%dur($12) : %vol($14) : %pitch($C0)
+	%dur($06) : %vol($00) : %pitch($C0)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($85)
+	%pitch($89)
+	%pitch($85)
+	%pitch($89)
+	%dur($12) : %vol($00) : %pitch($85)
+	%dur($0A) : %vol($7D) : %pitch($84)
+	%pitch($87)
+	%dur($0B) : %pitch($84)
+	%pitch($87)
+	%dur($12) : %vol($00) : %pitch($85)
+	%inst(16)
+	%dur($0E) : %vol($7D) : %pitch($82)
+	%pitch($85)
+	%inst(2D)
+	%dur($30) : %vol($7D) : %pitch($89)
+	db $00
 
 se_twinblasterpowerup: ; Twin blaster powerup
-	db $E0, $1F, $18, $00, $8C, $7F, $7D, $8C
+	%inst(1F)
+	%dur($18) : %vol($00) : %pitch($8C)
+	%dur($7F) : %vol($7D) : %pitch($8C)
 	db $00
 
 se_shieldpowerup: ; Shield powerup
-	db $E0, $2C, $18, $00, $8C, $30, $7D, $8C
+	%inst(2C)
+	%dur($18) : %vol($00) : %pitch($8C)
+	%dur($30) : %vol($7D) : %pitch($8C)
 	db $00
 
 se_wingrepairedpowerup: ; Wing repaired powerup
-	db $E0, $14, $18, $00, $8C, $1C, $7D, $8B
-	db $E0, $2E, $60, $7D, $8C, $00
+	%inst(14)
+	%dur($18) : %vol($00) : %pitch($8C)
+	%dur($1C) : %vol($7D) : %pitch($8B)
+	%inst(2E)
+	%dur($60) : %vol($7D) : %pitch($8C)
+	db $00
 
 se_conehit: ; Cone hit
-	db $E0, $05, $06, $5A, $B0, $E0, $0A, $24
-	db $25, $84, $00
+	%inst(05)
+	%dur($06) : %vol($5A) : %pitch($B0)
+	%inst(0A)
+	%dur($24) : %vol($25) : %pitch($84)
+	db $00
 
 se_backgroundthunder: ; Background thunder
-	db $7F, $00, $90, $E0, $04, $7F, $7D, $F9
-	db $8C, $00, $7F, $90, $7F, $F1, $00, $7F
-	db $8E, $3F, $F1, $00, $3D, $8E, $7F, $F9
-	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
-	db $8C
+	%dur($7F) : %vol($00) : %pitch($90)
+	%inst(04)
+	%dur($7F) : %vol($7D)
+	%pitchslide($8C,$7F,$90)
+	%dur($7F)
+	%pitchenv($7F,$8E)
+	%dur($3F)
+	%pitchenv($3D,$8E)
+	%dur($7F)
+	%pitchslide($8B,$7F,$8D)
+	%dur($7F)
+	%pitchenv($7D,$8C)
 
 se_volcanofire: ; Volcano fire
-	db $E0, $04, $3F, $7D, $F9, $8B, $00, $3F
-	db $8D, $7F, $F1, $00, $7D, $8C, $7F, $F9
-	db $8B, $00, $7F, $8D, $7F, $F1, $00, $7D
-	db $8C, $7F, $F9, $87, $00, $7F, $8A, $7F
-	db $F1, $00, $7F, $89, $7F, $F1, $00, $7D
-	db $89, $00
+	%inst(04)
+	%dur($3F) : %vol($7D)
+	%pitchslide($8B,$3F,$8D)
+	%dur($7F)
+	%pitchenv($7D,$8C)
+	%dur($7F)
+	%pitchslide($8B,$7F,$8D)
+	%dur($7F)
+	%pitchenv($7D,$8C)
+	%dur($7F)
+	%pitchslide($87,$7F,$8A)
+	%dur($7F)
+	%pitchenv($7F,$89)
+	%dur($7F)
+	%pitchenv($7D,$89)
+	db $00
 
 se_backgroundthunder2: ; Background thunder
-	db $7F, $00, $8D
+	%dur($7F) : %vol($00) : %pitch($8D)
 
 se_spinningcorebgthunder: ; Spinning core bg thunder
-	db $E0, $0C, $7F, $78, $F9, $8C, $00, $7F
-	db $8D, $7F, $F1, $00, $7F, $8C, $7F, $F1
-	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
-	db $7F, $F1, $00, $7F, $8C, $7F, $F1, $00
-	db $7F, $8C, $7F, $F1, $00, $7F, $8C, $7F
-	db $F1, $00, $7F, $8C, $7F, $F1, $00, $7F
-	db $8C, $7F, $F1, $00, $7F, $8C, $7F, $F1
-	db $00, $7F, $8C, $7F, $F1, $00, $7F, $8C
-	db $7F, $F1, $00, $7D, $8C, $00
+	%inst(0C)
+	%dur($7F) : %vol($78)
+	%pitchslide($8C,$7F,$8D)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7F,$8C)
+	%dur($7F)
+	%pitchenv($7D,$8C)
+	db $00
 
 se_goodluck: ; Jingle + good luck
-	db $E0, $01, $08, $1E, $B7, $B9, $08, $14
-	db $B9, $0C, $14, $B9, $0C, $0A, $08, $B9
-	db $18, $08, $00, $B9, $00
+	%inst(01)
+	%dur($08) : %vol($1E) : %pitch($B7)
+	%pitch($B9)
+	%dur($08) : %vol($14) : %pitch($B9)
+	%dur($0C) : %vol($14) : %pitch($B9)
+	%dur($0C) : %vol($0A)
+	%dur($08) : %pitch($B9)
+	%dur($18) : %vol($08)
+	db $00
+	%pitch($B9)
+	db $00
 
 se_goodlucksubsfx: ; Good luck
-	db $E0, $01, $0C, $00, $A4, $08, $1E, $B7
-	db $B9, $08, $14, $B9, $0C, $14, $B9, $0C
-	db $0A, $08, $B9, $18, $08, $00, $B9, $00
+	%inst(01)
+	%dur($0C) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($1E) : %pitch($B7)
+	%pitch($B9)
+	%dur($08) : %vol($14) : %pitch($B9)
+	%dur($0C) : %vol($14) : %pitch($B9)
+	%dur($0C) : %vol($0A)
+	%dur($08) : %pitch($B9)
+	%dur($18) : %vol($08)
+	db $00
+	%pitch($B9)
+	db $00
 
 se_bonuscredit: ; Bonus credit
-	db $E0, $01, $08, $32, $B2, $B4, $B7, $BC
-	db $08, $2E, $1C, $BE, $18, $C0, $08, $24
-	db $16, $B2, $B4, $B7, $BC, $08, $1E, $12
-	db $BE, $18, $C0, $08, $16, $0C, $B2, $B4
-	db $B7, $BC, $08, $12, $02, $BE, $18, $C0
+	%inst(01)
+	%dur($08) : %vol($32) : %pitch($B2)
+	%pitch($B4)
+	%pitch($B7)
+	%pitch($BC)
+	%dur($08) : %vol($2E)
+	%dur($1C) : %pitch($BE)
+	%dur($18) : %pitch($C0)
+	%dur($08) : %vol($24)
+	%dur($16) : %pitch($B2)
+	%pitch($B4)
+	%pitch($B7)
+	%pitch($BC)
+	%dur($08) : %vol($1E)
+	%dur($12) : %pitch($BE)
+	%dur($18) : %pitch($C0)
+	%dur($08) : %vol($16)
+	%dur($0C) : %pitch($B2)
+	%pitch($B4)
+	%pitch($B7)
+	%pitch($BC)
+	%dur($08) : %vol($12)
+	%dur($02) : %pitch($BE)
+	%dur($18) : %pitch($C0)
 	db $00
 
 se_bonuscreditsubsfx: ; Bonus
-	db $E0, $01, $18, $00, $A4, $08, $28, $B2
-	db $B4, $B7, $BC, $08, $0C, $1A, $BE, $0C
-	db $C0, $08, $12, $1E, $B2, $B4, $B7, $BC
-	db $08, $0C, $16, $BE, $18, $C0, $08, $02
-	db $12, $B2, $B4, $B7, $BC, $BE, $18, $C0
+	%inst(01)
+	%dur($18) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($28) : %pitch($B2)
+	%pitch($B4)
+	%pitch($B7)
+	%pitch($BC)
+	%dur($08) : %vol($0C)
+	%dur($1A) : %pitch($BE)
+	%dur($0C) : %pitch($C0)
+	%dur($08) : %vol($12)
+	%dur($1E) : %pitch($B2)
+	%pitch($B4)
+	%pitch($B7)
+	%pitch($BC)
+	%dur($08) : %vol($0C)
+	%dur($16) : %pitch($BE)
+	%dur($18) : %pitch($C0)
+	%dur($08) : %vol($02)
+	%dur($12) : %pitch($B2)
+	%pitch($B4)
+	%pitch($B7)
+	%pitch($BC)
+	%pitch($BE)
+	%dur($18) : %pitch($C0)
 	db $00
 
 se_playeramoebahit: ; Player amoeba hit
-	db $E0, $2A, $0C, $64, $A1, $00
+	%inst(2A)
+	%dur($0C) : %vol($64) : %pitch($A1)
+	db $00
 
 se_doorclosenear: ; Last base entry 2.door close
-	db $E0, $1C, $24, $7D, $F9, $91, $00, $24
-	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
-	db $08, $64, $99, $00
+	%inst(1C)
+	%dur($24) : %vol($7D)
+	%pitchslide($91,$24,$8C)
+	%dur($18)
+	%pitchenv($16,$8C)
+	%inst(05)
+	%dur($08) : %vol($64) : %pitch($99)
+	db $00
 
 se_doorclosemidfar: ; Far last base entry 2.door close
-	db $E0, $1C, $24, $46, $F9, $91, $00, $24
-	db $8C, $18, $F1, $00, $16, $8C, $E0, $05
-	db $08, $3C, $99, $00
+	%inst(1C)
+	%dur($24) : %vol($46)
+	%pitchslide($91,$24,$8C)
+	%dur($18)
+	%pitchenv($16,$8C)
+	%inst(05)
+	%dur($08) : %vol($3C) : %pitch($99)
+	db $00
 
 se_dooropennear: ; Last base entry 2.door open
-	db $E0, $1C, $24, $7D, $F9, $89, $00, $24
-	db $90, $18, $F1, $00, $16, $93, $E0, $05
-	db $08, $64, $99, $00
+	%inst(1C)
+	%dur($24) : %vol($7D)
+	%pitchslide($89,$24,$90)
+	%dur($18)
+	%pitchenv($16,$93)
+	%inst(05)
+	%dur($08) : %vol($64) : %pitch($99)
+	db $00
 
 se_dooropenmidfar: ; Far last base entry 2.door open
-	db $E0, $1C, $24, $46, $F9, $89, $00, $24
-	db $90, $18, $F1, $00, $16, $93, $E0, $05
-	db $08, $3C, $99, $00
+	%inst(1C)
+	%dur($24) : %vol($46)
+	%pitchslide($89,$24,$90)
+	%dur($18)
+	%pitchenv($16,$93)
+	%inst(05)
+	%dur($08) : %vol($3C) : %pitch($99)
+	db $00
 
 se_atomicbasecoreclose: ; Atomic base core close
-	db $E0, $1C, $24, $78, $F9, $9F, $00, $18
-	db $98, $24, $F9, $9F, $00, $18, $98, $24
-	db $64, $F9, $9F, $00, $18, $98, $24, $5A
-	db $F9, $9F, $00, $18, $98, $24, $46, $F9
-	db $9F, $00, $18, $98, $00
+	%inst(1C)
+	%dur($24) : %vol($78)
+	%pitchslide($9F,$18,$98)
+	%dur($24)
+	%pitchslide($9F,$18,$98)
+	%dur($24) : %vol($64)
+	%pitchslide($9F,$18,$98)
+	%dur($24) : %vol($5A)
+	%pitchslide($9F,$18,$98)
+	%dur($24) : %vol($46)
+	%pitchslide($9F,$18,$98)
+	db $00
 
 se_atomicbasecoreopen: ; Atomic base core open
-	db $E0, $1C, $24, $78, $F9, $98, $00, $18
-	db $9F, $24, $F9, $98, $00, $18, $9F, $24
-	db $64, $F9, $98, $00, $18, $9F, $24, $5A
-	db $F9, $98, $00, $18, $9F, $24, $46, $F9
-	db $98, $00, $18, $9F, $00
+	%inst(1C)
+	%dur($24) : %vol($78)
+	%pitchslide($98,$18,$9F)
+	%dur($24)
+	%pitchslide($98,$18,$9F)
+	%dur($24) : %vol($64)
+	%pitchslide($98,$18,$9F)
+	%dur($24) : %vol($5A)
+	%pitchslide($98,$18,$9F)
+	%dur($24) : %vol($46)
+	%pitchslide($98,$18,$9F)
+	db $00
 
 se_atomicbasepowersupplyon: ; Atomic base power supply on
-	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
-	db $F9, $8C, $00, $18, $93, $24, $F1, $00
-	db $22, $98, $00
+	%inst(05)
+	%dur($06) : %vol($78) : %pitch($9E)
+	%inst(1C)
+	%dur($18)
+	%pitchslide($8C,$18,$93)
+	%dur($24)
+	%pitchenv($22,$98)
+	db $00
 
 se_atomicbasepowersupplyoff: ; Atomic base power supply off
-	db $E0, $05, $06, $78, $9E, $E0, $1C, $18
-	db $F9, $98, $00, $18, $91, $24, $F1, $00
-	db $22, $8C, $00
+	%inst(05)
+	%dur($06) : %vol($78) : %pitch($9E)
+	%inst(1C)
+	%dur($18)
+	%pitchslide($98,$18,$91)
+	%dur($24)
+	%pitchenv($22,$8C)
+	db $00
 
 se_hovering: ; Hovering
-	db $E0, $29, $7F, $64, $F9, $A3, $00, $7F
-	db $A3, $7F, $F1, $00, $7F, $A3, $7F, $73
-	db $F1, $00, $7F, $A3, $7F, $7D, $F1, $00
-	db $7F, $A3, $7F, $F1, $00, $7F, $A3, $7F
-	db $F1, $00, $7F, $A3, $7F, $69, $F1, $00
-	db $7F, $A3, $7F, $50, $F1, $00, $7F, $A3
-	db $7F, $32, $F1, $00, $7F, $A3, $7F, $1E
-	db $F1, $00, $7D, $A3, $00
+	%inst(29)
+	%dur($7F) : %vol($64)
+	%pitchslide($A3,$7F,$A3)
+	%dur($7F)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($73)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F)
+	%pitchenv($7F,$A3)
+	%dur($7F)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($69)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($50)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($32)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($1E)
+	%pitchenv($7D,$A3)
+	db $00
 
 se_dooropen: ; Door open
-	db $E0, $1C, $18, $64, $F9, $85, $00, $18
-	db $8C, $18, $F1, $00, $16, $8C, $00
+	%inst(1C)
+	%dur($18) : %vol($64)
+	%pitchslide($85,$18,$8C)
+	%dur($18)
+	%pitchenv($16,$8C)
+	db $00
 
 se_doorclose: ; Door close
-	db $E0, $1C, $18, $64, $F9, $90, $00, $18
-	db $89, $18, $F1, $00, $16, $89, $00
+	%inst(1C)
+	%dur($18) : %vol($64)
+	%pitchslide($90,$18,$89)
+	%dur($18)
+	%pitchenv($16,$89)
+	db $00
 
 se_hovering2: ; Hovering
-	db $E0, $29, $7F, $5A, $F9, $A3, $00, $7F
-	db $A3, $7F, $5F, $F1, $00, $7F, $A3, $7F
-	db $64, $F1, $00, $7F, $A3, $7F, $6E, $F1
-	db $00, $7F, $A3, $7F, $7D, $F1, $00, $7F
-	db $A3, $7F, $78, $F1, $00, $7F, $A3, $7F
-	db $6E, $F1, $00, $7F, $A3, $7F, $64, $F1
-	db $00, $7F, $A3, $7F, $5F, $F1, $00, $7F
-	db $A3, $7F, $46, $F1, $00, $7F, $A3, $7F
-	db $3C, $F1, $00, $7F, $A3, $7F, $28, $F1
-	db $00, $7F, $A3, $7F, $1E, $F1, $00, $7D
-	db $A3, $00
+	%inst(29)
+	%dur($7F) : %vol($5A)
+	%pitchslide($A3,$7F,$A3)
+	%dur($7F) : %vol($5F)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($64)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($6E)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($7D)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($78)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($6E)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($64)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($5F)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($46)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($3C)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($28)
+	%pitchenv($7F,$A3)
+	%dur($7F) : %vol($1E)
+	%pitchenv($7D,$A3)
+	db $00
 
 se_hovering2subsfx: ; Background hum
-	db $E0, $29, $70, $5A, $F9, $99, $00, $70
-	db $99, $7F, $5F, $F1, $00, $7F, $99, $7F
-	db $64, $F1, $00, $7F, $99, $7F, $6E, $F1
-	db $00, $7F, $99, $7F, $7D, $F1, $00, $7F
-	db $99, $7F, $7D, $F1, $00, $7F, $99, $7F
-	db $6E, $F1, $00, $7F, $99, $7F, $69, $F1
-	db $00, $7F, $99, $7F, $5F, $F1, $00, $7F
-	db $99, $7F, $50, $F1, $00, $7F, $99, $7F
-	db $46, $F1, $00, $7F, $99, $7F, $32, $F1
-	db $00, $7F, $99, $7F, $1E, $F1, $00, $7D
-	db $99, $00
+	%inst(29)
+	%dur($70) : %vol($5A)
+	%pitchslide($99,$70,$99)
+	%dur($7F) : %vol($5F)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($64)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($6E)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($7D)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($7D)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($6E)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($69)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($5F)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($50)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($46)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($32)
+	%pitchenv($7F,$99)
+	%dur($7F) : %vol($1E)
+	%pitchenv($7D,$99)
+	db $00
 
 se_ringlasernear: ; Near enemy ring shot
-	db $E0, $27, $12, $5A, $F9, $AD, $00, $12
-	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
-	db $00, $0A, $B0, $00
+	%inst(27)
+	%dur($12) : %vol($5A)
+	%pitchslide($AD,$12,$B0)
+	%dur($0C)
+	%pitchenv($0C,$AF)
+	%dur($0C)
+	%pitchenv($0A,$B0)
+	db $00
 
 se_ringlasermid: ; Mid enemy ring shot
-	db $E0, $27, $12, $3C, $F9, $AD, $00, $12
-	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
-	db $00, $0A, $B0, $00
+	%inst(27)
+	%dur($12) : %vol($3C)
+	%pitchslide($AD,$12,$B0)
+	%dur($0C)
+	%pitchenv($0C,$AF)
+	%dur($0C)
+	%pitchenv($0A,$B0)
+	db $00
 
 se_ringlaserfar: ; Far enemy ring shot
-	db $E0, $27, $12, $1E, $F9, $AD, $00, $12
-	db $B0, $0C, $F1, $00, $0C, $AF, $0C, $F1
-	db $00, $0A, $B0, $00
+	%inst(27)
+	%dur($12) : %vol($1E)
+	%pitchslide($AD,$12,$B0)
+	%dur($0C)
+	%pitchenv($0C,$AF)
+	%dur($0C)
+	%pitchenv($0A,$B0)
+	db $00
 
 se_foxradiochat: ; Fox radio chat
-	db $E0, $0F, $12, $14, $BE, $06, $00, $BE
-	db $E0, $15, $18, $7D, $98, $E0, $16, $08
-	db $7D, $8B, $18, $90, $0C, $8E, $18, $8C
-	db $0C, $8E, $8D, $18, $00, $93, $00
+	%inst(0F)
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	%inst(16)
+	%dur($08) : %vol($7D) : %pitch($8B)
+	%dur($18) : %pitch($90)
+	%dur($0C) : %pitch($8E)
+	%dur($18) : %pitch($8C)
+	%dur($0C) : %pitch($8E)
+	%pitch($8D)
+	%dur($18) : %vol($00) : %pitch($93)
+	db $00
 
 se_radiochatquit: ; Radio chat quit
-	db $E0, $0F, $06, $14, $BE, $06, $00, $BE
-	db $06, $14, $BE, $06, $00, $BE, $E0, $15
-	db $18, $7D, $98, $00
+	%inst(0F)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%dur($06) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15)
+	%dur($18) : %vol($7D) : %pitch($98)
+	db $00
 
 se_playercamerachange: ; Player camera change
-	db $E0, $25, $48, $3C, $B6, $00
+	%inst(25)
+	%dur($48) : %vol($3C) : %pitch($B6)
+	db $00
 
 se_goodlucksubsubsfx: ; Good luck sub-sub-sfx
-	db $E0, $22, $18, $00, $A4, $48, $78, $A0
+	%inst(22)
+	%dur($18) : %vol($00) : %pitch($A4)
+	%dur($48) : %vol($78) : %pitch($A0)
 	db $00
 
 se_continue: ; Continue let's go
-	db $E0, $33, $48, $78, $A2, $00
+	%inst(33)
+	%dur($48) : %vol($78) : %pitch($A2)
+	db $00
 
 se_enemyupsealeft: ; Left water splash out
-	db $E0, $2B, $30, $7D, $0A, $F9, $A6, $00
-	db $28, $9A, $00
+	%inst(2B)
+	%dur($30) : %vol($7D)
+	%dur($0A)
+	%pitchslide($A6,$28,$9A)
+	db $00
 
 se_enemyupseacentre: ; Centre water splash
-	db $E0, $2B, $30, $7D, $F9, $A6, $00, $28
-	db $9A, $00
+	%inst(2B)
+	%dur($30) : %vol($7D)
+	%pitchslide($A6,$28,$9A)
+	db $00
 
 se_enemyupsearight: ; Right water splash
-	db $E0, $2B, $30, $0A, $7D, $F9, $A6, $00
-	db $28, $9A, $00
+	%inst(2B)
+	%dur($30) : %vol($0A)
+	%dur($7D)
+	%pitchslide($A6,$28,$9A)
+	db $00
 
 se_midwatersplash: ; Mid water splash
-	db $E0, $2B, $30, $6E, $F9, $A6, $00, $28
-	db $9A, $00
+	%inst(2B)
+	%dur($30) : %vol($6E)
+	%pitchslide($A6,$28,$9A)
+	db $00
 
 se_farwatersplash: ; Far water splash
-	db $E0, $2B, $30, $5A, $F9, $A6, $00, $28
-	db $9A, $00
+	%inst(2B)
+	%dur($30) : %vol($5A)
+	%pitchslide($A6,$28,$9A)
+	db $00
 
 se_enemydownsealeft: ; Left water splash in
-	db $E0, $21, $30, $7D, $0A, $A1, $00
+	%inst(21)
+	%dur($30) : %vol($7D)
+	%dur($0A) : %pitch($A1)
+	db $00
 
 se_enemydownseacentre: ; Centre water splash in
-	db $E0, $21, $30, $7D, $A1, $00
+	%inst(21)
+	%dur($30) : %vol($7D) : %pitch($A1)
+	db $00
 
 se_enemydownsearight: ; Right water splash in
-	db $E0, $21, $30, $0A, $7D, $A1, $00
+	%inst(21)
+	%dur($30) : %vol($0A)
+	%dur($7D) : %pitch($A1)
+	db $00
 
 se_midwatersplashin: ; Mid water splash in
-	db $E0, $21, $30, $6E, $A1, $00
+	%inst(21)
+	%dur($30) : %vol($6E) : %pitch($A1)
+	db $00
 
 se_farwatersplashin: ; Far water splash in
-	db $E0, $21, $30, $5A, $A1, $00
+	%inst(21)
+	%dur($30) : %vol($5A) : %pitch($A1)
+	db $00
 
 se_dancinginsectorpropelling: ; Dancing insector propelling
-	db $E0, $1B, $0C, $78, $F9, $A1, $00, $0A
-	db $9D, $18, $64, $F9, $A1, $00, $18, $A4
-	db $24, $F1, $00, $18, $9D, $00
+	%inst(1B)
+	%dur($0C) : %vol($78)
+	%pitchslide($A1,$0A,$9D)
+	%dur($18) : %vol($64)
+	%pitchslide($A1,$18,$A4)
+	%dur($24)
+	%pitchenv($18,$9D)
+	db $00
 
 se_dopleft: ; Right object fly-by
-	db $E0, $1E, $30, $00, $78, $F9, $B9, $00
-	db $30, $B9, $18, $F1, $00, $16, $B0, $00
+	%inst(1E)
+	%dur($30) : %vol($00)
+	%dur($78)
+	%pitchslide($B9,$30,$B9)
+	%dur($18)
+	%pitchenv($16,$B0)
+	db $00
 
 se_dopcentre: ; Centre object fly-by
-	db $E0, $1E, $30, $64, $F9, $B9, $00, $30
-	db $B9, $18, $F1, $00, $16, $B0, $00
+	%inst(1E)
+	%dur($30) : %vol($64)
+	%pitchslide($B9,$30,$B9)
+	%dur($18)
+	%pitchenv($16,$B0)
+	db $00
 
 se_dopright: ; Left object fly-by
-	db $E0, $1E, $30, $78, $00, $F9, $B9, $00
-	db $30, $B9, $18, $F1, $00, $16, $B0, $00
+	%inst(1E)
+	%dur($30) : %vol($78)
+	db $00
+	%pitchslide($B9,$30,$B9)
+	%dur($18)
+	%pitchenv($16,$B0)
+	db $00
 
 se_bladebarrierplayerwebhit: ; Blade barrier player web hit
-	db $E0, $19, $0C, $78, $F9, $B9, $00, $0C
-	db $A4, $0C, $F1, $00, $0A, $9D, $E0, $05
-	db $06, $78, $9E, $00
+	%inst(19)
+	%dur($0C) : %vol($78)
+	%pitchslide($B9,$0C,$A4)
+	%dur($0C)
+	%pitchenv($0A,$9D)
+	%inst(05)
+	%dur($06) : %vol($78) : %pitch($9E)
+	db $00
 
 se_unused: ; -unused-
-	db $E0, $05, $06, $78, $9E, $0C, $A1, $00
+	%inst(05)
+	%dur($06) : %vol($78) : %pitch($9E)
+	%dur($0C) : %pitch($A1)
+	db $00
 
 se_bladebarrierpostdrillatk: ; Blade barrier post-drill attack
-	db $E0, $1C, $12, $78, $F9, $95, $00, $12
-	db $98, $12, $F1, $00, $12, $96, $12, $F1
-	db $00, $12, $94, $12, $F1, $00, $10, $92
+	%inst(1C)
+	%dur($12) : %vol($78)
+	%pitchslide($95,$12,$98)
+	%dur($12)
+	%pitchenv($12,$96)
+	%dur($12)
+	%pitchenv($12,$94)
+	%dur($12)
+	%pitchenv($10,$92)
 	db $00
 
 se_conetriangle: ; Cone triangle
-	db $E0, $07, $12, $78, $F9, $95, $00, $12
-	db $98, $12, $F1, $00, $12, $97, $12, $F1
-	db $00, $12, $96, $12, $F1, $00, $12, $95
-	db $12, $F1, $00, $12, $94, $12, $F1, $00
-	db $12, $93, $12, $F1, $00, $10, $92, $00
+	%inst(07)
+	%dur($12) : %vol($78)
+	%pitchslide($95,$12,$98)
+	%dur($12)
+	%pitchenv($12,$97)
+	%dur($12)
+	%pitchenv($12,$96)
+	%dur($12)
+	%pitchenv($12,$95)
+	%dur($12)
+	%pitchenv($12,$94)
+	%dur($12)
+	%pitchenv($12,$93)
+	%dur($12)
+	%pitchenv($10,$92)
+	db $00
 
 se_bossshadowing: ; 1-6+2-3 Boss shadowing
-	db $E0, $07, $08, $78, $98, $08, $00, $98
-	db $08, $78, $98, $18, $64, $F9, $98, $00
-	db $16, $95, $18, $50, $F9, $98, $00, $16
-	db $95, $18, $3C, $F9, $98, $00, $16, $95
-	db $18, $32, $F9, $98, $00, $16, $95, $18
-	db $28, $F9, $98, $00, $16, $95, $00
+	%inst(07)
+	%dur($08) : %vol($78) : %pitch($98)
+	%dur($08) : %vol($00) : %pitch($98)
+	%dur($08) : %vol($78) : %pitch($98)
+	%dur($18) : %vol($64)
+	%pitchslide($98,$16,$95)
+	%dur($18) : %vol($50)
+	%pitchslide($98,$16,$95)
+	%dur($18) : %vol($3C)
+	%pitchslide($98,$16,$95)
+	%dur($18) : %vol($32)
+	%pitchslide($98,$16,$95)
+	%dur($18) : %vol($28)
+	%pitchslide($98,$16,$95)
+	db $00
 
 se_enemywarpin: ; Enemy warp-in
-	db $E0, $07, $08, $78, $95, $18, $64, $F9
-	db $89, $00, $16, $98, $18, $50, $F9, $8B
-	db $00, $16, $9A, $00
+	%inst(07)
+	%dur($08) : %vol($78) : %pitch($95)
+	%dur($18) : %vol($64)
+	%pitchslide($89,$16,$98)
+	%dur($18) : %vol($50)
+	%pitchslide($8B,$16,$9A)
+	db $00
 
 se_rockcrusherroll: ; Rock crusher roll
-	db $E0, $05, $05, $78, $8F, $8F, $90, $90
-	db $91, $91, $92, $92, $93, $93, $94, $94
-	db $95, $95, $96, $96, $97, $97, $98, $98
-	db $99, $99, $9A, $9A, $9B, $9B, $9C, $9C
-	db $9D, $9D, $9E, $9E, $9F, $9F, $A0, $A0
-	db $A1, $A1
+	%inst(05)
+	%dur($05) : %vol($78) : %pitch($8F)
+	%pitch($8F)
+	%pitch($90)
+	%pitch($90)
+	%pitch($91)
+	%pitch($91)
+	%pitch($92)
+	%pitch($92)
+	%pitch($93)
+	%pitch($93)
+	%pitch($94)
+	%pitch($94)
+	%pitch($95)
+	%pitch($95)
+	%pitch($96)
+	%pitch($96)
+	%pitch($97)
+	%pitch($97)
+	%pitch($98)
+	%pitch($98)
+	%pitch($99)
+	%pitch($99)
+	%pitch($9A)
+	%pitch($9A)
+	%pitch($9B)
+	%pitch($9B)
+	%pitch($9C)
+	%pitch($9C)
+	%pitch($9D)
+	%pitch($9D)
+	%pitch($9E)
+	%pitch($9E)
+	%pitch($9F)
+	%pitch($9F)
+	%pitch($A0)
+	%pitch($A0)
+	%pitch($A1)
+	%pitch($A1)
 
 se_slotmachinehandledown: ; Slot machine handle down
-	db $E0, $05, $05, $78, $A2, $A2, $A2, $A3
-	db $A3, $A4, $A4, $A5, $A5, $A6, $A6, $A7
-	db $A7, $A8, $A8, $A9, $A9, $06, $78, $92
-	db $30, $95, $00
+	%inst(05)
+	%dur($05) : %vol($78) : %pitch($A2)
+	%pitch($A2)
+	%pitch($A2)
+	%pitch($A3)
+	%pitch($A3)
+	%pitch($A4)
+	%pitch($A4)
+	%pitch($A5)
+	%pitch($A5)
+	%pitch($A6)
+	%pitch($A6)
+	%pitch($A7)
+	%pitch($A7)
+	%pitch($A8)
+	%pitch($A8)
+	%pitch($A9)
+	%pitch($A9)
+	%dur($06) : %vol($78) : %pitch($92)
+	%dur($30) : %pitch($95)
+	db $00
 
 se_destructbosssmallsubsfx: ; Explosion circle
-	db $E0, $05, $0C, $78, $9C, $18, $9C, $30
-	db $78, $F9, $8E, $00, $30, $8F, $30, $F1
-	db $00, $30, $90, $30, $F1, $00, $30, $91
-	db $30, $F1, $00, $30, $92, $48, $F1, $00
-	db $48, $91, $48, $F1, $00, $45, $90, $00
+	%inst(05)
+	%dur($0C) : %vol($78) : %pitch($9C)
+	%dur($18) : %pitch($9C)
+	%dur($30) : %vol($78)
+	%pitchslide($8E,$30,$8F)
+	%dur($30)
+	%pitchenv($30,$90)
+	%dur($30)
+	%pitchenv($30,$91)
+	%dur($30)
+	%pitchenv($30,$92)
+	%dur($48)
+	%pitchenv($48,$91)
+	%dur($48)
+	%pitchenv($45,$90)
+	db $00
 
 se_destructbosssmall: ; Small boss explosion
-	db $E0, $12, $30, $78, $F9, $8C, $00, $30
-	db $8D, $30, $F1, $00, $30, $8E, $30, $F1
-	db $00, $30, $8F, $30, $F1, $00, $30, $90
-	db $30, $F1, $00, $30, $91, $30, $F1, $00
-	db $30, $92, $30, $F1, $00, $2E, $93, $00
+	%inst(12)
+	%dur($30) : %vol($78)
+	%pitchslide($8C,$30,$8D)
+	%dur($30)
+	%pitchenv($30,$8E)
+	%dur($30)
+	%pitchenv($30,$8F)
+	%dur($30)
+	%pitchenv($30,$90)
+	%dur($30)
+	%pitchenv($30,$91)
+	%dur($30)
+	%pitchenv($30,$92)
+	%dur($30)
+	%pitchenv($2E,$93)
+	db $00
 
 se_plasmahydraarmhit: ; Plasma hydra arm hit
-	db $E0, $02, $0C, $78, $F9, $9C, $00, $0C
-	db $9B, $0C, $F1, $00, $0C, $A5, $18, $F1
-	db $00, $15, $A3, $00
+	%inst(02)
+	%dur($0C) : %vol($78)
+	%pitchslide($9C,$0C,$9B)
+	%dur($0C)
+	%pitchenv($0C,$A5)
+	%dur($18)
+	%pitchenv($15,$A3)
+	db $00
 
 se_enemyrocketplayerhit: ; Enemy rocket player hit
-	db $E0, $06, $12, $78, $F9, $93, $00, $12
-	db $8F, $24, $F1, $00, $24, $9B, $24, $F1
-	db $00, $21, $98, $00
+	%inst(06)
+	%dur($12) : %vol($78)
+	%pitchslide($93,$12,$8F)
+	%dur($24)
+	%pitchenv($24,$9B)
+	%dur($24)
+	%pitchenv($21,$98)
+	db $00
 
 se_dodorahit: ; Dodora hit
-	db $E0, $02, $12, $78, $F9, $91, $00, $12
-	db $96, $0C, $F1, $00, $0C, $A2, $24, $F1
-	db $00, $24, $9F, $24, $F1, $00, $21, $97
+	%inst(02)
+	%dur($12) : %vol($78)
+	%pitchslide($91,$12,$96)
+	%dur($0C)
+	%pitchenv($0C,$A2)
+	%dur($24)
+	%pitchenv($24,$9F)
+	%dur($24)
+	%pitchenv($21,$97)
 	db $00
 
 se_dodorahitsubsfx: ; Dodora hit sub-sfx
-	db $E0, $02, $10, $00, $8C, $12, $3C, $50
-	db $F9, $91, $00, $12, $96, $0C, $F1, $00
-	db $0C, $A2, $24, $F1, $00, $24, $9F, $24
-	db $F1, $00, $21, $97, $00
+	%inst(02)
+	%dur($10) : %vol($00) : %pitch($8C)
+	%dur($12) : %vol($3C)
+	%dur($50)
+	%pitchslide($91,$12,$96)
+	%dur($0C)
+	%pitchenv($0C,$A2)
+	%dur($24)
+	%pitchenv($24,$9F)
+	%dur($24)
+	%pitchenv($21,$97)
+	db $00
 
 se_dodoraeggcrackbird: ; Dodora egg crack + bird
-	db $E0, $15, $08, $78, $B4, $B9, $24, $BE
+	%inst(15)
+	%dur($08) : %vol($78) : %pitch($B4)
+	%pitch($B9)
+	%dur($24) : %pitch($BE)
 
 se_birdscream: ; Bird scream
-	db $E0, $07, $0C, $78, $F9, $A1, $00, $0C
-	db $A5, $0C, $F1, $00, $0C, $B1, $24, $F1
-	db $00, $21, $AF, $00
+	%inst(07)
+	%dur($0C) : %vol($78)
+	%pitchslide($A1,$0C,$A5)
+	%dur($0C)
+	%pitchenv($0C,$B1)
+	%dur($24)
+	%pitchenv($21,$AF)
+	db $00
 
 se_percentagering: ; Percentage ring
-	db $E0, $00, $03, $28, $B7, $B9, $B7, $B9
-	db $B7, $B9, $08, $BB, $18, $BE, $00
+	%inst(00)
+	%dur($03) : %vol($28) : %pitch($B7)
+	%pitch($B9)
+	%pitch($B7)
+	%pitch($B9)
+	%pitch($B7)
+	%pitch($B9)
+	%dur($08) : %pitch($BB)
+	%dur($18) : %pitch($BE)
+	db $00
 
 se_gateofring: ; Big support ring
-	db $E0, $01, $0C, $1E, $BC, $BE, $BC, $BE
-	db $0C, $1E, $0F, $C1, $24, $C6, $0C, $14
-	db $08, $C1, $24, $C6, $0C, $0A, $00, $C1
-	db $24, $C6, $00
+	%inst(01)
+	%dur($0C) : %vol($1E) : %pitch($BC)
+	%pitch($BE)
+	%pitch($BC)
+	%pitch($BE)
+	%dur($0C) : %vol($1E)
+	%dur($0F) : %pitch($C1)
+	%dur($24) : %pitch($C6)
+	%dur($0C) : %vol($14)
+	%dur($08) : %pitch($C1)
+	%dur($24) : %pitch($C6)
+	%dur($0C) : %vol($0A)
+	db $00
+	%pitch($C1)
+	%dur($24) : %pitch($C6)
+	db $00
 
 se_gateofringsubsfx: ; Big support ring sub-sfx
-	db $E0, $01, $15, $00, $A4, $0C, $1E, $BC
-	db $BE, $BC, $BE, $0C, $0F, $1E, $C1, $24
-	db $C6, $0C, $08, $14, $C1, $24, $C6, $0C
-	db $00, $0A, $C1, $24, $C6, $00
+	%inst(01)
+	%dur($15) : %vol($00) : %pitch($A4)
+	%dur($0C) : %vol($1E) : %pitch($BC)
+	%pitch($BE)
+	%pitch($BC)
+	%pitch($BE)
+	%dur($0C) : %vol($0F)
+	%dur($1E) : %pitch($C1)
+	%dur($24) : %pitch($C6)
+	%dur($0C) : %vol($08)
+	%dur($14) : %pitch($C1)
+	%dur($24) : %pitch($C6)
+	%dur($0C) : %vol($00)
+	%dur($0A) : %pitch($C1)
+	%dur($24) : %pitch($C6)
+	db $00
 
 se_cursor: ; Controls select
-	db $E0, $01, $08, $3C, $BE, $18, $C3, $08
-	db $00, $0A, $BE, $18, $C3, $00
+	%inst(01)
+	%dur($08) : %vol($3C) : %pitch($BE)
+	%dur($18) : %pitch($C3)
+	%dur($08) : %vol($00)
+	%dur($0A) : %pitch($BE)
+	%dur($18) : %pitch($C3)
+	db $00
 
 se_controlsselectsubsfx: ; Controls select sub-sfx
-	db $E0, $01, $18, $00, $A4, $08, $14, $00
-	db $BE, $18, $C3, $08, $05, $00, $BE, $18
-	db $C3, $00
+	%inst(01)
+	%dur($18) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($14)
+	db $00
+	%pitch($BE)
+	%dur($18) : %pitch($C3)
+	%dur($08) : %vol($05)
+	db $00
+	%pitch($BE)
+	%dur($18) : %pitch($C3)
+	db $00
 
 se_itemcatch: ; 1up ring hit
-	db $E0, $00, $08, $28, $BB, $BE, $C0, $18
-	db $C3, $08, $00, $0A, $BB, $BE, $C0, $0C
-	db $C3, $00
+	%inst(00)
+	%dur($08) : %vol($28) : %pitch($BB)
+	%pitch($BE)
+	%pitch($C0)
+	%dur($18) : %pitch($C3)
+	%dur($08) : %vol($00)
+	%dur($0A) : %pitch($BB)
+	%pitch($BE)
+	%pitch($C0)
+	%dur($0C) : %pitch($C3)
+	db $00
 
 se_itemcatchsubsfx: ; 1up ring hit sub-sfx
-	db $E0, $00, $18, $00, $A4, $08, $14, $00
-	db $BB, $BE, $C0, $18, $C3, $08, $05, $00
-	db $BB, $BE, $C0, $0C, $C3, $00
+	%inst(00)
+	%dur($18) : %vol($00) : %pitch($A4)
+	%dur($08) : %vol($14)
+	db $00
+	%pitch($BB)
+	%pitch($BE)
+	%pitch($C0)
+	%dur($18) : %pitch($C3)
+	%dur($08) : %vol($05)
+	db $00
+	%pitch($BB)
+	%pitch($BE)
+	%pitch($C0)
+	%dur($0C) : %pitch($C3)
+	db $00
 
 se_movingwallleft: ; Left gate moving
-	db $E0, $08, $18, $78, $00, $F9, $98, $00
-	db $18, $9D, $24, $F1, $00, $21, $A1, $00
+	%inst(08)
+	%dur($18) : %vol($78)
+	db $00
+	%pitchslide($98,$18,$9D)
+	%dur($24)
+	%pitchenv($21,$A1)
+	db $00
 
 se_movingwallcentre: ; Centre gate moving
-	db $E0, $08, $18, $64, $F9, $98, $00, $18
-	db $9D, $24, $F1, $00, $21, $A1, $00
+	%inst(08)
+	%dur($18) : %vol($64)
+	%pitchslide($98,$18,$9D)
+	%dur($24)
+	%pitchenv($21,$A1)
+	db $00
 
 se_movingwallright: ; Right gate moving
-	db $E0, $08, $18, $00, $78, $F9, $98, $00
-	db $18, $9D, $24, $F1, $00, $21, $A1, $00
+	%inst(08)
+	%dur($18) : %vol($00)
+	%dur($78)
+	%pitchslide($98,$18,$9D)
+	%dur($24)
+	%pitchenv($21,$A1)
+	db $00
 
 se_movingwallmid: ; Mid gate moving
-	db $E0, $08, $18, $3C, $F9, $98, $00, $18
-	db $9D, $24, $F1, $00, $21, $A1, $00
+	%inst(08)
+	%dur($18) : %vol($3C)
+	%pitchslide($98,$18,$9D)
+	%dur($24)
+	%pitchenv($21,$A1)
+	db $00
 
 se_movingwallfar: ; Far gate moving
-	db $E0, $08, $18, $1E, $F9, $98, $00, $18
-	db $9D, $24, $F1, $00, $21, $A1, $00
+	%inst(08)
+	%dur($18) : %vol($1E)
+	%pitchslide($98,$18,$9D)
+	%dur($24)
+	%pitchenv($21,$A1)
+	db $00
 
 se_speedup: ; Player boost
-	db $E0, $05, $48, $78, $F9, $95, $00, $45
-	db $A1, $00
+	%inst(05)
+	%dur($48) : %vol($78)
+	%pitchslide($95,$45,$A1)
+	db $00
 
 se_speedupsubsfx: ; Player boost sub-sfx
-	db $E0, $11, $60, $3C, $F9, $91, $00, $5D
-	db $AB, $00
+	%inst(11)
+	%dur($60) : %vol($3C)
+	%pitchslide($91,$5D,$AB)
+	db $00
 
 se_speeddown: ; Player brake
-	db $E0, $03, $30, $78, $F9, $A3, $00, $2D
-	db $95, $00
+	%inst(03)
+	%dur($30) : %vol($78)
+	%pitchslide($A3,$2D,$95)
+	db $00
 
 se_warning1: ; Incoming enemy
-	db $E0, $26, $0C, $28, $F9, $B6, $00, $0A
-	db $B9, $24, $F9, $B6, $00, $10, $B9, $0C
-	db $28, $F9, $B6, $00, $0A, $B9, $24, $F9
-	db $B6, $00, $10, $B9, $E0, $15, $24, $7D
-	db $98, $E0, $13, $70, $7D, $8C, $E0, $15
-	db $0C, $7D, $98, $00
+	%inst(26)
+	%dur($0C) : %vol($28)
+	%pitchslide($B6,$0A,$B9)
+	%dur($24)
+	%pitchslide($B6,$10,$B9)
+	%dur($0C) : %vol($28)
+	%pitchslide($B6,$0A,$B9)
+	%dur($24)
+	%pitchslide($B6,$10,$B9)
+	%inst(15)
+	%dur($24) : %vol($7D) : %pitch($98)
+	%inst(13)
+	%dur($70) : %vol($7D) : %pitch($8C)
+	%inst(15)
+	%dur($0C) : %vol($7D) : %pitch($98)
+	db $00
 
 se_warning2: ; Wing damaged
-	db $E0, $26, $30, $00, $A4, $0C, $28, $F9
-	db $B6, $00, $0A, $B9, $0C, $28, $F9, $B6
-	db $00, $0A, $B9, $18, $00, $A4, $E0, $15
-	db $24, $7D, $98, $E0, $14, $20, $7D, $8C
-	db $E0, $16, $40, $7D, $8C, $E0, $15, $0C
-	db $7D, $98, $00, $E0, $0E, $30, $32, $B7
+	%inst(26)
+	%dur($30) : %vol($00) : %pitch($A4)
+	%dur($0C) : %vol($28)
+	%pitchslide($B6,$0A,$B9)
+	%dur($0C) : %vol($28)
+	%pitchslide($B6,$0A,$B9)
+	%dur($18) : %vol($00) : %pitch($A4)
+	%inst(15)
+	%dur($24) : %vol($7D) : %pitch($98)
+	%inst(14)
+	%dur($20) : %vol($7D) : %pitch($8C)
+	%inst(16)
+	%dur($40) : %vol($7D) : %pitch($8C)
+	%inst(15)
+	%dur($0C) : %vol($7D) : %pitch($98)
+	db $00
+	%inst(0E)
+	%dur($30) : %vol($32) : %pitch($B7)
 	db $00
 
 se_phantron2landing: ; Phantron 2 landing
-	db $E0, $0D, $06, $78, $89, $04, $00, $89
-	db $24, $78, $F9, $89, $00, $22, $82, $00
+	%inst(0D)
+	%dur($06) : %vol($78) : %pitch($89)
+	%dur($04) : %vol($00) : %pitch($89)
+	%dur($24) : %vol($78)
+	%pitchslide($89,$22,$82)
+	db $00
 
 se_phantron2jump: ; Phantron 2 jump
-	db $E0, $1D, $0C, $78, $F9, $A9, $00, $0A
-	db $9D, $24, $F9, $9D, $00, $21, $AB, $00
+	%inst(1D)
+	%dur($0C) : %vol($78)
+	%pitchslide($A9,$0A,$9D)
+	%dur($24)
+	%pitchslide($9D,$21,$AB)
+	db $00
 
 se_missilenear: ; Near enemy rocket shot
-	db $E0, $0B, $30, $64, $95, $00
+	%inst(0B)
+	%dur($30) : %vol($64) : %pitch($95)
+	db $00
 
 se_missilemid: ; Mid enemy rocket shot
-	db $E0, $0B, $30, $3C, $95, $00
+	%inst(0B)
+	%dur($30) : %vol($3C) : %pitch($95)
+	db $00
 
 se_missilefar: ; Far enemy rocket shot
-	db $E0, $0B, $30, $1E, $95, $00
+	%inst(0B)
+	%dur($30) : %vol($1E) : %pitch($95)
+	db $00
 
 se_enemybattrynear: ; Near enemy battery
-	db $E0, $19, $08, $78, $9A, $48, $98, $00
+	%inst(19)
+	%dur($08) : %vol($78) : %pitch($9A)
+	%dur($48) : %pitch($98)
+	db $00
 
 se_enemybattrymid: ; Mid enemy battery
-	db $E0, $19, $08, $46, $9A, $48, $98, $00
+	%inst(19)
+	%dur($08) : %vol($46) : %pitch($9A)
+	%dur($48) : %pitch($98)
+	db $00
 
 se_enemybattryfar: ; Far enemy battery
-	db $E0, $19, $08, $28, $9A, $48, $98, $00
+	%inst(19)
+	%dur($08) : %vol($28) : %pitch($9A)
+	%dur($48) : %pitch($98)
+	db $00
 
 se_laserleft: ; Left enemy laser shot
-	db $E0, $09, $30, $5A, $0A, $95, $00
+	%inst(09)
+	%dur($30) : %vol($5A)
+	%dur($0A) : %pitch($95)
+	db $00
 
 se_lasercentre: ; Centre enemy laser shot
-	db $E0, $09, $30, $50, $95, $00
+	%inst(09)
+	%dur($30) : %vol($50) : %pitch($95)
+	db $00
 
 se_laserright: ; Right enemy laser shot
-	db $E0, $09, $30, $0A, $5A, $95, $00
+	%inst(09)
+	%dur($30) : %vol($0A)
+	%dur($5A) : %pitch($95)
+	db $00
 
 se_lasermid: ; Mid enemy laser shot
-	db $E0, $09, $30, $28, $95, $00
+	%inst(09)
+	%dur($30) : %vol($28) : %pitch($95)
+	db $00
 
 se_laserfar: ; Far enemy laser shot
-	db $E0, $09, $30, $1E, $95, $00
+	%inst(09)
+	%dur($30) : %vol($1E) : %pitch($95)
+	db $00
 
 se_wingdestructright: ; Right wing damaged
-	db $E0, $05, $30, $0A, $5A, $A9, $00
+	%inst(05)
+	%dur($30) : %vol($0A)
+	%dur($5A) : %pitch($A9)
+	db $00
 
 se_wingdestructleft: ; Left wing damaged
-	db $E0, $05, $30, $5A, $0A, $A9, $00
+	%inst(05)
+	%dur($30) : %vol($5A)
+	%dur($0A) : %pitch($A9)
+	db $00
 
 se_winglessarwingcollision: ; Wingless arwing collision
-	db $E0, $05, $18, $5A, $B5, $00
+	%inst(05)
+	%dur($18) : %vol($5A) : %pitch($B5)
+	db $00
 
 se_wingdamageright: ; Right wing crash
-	db $E0, $05, $18, $0A, $5A, $B5, $00
+	%inst(05)
+	%dur($18) : %vol($0A)
+	%dur($5A) : %pitch($B5)
+	db $00
 
 se_wingdamageleft: ; Left wing crash
-	db $E0, $05, $18, $5A, $0A, $B5, $00
+	%inst(05)
+	%dur($18) : %vol($5A)
+	%dur($0A) : %pitch($B5)
+	db $00
 
 se_playerdamage: ; Player crash
-	db $E0, $0D, $06, $64, $9D, $60, $78, $9D
+	%inst(0D)
+	%dur($06) : %vol($64) : %pitch($9D)
+	%dur($60) : %vol($78) : %pitch($9D)
 	db $00
 
 se_damageenemynear: ; Near enemy hit
-	db $E0, $0D, $20, $46, $F9, $8E, $00, $1E
-	db $85, $00
+	%inst(0D)
+	%dur($20) : %vol($46)
+	%pitchslide($8E,$1E,$85)
+	db $00
 
 se_damageenemymid: ; Mid enemy hit
-	db $E0, $0D, $20, $28, $F9, $8E, $00, $1E
-	db $85, $00
+	%inst(0D)
+	%dur($20) : %vol($28)
+	%pitchslide($8E,$1E,$85)
+	db $00
 
 se_damageenemyfar: ; Far enemy hit
-	db $E0, $0D, $20, $1E, $F9, $8E, $00, $1E
-	db $85, $00
+	%inst(0D)
+	%dur($20) : %vol($1E)
+	%pitchslide($8E,$1E,$85)
+	db $00
 
 se_destructenemynear: ; Near enemy explosion
-	db $E0, $06, $60, $78, $98, $00
+	%inst(06)
+	%dur($60) : %vol($78) : %pitch($98)
+	db $00
 
 se_destructenemynearsubsfx: ; Near enemy explosion sub-sfx
-	db $E0, $06, $18, $00, $98, $60, $50, $95
+	%inst(06)
+	%dur($18) : %vol($00) : %pitch($98)
+	%dur($60) : %vol($50) : %pitch($95)
 	db $00
 
 se_destructenemymid: ; Mid enemy explosion
-	db $E0, $06, $70, $5A, $95, $00
+	%inst(06)
+	%dur($70) : %vol($5A) : %pitch($95)
+	db $00
 
 se_destructenemyfar: ; Far enemy explosion
-	db $E0, $06, $70, $46, $95, $00
+	%inst(06)
+	%dur($70) : %vol($46) : %pitch($95)
+	db $00
 
 se_destructbossnear: ; Near big boss explosion
-	db $E0, $0D, $0C, $78, $97, $12, $97, $0C
-	db $64, $95, $12, $95, $0C, $50, $90, $60
-	db $90, $00
+	%inst(0D)
+	%dur($0C) : %vol($78) : %pitch($97)
+	%dur($12) : %pitch($97)
+	%dur($0C) : %vol($64) : %pitch($95)
+	%dur($12) : %pitch($95)
+	%dur($0C) : %vol($50) : %pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossnearsubsfx: ; Near big boss explosion sub-sfx
-	db $E0, $0D, $24, $00, $98, $0C, $64, $00
-	db $97, $12, $97, $0C, $50, $00, $95, $18
-	db $95, $0C, $3C, $00, $90, $60, $90, $00
+	%inst(0D)
+	%dur($24) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($64)
+	db $00
+	%pitch($97)
+	%dur($12) : %pitch($97)
+	%dur($0C) : %vol($50)
+	db $00
+	%pitch($95)
+	%dur($18) : %pitch($95)
+	%dur($0C) : %vol($3C)
+	db $00
+	%pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossnearsubsubsfx: ; Near big boss explosion sub-sub-sfx
-	db $E0, $0D, $24, $00, $98, $0C, $00, $64
-	db $97, $18, $97, $0C, $00, $50, $95, $18
-	db $95, $0C, $00, $3C, $90, $60, $90, $00
+	%inst(0D)
+	%dur($24) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($00)
+	%dur($64) : %pitch($97)
+	%dur($18) : %pitch($97)
+	%dur($0C) : %vol($00)
+	%dur($50) : %pitch($95)
+	%dur($18) : %pitch($95)
+	%dur($0C) : %vol($00)
+	%dur($3C) : %pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossmid: ; Mid big boss explosion
-	db $E0, $0D, $0C, $64, $97, $12, $97, $0C
-	db $50, $95, $12, $95, $0C, $3C, $90, $60
-	db $90, $00
+	%inst(0D)
+	%dur($0C) : %vol($64) : %pitch($97)
+	%dur($12) : %pitch($97)
+	%dur($0C) : %vol($50) : %pitch($95)
+	%dur($12) : %pitch($95)
+	%dur($0C) : %vol($3C) : %pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossmidsubsubsfx: ; Mid big boss explosion sub-sub-sfx
-	db $E0, $0D, $24, $00, $98, $0C, $50, $00
-	db $97, $12, $97, $0C, $3C, $00, $95, $18
-	db $95, $0C, $28, $00, $90, $60, $90, $00
+	%inst(0D)
+	%dur($24) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($50)
+	db $00
+	%pitch($97)
+	%dur($12) : %pitch($97)
+	%dur($0C) : %vol($3C)
+	db $00
+	%pitch($95)
+	%dur($18) : %pitch($95)
+	%dur($0C) : %vol($28)
+	db $00
+	%pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossmidsubsfx: ; Mid big boss explosion sub-sfx
-	db $E0, $0D, $24, $00, $98, $0C, $00, $50
-	db $97, $18, $97, $0C, $00, $3C, $95, $18
-	db $95, $0C, $00, $28, $90, $60, $90, $00
+	%inst(0D)
+	%dur($24) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($00)
+	%dur($50) : %pitch($97)
+	%dur($18) : %pitch($97)
+	%dur($0C) : %vol($00)
+	%dur($3C) : %pitch($95)
+	%dur($18) : %pitch($95)
+	%dur($0C) : %vol($00)
+	%dur($28) : %pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossfar: ; Far big boss explosion
-	db $E0, $0D, $0C, $3C, $97, $12, $97, $0C
-	db $32, $95, $12, $95, $0C, $1E, $90, $60
-	db $90, $00
+	%inst(0D)
+	%dur($0C) : %vol($3C) : %pitch($97)
+	%dur($12) : %pitch($97)
+	%dur($0C) : %vol($32) : %pitch($95)
+	%dur($12) : %pitch($95)
+	%dur($0C) : %vol($1E) : %pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_bigexplosionleft: ; Big explosion left
-	db $E0, $0D, $24, $00, $98, $0C, $32, $00
-	db $97, $12, $97, $0C, $1E, $00, $95, $18
-	db $95, $0C, $14, $00, $90, $60, $90, $00
+	%inst(0D)
+	%dur($24) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($32)
+	db $00
+	%pitch($97)
+	%dur($12) : %pitch($97)
+	%dur($0C) : %vol($1E)
+	db $00
+	%pitch($95)
+	%dur($18) : %pitch($95)
+	%dur($0C) : %vol($14)
+	db $00
+	%pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_destructbossfarsubsfx: ; Far big boss explosion sub-sfx
-	db $E0, $0D, $24, $00, $98, $0C, $00, $32
-	db $97, $18, $97, $0C, $00, $1E, $95, $18
-	db $95, $0C, $00, $14, $90, $60, $90, $00
+	%inst(0D)
+	%dur($24) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($00)
+	%dur($32) : %pitch($97)
+	%dur($18) : %pitch($97)
+	%dur($0C) : %vol($00)
+	%dur($1E) : %pitch($95)
+	%dur($18) : %pitch($95)
+	%dur($0C) : %vol($00)
+	%dur($14) : %pitch($90)
+	%dur($60) : %pitch($90)
+	db $00
 
 se_playerdown: ; Player down
-	db $E0, $0D, $0C, $78, $9C, $9C, $60, $9C
+	%inst(0D)
+	%dur($0C) : %vol($78) : %pitch($9C)
+	%pitch($9C)
+	%dur($60) : %pitch($9C)
 	db $00
 
 se_playerdownsubsfx: ; Player down sub-sfx
-	db $E0, $0D, $06, $00, $98, $0C, $00, $64
-	db $98, $0C, $5A, $00, $98, $0C, $00, $50
-	db $98, $48, $46, $00, $95, $60, $00, $28
-	db $95, $00
+	%inst(0D)
+	%dur($06) : %vol($00) : %pitch($98)
+	%dur($0C) : %vol($00)
+	%dur($64) : %pitch($98)
+	%dur($0C) : %vol($5A)
+	db $00
+	%pitch($98)
+	%dur($0C) : %vol($00)
+	%dur($50) : %pitch($98)
+	%dur($48) : %vol($46)
+	db $00
+	%pitch($95)
+	%dur($60) : %vol($00)
+	%dur($28) : %pitch($95)
+	db $00
 
 se_laser: ; Player laser shot
-	db $E0, $20, $48, $32, $92, $00
+	%inst(20)
+	%dur($48) : %vol($32) : %pitch($92)
+	db $00
 
 se_specialweapon: ; Player bomb explosion
-	db $E0, $05, $0C, $64, $9C, $30, $9C, $E0
-	db $12, $60, $64, $F9, $85, $00, $60, $86
-	db $60, $7D, $F1, $00, $5E, $87, $00
+	%inst(05)
+	%dur($0C) : %vol($64) : %pitch($9C)
+	%dur($30) : %pitch($9C)
+	%inst(12)
+	%dur($60) : %vol($64)
+	%pitchslide($85,$60,$86)
+	%dur($60) : %vol($7D)
+	%pitchenv($5E,$87)
+	db $00
 
 se_abutton: ; Player bomb shot
-	db $E0, $0B, $06, $78, $98, $18, $78, $9D
+	%inst(0B)
+	%dur($06) : %vol($78) : %pitch($98)
+	%dur($18) : %vol($78) : %pitch($9D)
 	db $00
 
 se_dualbeam: ; Dual beam shot
-	db $E0, $19, $08, $5A, $A1, $E0, $17, $24
-	db $F9, $98, $00, $22, $B0, $00
+	%inst(19)
+	%dur($08) : %vol($5A) : %pitch($A1)
+	%inst(17)
+	%dur($24)
+	%pitchslide($98,$22,$B0)
+	db $00
 
 se_hitwallnear: ; Near laser deflect
-	db $E0, $0A, $24, $21, $B2, $00
+	%inst(0A)
+	%dur($24) : %vol($21) : %pitch($B2)
+	db $00
 
 se_hitwallmid: ; Mid laser deflect
-	db $E0, $0A, $24, $11, $B2, $00
+	%inst(0A)
+	%dur($24) : %vol($11) : %pitch($B2)
+	db $00
 
 se_hitwallfar: ; Far laser deflect
-	db $E0, $0A, $24, $0D, $B2, $00
+	%inst(0A)
+	%dur($24) : %vol($0D) : %pitch($B2)
+	db $00
 
 se_wingtouchleft: ; Left wing scratch
-	db $E0, $05, $06, $5A, $00, $BC, $BC, $00
+	%inst(05)
+	%dur($06) : %vol($5A)
+	db $00
+	%pitch($BC)
+	%pitch($BC)
+	db $00
 
 se_wingtouchright: ; Right wing scratch
-	db $E0, $05, $06, $00, $5A, $BC, $BC, $00
+	%inst(05)
+	%dur($06) : %vol($00)
+	%dur($5A) : %pitch($BC)
+	%pitch($BC)
+	db $00
 
 se_pause: ; Pause
-	db $E0, $00, $10, $1E, $B4, $30, $1E, $B7
+	%inst(00)
+	%dur($10) : %vol($1E) : %pitch($B4)
+	%dur($30) : %vol($1E) : %pitch($B7)
 	db $00
 
 se_pausesubsfx: ; Pause sub-sfx
-	db $E0, $00, $08, $00, $B0, $10, $1E, $B0
-	db $30, $1E, $BC, $00
+	%inst(00)
+	%dur($08) : %vol($00) : %pitch($B0)
+	%dur($10) : %vol($1E) : %pitch($B0)
+	%dur($30) : %vol($1E) : %pitch($BC)
+	db $00
 
 ; make sure patterns aren't too big
 %warnpc($238f)
@@ -4442,8 +5733,8 @@ _2bb1:
 _2BC1:
 	mov	x,#$00
 	incw	!adk
-	mov	a,(!adk+x)
-	mov	x,!_03c0
+	mov	a,(!adk+x)			; Get next byte of sound effect data
+	mov	x,!_03c0			; Get audio channel
 	mov.b	!chn,x
 	mov	y,a
 	call	dss
@@ -4453,21 +5744,21 @@ _2BC1:
 _2BD6:
 	mov	x,#$00
 	incw	!adk
-	mov	a,(!adk+x)
+	mov	a,(!adk+x)			; Get next byte of sound effect data
 	mov	x,!_03c0
-	mov.b	!swphc+x,a
+	mov.b	!swphc+x,a		; Delay in ticks
 	mov	x,#$00
 	incw	!adk
-	mov	a,(!adk+x)
+	mov	a,(!adk+x)			; Get next byte of sound effect data
 	mov	x,!_03c0
-	mov.b	!swpc+x,a
+	mov.b	!swpc+x,a		; Length of slide
 	push	a
 	mov	x,#$00
 	incw	!adk
-	mov	a,(!adk+x)
+	mov	a,(!adk+x)			; Get next byte of sound effect data
 	pop	y
 	mov	x,!_03c0
-	mov.b	!chn,x
+	mov.b	!chn,x			; Target note
 	call	swpadset
 	jmp	_2B8B
 
