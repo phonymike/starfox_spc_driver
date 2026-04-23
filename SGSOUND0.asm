@@ -5403,31 +5403,37 @@ _289d:
 	mov	y,#$64
 	mov	!ttt,#$04
 _28a6:
-	mov	a,_28BF+x
+	mov	a,special_patches+x
 	call	apus
 	inc	x
 	inc	y
 	dbnz	!ttt,_28a6
-	mov	a,_28BF+x
+	mov	a,special_patches+x
 	mov	!_022d,a
 	inc	x
-	mov	a,_28BF+x
+	mov	a,special_patches+x
 	mov	!_022c,a
 	ret
 
-_28BF:
-	db $20, $0C, $E0, $70, $02, $80, $20, $0C
-	db $E0, $60, $07, $00, $00, $0E, $E0, $70
-	db $03, $00, $0A, $0E, $E0, $70, $01, $80
-	db $01, $0E, $E0, $7F, $01, $00, $01, $0E
-	db $E0, $28, $07, $00, $2D, $0E, $E0, $70
-	db $01, $00, $03, $0E, $E0, $7F, $01, $40
-	db $03, $0E, $E0, $70, $03, $00, $13, $0E
-	db $E0, $60, $00, $60, $0A, $0E, $E0, $7F
-	db $00, $60, $0B, $0E, $E0, $60, $05, $00
-	db $02, $0E, $E0, $7F, $01, $80, $13, $0E
-	db $E0, $70, $01, $00, $02, $0E, $E0, $40
-	db $08, $00
+; $28BF
+; Second table of sound effect patches
+special_patches:
+;	VxSRCN, VxADSR1, VxADSR2, VxGAIN, pitch mult base, pitch mult fractional (256ths)
+	db $20, $0C, $E0, $70, $02, $80 ; $00
+	db $20, $0C, $E0, $60, $07, $00 ; $01
+	db $00, $0E, $E0, $70, $03, $00 ; $02
+	db $0A, $0E, $E0, $70, $01, $80 ; $03
+	db $01, $0E, $E0, $7F, $01, $00 ; $04
+	db $01, $0E, $E0, $28, $07, $00 ; $05
+	db $2D, $0E, $E0, $70, $01, $00 ; $06 Helicopter
+	db $03, $0E, $E0, $7F, $01, $40 ; $07
+	db $03, $0E, $E0, $70, $03, $00 ; $08
+	db $13, $0E, $E0, $60, $00, $60 ; $09
+	db $0A, $0E, $E0, $7F, $00, $60 ; $0A
+	db $0B, $0E, $E0, $60, $05, $00 ; $0B
+	db $02, $0E, $E0, $7F, $01, $80 ; $0C
+	db $13, $0E, $E0, $70, $01, $00 ; $0D
+	db $02, $0E, $E0, $40, $08, $00 ; $0F
 
 _2919:	
 	db $0A, $14, $0A, $00
