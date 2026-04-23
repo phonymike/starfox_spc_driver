@@ -5417,10 +5417,12 @@ _28a6:
 
 ; $28BF
 ; Second table of sound effect patches
+; Something to do with looping sounds that have stereo panning based
+; on location relative to player
 special_patches:
 ;	VxSRCN, VxADSR1, VxADSR2, VxGAIN, pitch mult base, pitch mult fractional (256ths)
-	db $20, $0C, $E0, $70, $02, $80 ; $00
-	db $20, $0C, $E0, $60, $07, $00 ; $01
+	db $20, $0C, $E0, $70, $02, $80 ; $00 Arwing engine
+	db $20, $0C, $E0, $60, $07, $00 ; $01 Arwing engine
 	db $00, $0E, $E0, $70, $03, $00 ; $02
 	db $0A, $0E, $E0, $70, $01, $80 ; $03
 	db $01, $0E, $E0, $7F, $01, $00 ; $04
@@ -5428,7 +5430,7 @@ special_patches:
 	db $2D, $0E, $E0, $70, $01, $00 ; $06 Helicopter
 	db $03, $0E, $E0, $7F, $01, $40 ; $07
 	db $03, $0E, $E0, $70, $03, $00 ; $08
-	db $13, $0E, $E0, $60, $00, $60 ; $09
+	db $13, $0E, $E0, $60, $00, $60 ; $09 
 	db $0A, $0E, $E0, $7F, $00, $60 ; $0A
 	db $0B, $0E, $E0, $60, $05, $00 ; $0B
 	db $02, $0E, $E0, $7F, $01, $80 ; $0C
