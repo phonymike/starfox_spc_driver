@@ -4896,7 +4896,9 @@ se_pausesubsfx: ; Pause sub-sfx
 	db $00
 
 ; make sure patterns aren't too big
+if !opt_f1_f9 == 0
 %warnpc($238f)
+endif
 
 ; 238F-24FC.bin
 sfx_patches:
