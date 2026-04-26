@@ -52,6 +52,7 @@ start10:
 	bne	start10
 ;........................................
 	mov	x,#$00
+if !opt_misc == 0
 -
 	mov	!ngs+x,a
 	inc	x
@@ -61,6 +62,13 @@ start10:
 	mov	!pvodw+x,a
 	inc	x					; zero 0300-03ff
 	bne	-
+else ; saves 3 bytes
+clr_0200_03ff:
+	mov !ngs+x,a
+	mov !pvodw+x,a
+	inc x					; zero 0200-02ff, 0300-03ff
+	bne clr_0200_03ff
+endif
 ;........................................
 	inc	a
 	call	esaset			; EDL & ESA set ; set echo delay to 1 (16ms)
