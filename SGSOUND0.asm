@@ -10,6 +10,8 @@ arch spc700
 					; saves 361 bytes
 !opt_misc = 0		; various small optimizations
 
+!msu_mute = 0		; Mute BGM for MSU-1
+
 incsrc macros.inc
 !check_space = 1			; 1 will warn if data chunks are too large
 
@@ -913,7 +915,11 @@ tx17:
 	mov.b	a,!keyd
 	and.b	a,!fkin
 	pop	a
+	if !msu_mute == 0
 	bne	tx18
+	else
+	bra	tx18
+	endif
 	call	dss				; freq. data set ; handle note cmd if vbit $1a clear
 ;...................
 tx18:
