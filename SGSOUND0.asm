@@ -2981,8 +2981,7 @@ se_twinlaser: ; Player twin blaster shot
 
 se_bigarwingdamagealarm: ; Big arwing damage alarm
 	%inst(26)
-	%dur($06) : %vol($46)
-	%dur($14)
+	%dur($06) : %vol($46,$14)
 	%pitchslide($B4,$06,$B7)
 	%dur($0C)
 	db $F1, $B5, $00, $06 ; invalid pitch envelope command
@@ -3006,8 +3005,7 @@ se_bigarwingdamagealarm: ; Big arwing damage alarm
 
 se_smallarwingdamagealarm: ; Small arwing damage alarm
 	%inst(26)
-	%dur($0A) : %vol($3C)
-	%dur($14)
+	%dur($0A) : %vol($3C,$14)
 	%pitchslide($B0,$0A,$B4)
 	%dur($10)
 	db $F1, $B2, $00, $0A ; invalid pitch envelope command
