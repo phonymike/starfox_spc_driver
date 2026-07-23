@@ -23,12 +23,29 @@ macro dur(val)
 endmacro
 
 ; VCMD $00-$7F: Set volume (must follow duration)
-; if byte following dur() < $80, it's volume
-macro vol(vol)
+; First parameter sets left/right channel volume.
+; Optional second parameter sets right channel volume.
+; if byte following dur() < $80, it's volume.
+macro vol(vol,...)
 	if <vol> > $7F
 		error "invalid volume value, must be between $0-$7F"
 	endif
-	db	<vol>
+
+	if sizeof(...) > 1
+		error "too many volume parameters specified! there should be at least 1!"
+	endif
+
+	if sizeof(...) == 1
+	if <...[0]> > $7F
+		error "invalid right channel volume value, must be between $0-$7F"
+	endif
+	endif
+
+	db	<vol> ; left/right volume
+
+	if sizeof(...) == 1
+	db <...[0]> ; right volume
+	endif
 endmacro
 
 ; VCMDs $80-$C7: notes $80-$C7
