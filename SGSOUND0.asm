@@ -2537,8 +2537,7 @@ sfx_ptrs:
 
 se_androssscream4: ; Andross scream 4
 	%inst(2D)
-	%dur($7F) : %vol($7D)
-	%dur($64) : %pitch($81)
+	%dur($7F) : %vol($7D,$64) : %pitch($81)
 
 se_androssscream3: ; Andross scream 3
 	%inst(2E)
@@ -2546,8 +2545,7 @@ se_androssscream3: ; Andross scream 3
 
 se_androssscream2: ; Andross scream 2
 	%inst(2D)
-	%dur($5F) : %vol($64)
-	%dur($7D) : %pitch($82)
+	%dur($5F) : %vol($64,$7D) : %pitch($82)
 	db $00
 
 se_androssshellexplosion: ; Andross shell explosion
@@ -2708,17 +2706,13 @@ se_whalescream: ; Whale scream
 
 se_cometflyby: ; Comet fly-by
 	%inst(10)
-	%dur($1C) : %vol($00)
-	%dur($0A) : %pitch($C7)
+	%dur($1C) : %vol($00,$0A) : %pitch($C7)
 	%pitch($C5)
-	%dur($0F) : %vol($05)
-	%dur($14) : %pitch($C2)
+	%dur($0F) : %vol($05,$14) : %pitch($C2)
 	%pitch($C0)
 	%dur($0A) : %vol($1E) : %pitch($C1)
 	%pitch($BF)
-	%dur($60) : %vol($28)
-	db $00
-	%pitch($BD)
+	%dur($60) : %vol($28,$00) : %pitch($BD)
 	db $00
 
 se_shootingstar: ; Shooting star
@@ -2852,37 +2846,29 @@ se_objectimpact: ; Object impact
 
 se_metalsmashersmashing: ; Metal smasher smashing
 	%inst(36)
-	%dur($24) : %vol($50)
-	db $00
+	%dur($24) : %vol($50,$00)
 	%pitchslide($A3,$18,$9C)
 	%dur($24)
 	%pitchslide($A3,$18,$9C)
-	%dur($24) : %vol($64)
-	%dur($28)
+	%dur($24) : %vol($64,$28)
 	%pitchslide($A3,$18,$9C)
-	%dur($24) : %vol($6E)
-	%dur($3C)
+	%dur($24) : %vol($6E,$3C)
 	%pitchslide($A3,$18,$9C)
-	%dur($24) : %vol($7D)
-	%dur($50)
+	%dur($24) : %vol($7D,$50)
 	%pitchslide($A3,$18,$9C)
 	db $00
 
 se_enemy: ; Enemy
 	%inst(36)
-	%dur($24) : %vol($00)
-	%dur($50)
+	%dur($24) : %vol($00,$50)
 	%pitchslide($A2,$18,$9B)
 	%dur($24)
 	%pitchslide($A2,$18,$99)
-	%dur($24) : %vol($28)
-	%dur($64)
+	%dur($24) : %vol($28,$64)
 	%pitchslide($A2,$18,$9B)
-	%dur($24) : %vol($3C)
-	%dur($6E)
+	%dur($24) : %vol($3C,$6E)
 	%pitchslide($A2,$18,$9B)
-	%dur($24) : %vol($50)
-	%dur($7D)
+	%dur($24) : %vol($50,$7D)
 	%pitchslide($A2,$18,$9B)
 	db $00
 
@@ -3042,11 +3028,8 @@ se_slotmachinecoin: ; Slot machine coin
 	%dur($08) : %vol($32) : %pitch($BC)
 	%pitch($BE)
 	%dur($08) : %vol($28) : %pitch($C1)
-	%dur($18) : %vol($14)
-	%dur($08) : %pitch($C3)
-	%dur($30) : %vol($08)
-	db $00
-	%pitch($C3)
+	%dur($18) : %vol($14,$08) : %pitch($C3)
+	%dur($30) : %vol($08,$00) : %pitch($C3)
 	db $00
 
 se_slotmachinecoinsubsfx: ; Slot machine coin sub-sfx
@@ -3059,11 +3042,8 @@ se_slotmachinecoinsubsfx: ; Slot machine coin sub-sfx
 	%dur($08) : %vol($32) : %pitch($BC)
 	%pitch($BE)
 	%dur($08) : %vol($28) : %pitch($C1)
-	%dur($18) : %vol($14)
-	%dur($08) : %pitch($C3)
-	%dur($30) : %vol($08)
-	db $00
-	%pitch($C3)
+	%dur($18) : %vol($14,$08) : %pitch($C3)
+	%dur($30) : %vol($08,$00) : %pitch($C3)
 	db $00
 
 se_blockadedirectionchange: ; Blockade direction change
@@ -3078,16 +3058,13 @@ se_blockadedirectionchange: ; Blockade direction change
 se_bombpowerup: ; Bomb powerup
 	%inst(00)
 	%dur($24) : %vol($00) : %pitch($A4)
-	%dur($08) : %vol($0A)
-	%dur($28)
+	%dur($08) : %vol($0A,$28)
 	%pitchslide($B7,$06,$B9)
 	%dur($08) : %vol($00) : %pitch($B9)
-	%dur($08) : %vol($0A)
-	%dur($28)
+	%dur($08) : %vol($0A,$28)
 	%pitchslide($B7,$06,$B9)
 	%dur($08) : %vol($00) : %pitch($B9)
-	%dur($08) : %vol($0A)
-	%dur($28)
+	%dur($08) : %vol($0A,$28)
 	%pitchslide($B7,$06,$B9)
 	%dur($08) : %vol($00) : %pitch($B9)
 	db $00
@@ -3104,136 +3081,97 @@ se_rockcrusheruncover: ; Rock crusher uncover
 
 se_phantronappears: ; Phantron appears
 	%inst(31)
-	%dur($5F) : %vol($64)
-	db $00
+	%dur($5F) : %vol($64,$00)
 	%pitchslide($A3,$5F,$A3)
-	%dur($5F) : %vol($64)
-	%dur($1E)
+	%dur($5F) : %vol($64,$1E)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($73)
-	%dur($46)
+	%dur($5F) : %vol($73,$46)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($7D)
-	%dur($64)
+	%dur($5F) : %vol($7D,$64)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($50)
-	%dur($69)
+	%dur($5F) : %vol($50,$69)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($32)
-	%dur($50)
+	%dur($5F) : %vol($32,$50)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($1E)
-	%dur($32)
+	%dur($5F) : %vol($1E,$32)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($0A)
-	%dur($1E)
+	%dur($5F) : %vol($0A,$1E)
 	%pitchenv($5D,$A3)
 	db $00
 
 se_destructorengine: ; Destructor engine
 	%inst(30)
-	%dur($7F) : %vol($00)
-	%dur($64)
+	%dur($7F) : %vol($00,$64)
 	%pitchslide($A3,$7F,$A3)
 	%dur($7F)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($0A)
-	%dur($73)
+	%dur($7F) : %vol($0A,$73)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($1E)
-	%dur($7D)
+	%dur($7F) : %vol($1E,$7D)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($32)
-	%dur($7D)
+	%dur($7F) : %vol($32,$7D)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($46)
-	%dur($7D)
+	%dur($7F) : %vol($46,$7D)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($5A)
-	%dur($7D)
+	%dur($7F) : %vol($5A,$7D)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($5A)
-	%dur($7D)
+	%dur($7F) : %vol($5A,$7D)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($50)
-	%dur($69)
+	%dur($7F) : %vol($50,$69)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($46)
-	%dur($5A)
+	%dur($7F) : %vol($46,$5A)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($3C)
-	%dur($50)
+	%dur($7F) : %vol($3C,$50)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($28)
-	%dur($41)
+	%dur($7F) : %vol($28,$41)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($1E)
-	%dur($32)
+	%dur($7F) : %vol($1E,$32)
 	%pitchenv($7F,$A3)
-	%dur($7F) : %vol($14)
-	%dur($1E)
+	%dur($7F) : %vol($14,$1E)
 	%pitchenv($7D,$A3)
 	db $00
 
 se_destructorengine2: ; Destructor engine
 	%inst(30)
-	%dur($7F) : %vol($00)
-	%dur($64)
+	%dur($7F) : %vol($00,$64)
 	%pitchslide($A1,$7F,$A1)
-	%dur($7F) : %vol($0A)
-	%dur($64)
+	%dur($7F) : %vol($0A,$64)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($1E)
-	%dur($73)
+	%dur($7F) : %vol($1E,$73)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($32)
-	%dur($7D)
+	%dur($7F) : %vol($32,$7D)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($46)
-	%dur($7D)
+	%dur($7F) : %vol($46,$7D)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($5A)
-	%dur($7D)
+	%dur($7F) : %vol($5A,$7D)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($5A)
-	%dur($7D)
+	%dur($7F) : %vol($5A,$7D)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($7D)
-	%dur($5A)
+	%dur($7F) : %vol($7D,$5A)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($69)
-	%dur($50)
+	%dur($7F) : %vol($69,$50)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($5A)
-	%dur($46)
+	%dur($7F) : %vol($5A,$46)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($50)
-	%dur($3C)
+	%dur($7F) : %vol($50,$3C)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($41)
-	%dur($28)
+	%dur($7F) : %vol($41,$28)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($32)
-	%dur($1E)
+	%dur($7F) : %vol($32,$1E)
 	%pitchenv($7F,$A1)
-	%dur($7F) : %vol($1E)
-	%dur($14)
+	%dur($7F) : %vol($1E,$14)
 	%pitchenv($7D,$A1)
 	db $00
 
 se_rockcrusherappears: ; Rock crusher appears
 	%inst(2F)
-	%dur($5F) : %vol($64)
-	db $00
+	%dur($5F) : %vol($64,$00)
 	%pitchslide($A3,$5F,$A3)
-	%dur($5F) : %vol($64)
-	%dur($1E)
+	%dur($5F) : %vol($64,$1E)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($73)
-	%dur($46)
+	%dur($5F) : %vol($73,$46)
 	%pitchenv($5F,$A3)
-	%dur($5F) : %vol($7D)
-	%dur($64)
+	%dur($5F) : %vol($7D,$64)
 	%pitchenv($5F,$A3)
 	%dur($5F) : %vol($69)
 	%pitchenv($5F,$A3)
@@ -3601,11 +3539,8 @@ se_goodluck: ; Jingle + good luck
 	%pitch($B9)
 	%dur($08) : %vol($14) : %pitch($B9)
 	%dur($0C) : %vol($14) : %pitch($B9)
-	%dur($0C) : %vol($0A)
-	%dur($08) : %pitch($B9)
-	%dur($18) : %vol($08)
-	db $00
-	%pitch($B9)
+	%dur($0C) : %vol($0A,$08) : %pitch($B9)
+	%dur($18) : %vol($08,$00) : %pitch($B9)
 	db $00
 
 se_goodlucksubsfx: ; Good luck
@@ -3615,11 +3550,8 @@ se_goodlucksubsfx: ; Good luck
 	%pitch($B9)
 	%dur($08) : %vol($14) : %pitch($B9)
 	%dur($0C) : %vol($14) : %pitch($B9)
-	%dur($0C) : %vol($0A)
-	%dur($08) : %pitch($B9)
-	%dur($18) : %vol($08)
-	db $00
-	%pitch($B9)
+	%dur($0C) : %vol($0A,$08) : %pitch($B9)
+	%dur($18) : %vol($08,$00) : %pitch($B9)
 	db $00
 
 se_bonuscredit: ; Bonus credit
@@ -3628,24 +3560,19 @@ se_bonuscredit: ; Bonus credit
 	%pitch($B4)
 	%pitch($B7)
 	%pitch($BC)
-	%dur($08) : %vol($2E)
-	%dur($1C) : %pitch($BE)
+	%dur($08) : %vol($2E,$1C) : %pitch($BE)
 	%dur($18) : %pitch($C0)
-	%dur($08) : %vol($24)
-	%dur($16) : %pitch($B2)
+	%dur($08) : %vol($24,$16) : %pitch($B2)
 	%pitch($B4)
 	%pitch($B7)
 	%pitch($BC)
-	%dur($08) : %vol($1E)
-	%dur($12) : %pitch($BE)
+	%dur($08) : %vol($1E,$12) : %pitch($BE)
 	%dur($18) : %pitch($C0)
-	%dur($08) : %vol($16)
-	%dur($0C) : %pitch($B2)
+	%dur($08) : %vol($16,$0C) : %pitch($B2)
 	%pitch($B4)
 	%pitch($B7)
 	%pitch($BC)
-	%dur($08) : %vol($12)
-	%dur($02) : %pitch($BE)
+	%dur($08) : %vol($12,$02) : %pitch($BE)
 	%dur($18) : %pitch($C0)
 	db $00
 
@@ -3656,19 +3583,15 @@ se_bonuscreditsubsfx: ; Bonus
 	%pitch($B4)
 	%pitch($B7)
 	%pitch($BC)
-	%dur($08) : %vol($0C)
-	%dur($1A) : %pitch($BE)
+	%dur($08) : %vol($0C,$1A) : %pitch($BE)
 	%dur($0C) : %pitch($C0)
-	%dur($08) : %vol($12)
-	%dur($1E) : %pitch($B2)
+	%dur($08) : %vol($12,$1E) : %pitch($B2)
 	%pitch($B4)
 	%pitch($B7)
 	%pitch($BC)
-	%dur($08) : %vol($0C)
-	%dur($16) : %pitch($BE)
+	%dur($08) : %vol($0C,$16) : %pitch($BE)
 	%dur($18) : %pitch($C0)
-	%dur($08) : %vol($02)
-	%dur($12) : %pitch($B2)
+	%dur($08) : %vol($02,$12) : %pitch($B2)
 	%pitch($B4)
 	%pitch($B7)
 	%pitch($BC)
@@ -3943,8 +3866,7 @@ se_continue: ; Continue let's go
 
 se_enemyupsealeft: ; Left water splash out
 	%inst(2B)
-	%dur($30) : %vol($7D)
-	%dur($0A)
+	%dur($30) : %vol($7D,$0A)
 	%pitchslide($A6,$28,$9A)
 	db $00
 
@@ -3956,8 +3878,7 @@ se_enemyupseacentre: ; Centre water splash
 
 se_enemyupsearight: ; Right water splash
 	%inst(2B)
-	%dur($30) : %vol($0A)
-	%dur($7D)
+	%dur($30) : %vol($0A,$7D)
 	%pitchslide($A6,$28,$9A)
 	db $00
 
@@ -3975,8 +3896,7 @@ se_farwatersplash: ; Far water splash
 
 se_enemydownsealeft: ; Left water splash in
 	%inst(21)
-	%dur($30) : %vol($7D)
-	%dur($0A) : %pitch($A1)
+	%dur($30) : %vol($7D,$0A) : %pitch($A1)
 	db $00
 
 se_enemydownseacentre: ; Centre water splash in
@@ -3986,8 +3906,7 @@ se_enemydownseacentre: ; Centre water splash in
 
 se_enemydownsearight: ; Right water splash in
 	%inst(21)
-	%dur($30) : %vol($0A)
-	%dur($7D) : %pitch($A1)
+	%dur($30) : %vol($0A,$7D) : %pitch($A1)
 	db $00
 
 se_midwatersplashin: ; Mid water splash in
@@ -4012,8 +3931,7 @@ se_dancinginsectorpropelling: ; Dancing insector propelling
 
 se_dopleft: ; Right object fly-by
 	%inst(1E)
-	%dur($30) : %vol($00)
-	%dur($78)
+	%dur($30) : %vol($00,$78)
 	%pitchslide($B9,$30,$B9)
 	%dur($18)
 	%pitchenv($16,$B0)
@@ -4029,8 +3947,7 @@ se_dopcentre: ; Centre object fly-by
 
 se_dopright: ; Left object fly-by
 	%inst(1E)
-	%dur($30) : %vol($78)
-	db $00
+	%dur($30) : %vol($78,$00)
 	%pitchslide($B9,$30,$B9)
 	%dur($18)
 	%pitchenv($16,$B0)
@@ -4243,8 +4160,7 @@ se_dodorahit: ; Dodora hit
 se_dodorahitsubsfx: ; Dodora hit sub-sfx
 	%inst(02)
 	%dur($10) : %vol($00) : %pitch($8C)
-	%dur($12) : %vol($3C)
-	%dur($50)
+	%dur($12) : %vol($3C,$50)
 	%pitchslide($91,$12,$96)
 	%dur($0C)
 	%pitchenv($0C,$A2)
@@ -4288,15 +4204,11 @@ se_gateofring: ; Big support ring
 	%pitch($BE)
 	%pitch($BC)
 	%pitch($BE)
-	%dur($0C) : %vol($1E)
-	%dur($0F) : %pitch($C1)
+	%dur($0C) : %vol($1E,$0F) : %pitch($C1)
 	%dur($24) : %pitch($C6)
-	%dur($0C) : %vol($14)
-	%dur($08) : %pitch($C1)
+	%dur($0C) : %vol($14,$08) : %pitch($C1)
 	%dur($24) : %pitch($C6)
-	%dur($0C) : %vol($0A)
-	db $00
-	%pitch($C1)
+	%dur($0C) : %vol($0A,$00) : %pitch($C1)
 	%dur($24) : %pitch($C6)
 	db $00
 
@@ -4307,14 +4219,11 @@ se_gateofringsubsfx: ; Big support ring sub-sfx
 	%pitch($BE)
 	%pitch($BC)
 	%pitch($BE)
-	%dur($0C) : %vol($0F)
-	%dur($1E) : %pitch($C1)
+	%dur($0C) : %vol($0F,$1E) : %pitch($C1)
 	%dur($24) : %pitch($C6)
-	%dur($0C) : %vol($08)
-	%dur($14) : %pitch($C1)
+	%dur($0C) : %vol($08,$14) : %pitch($C1)
 	%dur($24) : %pitch($C6)
-	%dur($0C) : %vol($00)
-	%dur($0A) : %pitch($C1)
+	%dur($0C) : %vol($00,$0A) : %pitch($C1)
 	%dur($24) : %pitch($C6)
 	db $00
 
@@ -4322,21 +4231,16 @@ se_cursor: ; Controls select
 	%inst(01)
 	%dur($08) : %vol($3C) : %pitch($BE)
 	%dur($18) : %pitch($C3)
-	%dur($08) : %vol($00)
-	%dur($0A) : %pitch($BE)
+	%dur($08) : %vol($00,$0A) : %pitch($BE)
 	%dur($18) : %pitch($C3)
 	db $00
 
 se_controlsselectsubsfx: ; Controls select sub-sfx
 	%inst(01)
 	%dur($18) : %vol($00) : %pitch($A4)
-	%dur($08) : %vol($14)
-	db $00
-	%pitch($BE)
+	%dur($08) : %vol($14,$00) : %pitch($BE)
 	%dur($18) : %pitch($C3)
-	%dur($08) : %vol($05)
-	db $00
-	%pitch($BE)
+	%dur($08) : %vol($05,$00) : %pitch($BE)
 	%dur($18) : %pitch($C3)
 	db $00
 
@@ -4346,8 +4250,7 @@ se_itemcatch: ; 1up ring hit
 	%pitch($BE)
 	%pitch($C0)
 	%dur($18) : %pitch($C3)
-	%dur($08) : %vol($00)
-	%dur($0A) : %pitch($BB)
+	%dur($08) : %vol($00,$0A) : %pitch($BB)
 	%pitch($BE)
 	%pitch($C0)
 	%dur($0C) : %pitch($C3)
@@ -4356,15 +4259,11 @@ se_itemcatch: ; 1up ring hit
 se_itemcatchsubsfx: ; 1up ring hit sub-sfx
 	%inst(00)
 	%dur($18) : %vol($00) : %pitch($A4)
-	%dur($08) : %vol($14)
-	db $00
-	%pitch($BB)
+	%dur($08) : %vol($14,$00) : %pitch($BB)
 	%pitch($BE)
 	%pitch($C0)
 	%dur($18) : %pitch($C3)
-	%dur($08) : %vol($05)
-	db $00
-	%pitch($BB)
+	%dur($08) : %vol($05,$00) : %pitch($BB)
 	%pitch($BE)
 	%pitch($C0)
 	%dur($0C) : %pitch($C3)
@@ -4372,8 +4271,7 @@ se_itemcatchsubsfx: ; 1up ring hit sub-sfx
 
 se_movingwallleft: ; Left gate moving
 	%inst(08)
-	%dur($18) : %vol($78)
-	db $00
+	%dur($18) : %vol($78,$00)
 	%pitchslide($98,$18,$9D)
 	%dur($24)
 	%pitchenv($21,$A1)
@@ -4389,8 +4287,7 @@ se_movingwallcentre: ; Centre gate moving
 
 se_movingwallright: ; Right gate moving
 	%inst(08)
-	%dur($18) : %vol($00)
-	%dur($78)
+	%dur($18) : %vol($00,$78)
 	%pitchslide($98,$18,$9D)
 	%dur($24)
 	%pitchenv($21,$A1)
@@ -4520,8 +4417,7 @@ se_enemybattryfar: ; Far enemy battery
 
 se_laserleft: ; Left enemy laser shot
 	%inst(09)
-	%dur($30) : %vol($5A)
-	%dur($0A) : %pitch($95)
+	%dur($30) : %vol($5A,$0A) : %pitch($95)
 	db $00
 
 se_lasercentre: ; Centre enemy laser shot
@@ -4531,8 +4427,7 @@ se_lasercentre: ; Centre enemy laser shot
 
 se_laserright: ; Right enemy laser shot
 	%inst(09)
-	%dur($30) : %vol($0A)
-	%dur($5A) : %pitch($95)
+	%dur($30) : %vol($0A,$5A) : %pitch($95)
 	db $00
 
 se_lasermid: ; Mid enemy laser shot
@@ -4547,14 +4442,12 @@ se_laserfar: ; Far enemy laser shot
 
 se_wingdestructright: ; Right wing damaged
 	%inst(05)
-	%dur($30) : %vol($0A)
-	%dur($5A) : %pitch($A9)
+	%dur($30) : %vol($0A,$5A) : %pitch($A9)
 	db $00
 
 se_wingdestructleft: ; Left wing damaged
 	%inst(05)
-	%dur($30) : %vol($5A)
-	%dur($0A) : %pitch($A9)
+	%dur($30) : %vol($5A,$0A) : %pitch($A9)
 	db $00
 
 se_winglessarwingcollision: ; Wingless arwing collision
@@ -4564,14 +4457,12 @@ se_winglessarwingcollision: ; Wingless arwing collision
 
 se_wingdamageright: ; Right wing crash
 	%inst(05)
-	%dur($18) : %vol($0A)
-	%dur($5A) : %pitch($B5)
+	%dur($18) : %vol($0A,$5A) : %pitch($B5)
 	db $00
 
 se_wingdamageleft: ; Left wing crash
 	%inst(05)
-	%dur($18) : %vol($5A)
-	%dur($0A) : %pitch($B5)
+	%dur($18) : %vol($5A,$0A) : %pitch($B5)
 	db $00
 
 se_playerdamage: ; Player crash
@@ -4632,31 +4523,22 @@ se_destructbossnear: ; Near big boss explosion
 se_destructbossnearsubsfx: ; Near big boss explosion sub-sfx
 	%inst(0D)
 	%dur($24) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($64)
-	db $00
-	%pitch($97)
+	%dur($0C) : %vol($64,$00) : %pitch($97)
 	%dur($12) : %pitch($97)
-	%dur($0C) : %vol($50)
-	db $00
-	%pitch($95)
+	%dur($0C) : %vol($50,$00) : %pitch($95)
 	%dur($18) : %pitch($95)
-	%dur($0C) : %vol($3C)
-	db $00
-	%pitch($90)
+	%dur($0C) : %vol($3C,$00) : %pitch($90)
 	%dur($60) : %pitch($90)
 	db $00
 
 se_destructbossnearsubsubsfx: ; Near big boss explosion sub-sub-sfx
 	%inst(0D)
 	%dur($24) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($00)
-	%dur($64) : %pitch($97)
+	%dur($0C) : %vol($00,$64) : %pitch($97)
 	%dur($18) : %pitch($97)
-	%dur($0C) : %vol($00)
-	%dur($50) : %pitch($95)
+	%dur($0C) : %vol($00,$50) : %pitch($95)
 	%dur($18) : %pitch($95)
-	%dur($0C) : %vol($00)
-	%dur($3C) : %pitch($90)
+	%dur($0C) : %vol($00,$3C) : %pitch($90)
 	%dur($60) : %pitch($90)
 	db $00
 
@@ -4673,31 +4555,22 @@ se_destructbossmid: ; Mid big boss explosion
 se_destructbossmidsubsubsfx: ; Mid big boss explosion sub-sub-sfx
 	%inst(0D)
 	%dur($24) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($50)
-	db $00
-	%pitch($97)
+	%dur($0C) : %vol($50,$00) : %pitch($97)
 	%dur($12) : %pitch($97)
-	%dur($0C) : %vol($3C)
-	db $00
-	%pitch($95)
+	%dur($0C) : %vol($3C,$00) : %pitch($95)
 	%dur($18) : %pitch($95)
-	%dur($0C) : %vol($28)
-	db $00
-	%pitch($90)
+	%dur($0C) : %vol($28,$00) : %pitch($90)
 	%dur($60) : %pitch($90)
 	db $00
 
 se_destructbossmidsubsfx: ; Mid big boss explosion sub-sfx
 	%inst(0D)
 	%dur($24) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($00)
-	%dur($50) : %pitch($97)
+	%dur($0C) : %vol($00,$50) : %pitch($97)
 	%dur($18) : %pitch($97)
-	%dur($0C) : %vol($00)
-	%dur($3C) : %pitch($95)
+	%dur($0C) : %vol($00,$3C) : %pitch($95)
 	%dur($18) : %pitch($95)
-	%dur($0C) : %vol($00)
-	%dur($28) : %pitch($90)
+	%dur($0C) : %vol($00,$28) : %pitch($90)
 	%dur($60) : %pitch($90)
 	db $00
 
@@ -4714,31 +4587,22 @@ se_destructbossfar: ; Far big boss explosion
 se_bigexplosionleft: ; Big explosion left
 	%inst(0D)
 	%dur($24) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($32)
-	db $00
-	%pitch($97)
+	%dur($0C) : %vol($32,$00) : %pitch($97)
 	%dur($12) : %pitch($97)
-	%dur($0C) : %vol($1E)
-	db $00
-	%pitch($95)
+	%dur($0C) : %vol($1E,$00) : %pitch($95)
 	%dur($18) : %pitch($95)
-	%dur($0C) : %vol($14)
-	db $00
-	%pitch($90)
+	%dur($0C) : %vol($14,$00) : %pitch($90)
 	%dur($60) : %pitch($90)
 	db $00
 
 se_destructbossfarsubsfx: ; Far big boss explosion sub-sfx
 	%inst(0D)
 	%dur($24) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($00)
-	%dur($32) : %pitch($97)
+	%dur($0C) : %vol($00,$32) : %pitch($97)
 	%dur($18) : %pitch($97)
-	%dur($0C) : %vol($00)
-	%dur($1E) : %pitch($95)
+	%dur($0C) : %vol($00,$1E) : %pitch($95)
 	%dur($18) : %pitch($95)
-	%dur($0C) : %vol($00)
-	%dur($14) : %pitch($90)
+	%dur($0C) : %vol($00,$14) : %pitch($90)
 	%dur($60) : %pitch($90)
 	db $00
 
@@ -4752,18 +4616,11 @@ se_playerdown: ; Player down
 se_playerdownsubsfx: ; Player down sub-sfx
 	%inst(0D)
 	%dur($06) : %vol($00) : %pitch($98)
-	%dur($0C) : %vol($00)
-	%dur($64) : %pitch($98)
-	%dur($0C) : %vol($5A)
-	db $00
-	%pitch($98)
-	%dur($0C) : %vol($00)
-	%dur($50) : %pitch($98)
-	%dur($48) : %vol($46)
-	db $00
-	%pitch($95)
-	%dur($60) : %vol($00)
-	%dur($28) : %pitch($95)
+	%dur($0C) : %vol($00,$64) : %pitch($98)
+	%dur($0C) : %vol($5A,$00) : %pitch($98)
+	%dur($0C) : %vol($00,$50) : %pitch($98)
+	%dur($48) : %vol($46,$00) : %pitch($95)
+	%dur($60) : %vol($00,$28) : %pitch($95)
 	db $00
 
 se_laser: ; Player laser shot
@@ -4813,16 +4670,13 @@ se_hitwallfar: ; Far laser deflect
 
 se_wingtouchleft: ; Left wing scratch
 	%inst(05)
-	%dur($06) : %vol($5A)
-	db $00
-	%pitch($BC)
+	%dur($06) : %vol($5A,$00) : %pitch($BC)
 	%pitch($BC)
 	db $00
 
 se_wingtouchright: ; Right wing scratch
 	%inst(05)
-	%dur($06) : %vol($00)
-	%dur($5A) : %pitch($BC)
+	%dur($06) : %vol($00,$5A) : %pitch($BC)
 	%pitch($BC)
 	db $00
 
