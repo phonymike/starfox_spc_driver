@@ -552,7 +552,7 @@ _67B:
 	mov	a,#$ff
 	mov	y,#$5c
 	call	apus
-	call	ten00
+	call	xfer_begin
 	mov	a,#$00
 	mov	!_03ca,a
 	mov.b	!sf0,a
@@ -2256,62 +2256,77 @@ gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ;************************************************	; 7.6560747 = 07.a8h
 ;
 ;************************************************
+	if !opt_misc == 0
 	db "*Ver S1.20*"		; ** version check **
+	endif
 ;************************************************
 ;
 ;
 ;***************************************
 ;		tensou program
 ;***************************************
-ten00:
-	mov	a,#$aa				;
-	mov	!port0,a			;
-	mov	a,#$bb				;
-	mov	!port1,a			;
+xfer_begin:
+	if !opt_misc == 0
+	mov	a,#$aa				;\ notify Main CPU that APU is ready
+	mov	!port0,a			;|
+	mov	a,#$bb				;|
+	mov	!port1,a			;/ for communication
+	else
+	mov	!port0,#$aa			;\ notify Main CPU that APU is ready
+	mov	!port1,#$bb			;/ for communication
+	endif
 ;........................................
-ten02:
-	mov	a,!port0			; flag O.K. ?
-	cmp	a,#$cc				;
-	bne	ten02				;
-	bra	ten40				;
+xfer_wait:
+	if !opt_misc == 0
+	mov	a,!port0			; wait for initial "kick" value ; flag O.K. ?
+	cmp	a,#$cc
+	else
+	cmp	!port0,#$cc			; wait for initial "kick" value ; flag O.K. ?
+	endif
+	bne	xfer_wait			; </
+	bra	xfer_start
 ;........................................
-ten16:
-	mov	y,!port0			;
-	bne	ten16				;
+xfer_block:
+	mov	y,!port0			; index (should become 0)
+	bne	xfer_block
 ;........................................
-ten20:
-	cmp	y,!port0			;
-	bne	ten26
+xfer_data:
+	cmp	y,!port0
+	bne	xfer_retry
 ;......
-	mov	a,!port1
-	mov	!port0,y
-	mov	(!adx)+y,a			;
-;
-	inc	y
-	bne	ten20				;
+	mov	a,!port1			; get data
+	mov	!port0,y			; ack data
+	mov	(!adx)+y,a			; store data
+	inc	y					; addr lsb
+	bne	xfer_data
 ;......
-	inc.b	!adx+1			;
-	bra	ten20				;
+	inc.b	!adx+1
+	bra	xfer_data
 ;........................................
-ten26:
-	bpl	ten20				;
-;
-	cmp	y,!port0			;
-	bpl	ten20				;
+xfer_retry:
+	bpl	xfer_data
+	cmp	y,!port0
+	bpl	xfer_data
 ;........................................
-ten40:
-	mov	a,!port2			;
-	mov	y,!port3			;
-	movw	!adx,ya			;
-;
-	mov	y,!port0			;
-	mov	a,!port1			;
-	mov	!port0,y			; flag return
-	bne	ten16				; port1 = 0 ?
+xfer_start:
+	if !opt_misc == 0
+	mov	a,!port2					;\ copy transfer (or entrypoint)
+	mov	y,!port3					;|
+	else
+	movw	ya,!port2				;\ copy transfer (or entrypoint)
+	endif
+	movw	!adx,ya			; addr	;/ address to RAM
+	mov	y,!port0			;\cmd:kick
+	mov	a,!port1			;/
+	mov	!port0,y			; ack kick ; flag return
+	bne	xfer_block			; port1 = 0 ?
 ;........................................
+	if !opt_misc == 0
 	mov	x,#$31				; in port clear
 	mov	!cont,x
-
+	else
+	mov	!cont,#$31			; in port clear
+	endif
 	ret
 ;........................................
 
