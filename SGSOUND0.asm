@@ -568,8 +568,11 @@ _67B:
 	mov	a,#$ff
 	mov	y,#$5c
 	call	apus
+	if !use_bootrom != 0
+	mov	!cont,#$80	; Switch boot ROM back into memory
+	jmp $FFC0	; Jump to boot ROM reset vector
+	else ; not necessary if using boot ROM
 	call	xfer_begin
-	if !use_bootrom == 0 ; not necessary if using boot ROM
 	mov	a,#$00
 	mov	!_03ca,a
 	mov.b	!sf0,a
@@ -2288,11 +2291,8 @@ gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ;***************************************
 ;		tensou program
 ;***************************************
+	if !use_bootrom == 0
 xfer_begin:
-if !use_bootrom != 0
-	mov	!cont,#$80	; Switch boot ROM back into memory
-	jmp $FFC0	; Jump to boot ROM reset vector
-else ;if !use_bootrom == 0
 	if !opt_misc == 0
 	mov	a,#$aa				;\ notify Main CPU that APU is ready
 	mov	!port0,a			;|
@@ -2355,7 +2355,7 @@ xfer_start:
 	mov	!cont,#$31			; in port clear
 	endif
 	ret
-endif	;!use_bootrom
+	endif	;!use_bootrom
 ;........................................
 
 ; include sound effects data
