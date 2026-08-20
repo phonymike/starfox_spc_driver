@@ -117,3 +117,24 @@ macro pitchslide(start,len,target)
 	db	$F9,<start>,<len>,<target>
 	endif
 endmacro
+
+; Common sound sequences
+macro teammateradiochat()
+	%inst(0F) ; comms beep
+	%dur($12) : %vol($14) : %pitch($BE)
+	%dur($06) : %vol($00) : %pitch($BE)
+	%inst(15) ; comms static
+	%dur($18) : %vol($7D) : %pitch($98)
+endmacro
+
+macro downradiochat()
+	%inst(0F) ; comms beep
+	for i = 0..2 ; rept 2
+		%dur($06) : %vol($14) : %pitch($C0)
+		%dur($04) : %vol($00) : %pitch($C0)
+		%dur($12) : %vol($14) : %pitch($C0)
+		%dur($06) : %vol($00) : %pitch($C0)
+	endfor
+	%inst(15) ; comms static
+	%dur($18) : %vol($7D) : %pitch($98)
+endmacro
