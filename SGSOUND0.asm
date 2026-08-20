@@ -88,10 +88,15 @@ endif
 ;
 	set5	!flgs			; echo off
 ;................................................
+	if !opt_misc == 0
 	mov	a,#$96
 	mov	!_03c6,a
 	mov	a,#$bb
 	mov	!_03cb,a
+	else
+	mov	!_03c6,#$96
+	mov	!_03cb,#$bb
+	endif
 	call	create_engine_sound_brr
 ;................................................
 	mov	a,#$60
@@ -564,6 +569,7 @@ _67B:
 	mov	y,#$5c
 	call	apus
 	call	xfer_begin
+	if !use_bootrom == 0 ; not necessary if using boot ROM
 	mov	a,#$00
 	mov	!_03ca,a
 	mov.b	!sf0,a
@@ -575,11 +581,17 @@ _67B:
 -
 	mov	!_039f+y,a
 	dbnz	y,-
+	if !opt_misc == 0
 	mov	a,#$96
 	mov	!_03c6,a
 	mov	a,#$bb
 	mov	!_03cb,a
+	else
+	mov	!_03c6,#$96
+	mov	!_03cb,#$bb
+	endif
 	call	create_engine_sound_brr
+	endif
 ;................................................
 _6B7:
 	cmp	!sf0,#$11
