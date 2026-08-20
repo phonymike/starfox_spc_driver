@@ -9,7 +9,11 @@ arch spc700
 !opt_f1_f9 = 0		; remove unnecessary broken delay operand from $F1/$F9 VCMDs
 					; saves 361 bytes
 !opt_misc = 0		; various small optimizations
+!use_bootrom = 0 	; switch APU boot ROM in for uploads instead of using a copy
+					; saves 64-76 bytes
 
+; Other changes
+; 0 = off, 1 = on
 !msu_mute = 0		; Mute BGM for MSU-1
 
 incsrc macros.inc
@@ -46,15 +50,21 @@ incsrc KAN.asm
 	mov	sp,x				;
 ;
 	mov	a,#$00				; clear RAM 000h-0dfh
+if !opt_misc == 0
 	mov	x,a
+else
+	mov	y,a
+endif
 ;
+if !opt_misc == 0 ; APU boot ROM clears 0001-00EF for us, saves 5 bytes to remove
 start10:
 	mov	(x+),a
-	cmp	x,#$df+1			; zero 00-e0
-	bne	start10
+	cmp	x,#$df+1
+	bne	start10				; clear RAM 000h-0E0h
+endif
 ;........................................
-	mov	x,#$00
 if !opt_misc == 0
+	mov	x,#$00
 -
 	mov	!ngs+x,a
 	inc	x
@@ -66,10 +76,10 @@ if !opt_misc == 0
 	bne	-
 else ; saves 3 bytes
 clr_0200_03ff:
-	mov !ngs+x,a
-	mov !pvodw+x,a
-	inc x					; zero 0200-02ff, 0300-03ff
-	bne clr_0200_03ff
+	mov !ngs+y,a
+	mov !pvodw+y,a
+	dbnz y,clr_0200_03ff	; zero 0200-02ff, 0300-03ff
+	movw	$00,ya	; zero 0000-0001
 endif
 ;........................................
 	inc	a
@@ -2266,6 +2276,10 @@ gfd:	;c00  c01  d00  d01  e00  f00  f01  g00  g01  a00  a01  b00  1.0594631
 ;		tensou program
 ;***************************************
 xfer_begin:
+if !use_bootrom != 0
+	mov	!cont,#$80	; Switch boot ROM back into memory
+	jmp $FFC0	; Jump to boot ROM reset vector
+else ;if !use_bootrom == 0
 	if !opt_misc == 0
 	mov	a,#$aa				;\ notify Main CPU that APU is ready
 	mov	!port0,a			;|
@@ -2328,6 +2342,7 @@ xfer_start:
 	mov	!cont,#$31			; in port clear
 	endif
 	ret
+endif	;!use_bootrom
 ;........................................
 
 ; 0F21-0FDF.bin
