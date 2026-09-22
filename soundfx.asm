@@ -1059,7 +1059,6 @@ se_slippyradiochat: ; Slippy radio chat
 	%dur($08) : %pitch($89)
 	%inst(14)
 	%dur($08) : %pitch($8C)
-	%inst(16)
 	db $00
 
 se_slippyradiochathit: ; Slippy radio chat hit
