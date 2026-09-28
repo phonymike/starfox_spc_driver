@@ -2473,7 +2473,7 @@ sfx_ptrs:
 	dw se_androssappears			; $87 ANDROSS APPEARS
 	dw se_androsshit				; $88 ANDROSS HIT
 	dw se_textting					; $89 TEXT TING
-	dw se_silence					; $8A SILENCE
+	dw se_silence					; $8A SILENCE (called by HUD arrows)
 	dw se_prewingrepaired			; $8B PRE-WING REPAIRED
 	dw se_androssradiochat			; $8C ANDROSS RADIO CHAT
 	dw se_metalsmashersmashing		; $8D METAL SMASHER SMASHING
