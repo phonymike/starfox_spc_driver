@@ -4360,6 +4360,8 @@ se_warning2: ; Wing damaged
 	%inst(15)
 	%dur($0C) : %vol($7D) : %pitch($98)
 	db $00
+
+se_unreferenced: ; Unreferenced sound effect (potentially what $8A originally pointed to?)
 	%inst(0E)
 	%dur($30) : %vol($32) : %pitch($B7)
 	db $00
