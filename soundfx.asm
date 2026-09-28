@@ -2018,6 +2018,11 @@ se_warning2: ; Wing damaged
 	%dur($0C) : %pitch($98)
 	db $00
 
+;se_unreferenced: ; Unreferenced sound effect (potentially what $8A originally pointed to?)
+;	%inst(0E)
+;	%dur($30) : %vol($32) : %pitch($B7)
+;	db $00
+
 se_phantron2landing: ; Phantron 2 landing
 	%inst(0D)
 	%dur($06) : %vol($78) : %pitch($89)
