@@ -2587,23 +2587,25 @@ _2671:
 	mov	y,#$74
 	mov	!ttt,#$04
 -
-	mov	a,engine_sound_id_table+x
+	mov	a,engine_sound_patches+x
 	call	apus
 	inc	x
 	inc	y
 	dbnz	!ttt,-
-	mov	a,engine_sound_id_table+x
+	mov	a,engine_sound_patches+x
 	mov	!_022f,a
 	inc	x
-	mov	a,engine_sound_id_table+x
+	mov	a,engine_sound_patches+x
 	mov	!_022e,a
 	ret
 
-; related to determining wavering in pitch?
-engine_sound_id_table:
-	db $20, $00, $00, $E8, $04, $00, $20, $00
-	db $00, $EF, $00, $60, $20, $00, $00, $E5
-	db $00, $80, $20, $00, $00, $E8, $01, $C0
+; Engine sound patch table
+engine_sound_patches:
+;	VxSRCN, VxADSR1, VxADSR2, VxGAIN, pitch mult base, pitch mult fractional (256ths)
+	db $20, $00, $00, $E8, $04, $00 ; $00
+	db $20, $00, $00, $EF, $00, $60 ; $01
+	db $20, $00, $00, $E5, $00, $80 ; $02
+	db $20, $00, $00, $E8, $01, $C0 ; $03
 
 ; table of engine frequency notes
 engine_freq_table:
